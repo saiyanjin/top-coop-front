@@ -1,0 +1,154 @@
+<template>
+  <div>
+    <v-app-bar class="bg-vertFonce border-b-sm border-vertClair" elevation="0">
+      <v-btn @click.stop="drawer = !drawer" :icon="drawer ? 'mdi-menu-open' : 'mdi-menu-close'"/>
+      <span class="mr-15">Menu</span>
+
+      <div class="ml-15 d-flex align-center">
+        <div class="d-flex align-center text-white ml-14">
+          <v-icon icon="mdi-view-dashboard-outline" class="mr-2"></v-icon>
+          Dashboard TopCoop
+        </div>
+
+        <v-btn-toggle
+          v-model="activeTopTab"
+          variant="text"
+          class="h-100 align-center rounded-0"
+          @update:model-value="onTopTabChange"
+        >
+          <v-btn value="calendrier" prepend-icon="mdi-calendar-month-outline" class="custom-nav-btn text-white mx-8 text-title-medium pa-3 rounded-lg">
+            Calendrier
+          </v-btn>
+          <v-btn value="commandes" prepend-icon="mdi-file-document-outline" class="custom-nav-btn text-white text-title-medium pa-3 rounded-lg">
+            Commandes
+          </v-btn>
+        </v-btn-toggle>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn @click="toggleTheme" :icon="isDark ? 'mdi-weather-night' : 'mdi-white-balance-sunny'" />
+      <v-btn icon="mdi-account" variant="text" class="text-white"></v-btn>
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      class="bg-vertFonce border-0"
+      width="260"
+      permanent
+    >
+      <div class="position-sticky top-0 pt-4 pb-2 w-100 bg-vertFonce z-index-2">
+        <v-text-field
+          v-model="schemaSearch"
+          prepend-inner-icon="mdi-magnify"
+          label="Rechercher une entité"
+          variant="outlined"
+          density="compact"
+          clearable
+          hide-details
+          color="vertClair"
+          base-color="vertClair"
+          class="mx-3 text-white"
+        />
+      </div>
+
+      <v-list 
+        v-model:selected="selectedLeftItem" 
+        active-class="bg-vertClair text-SlightlyDark"
+        class="bg-transparent px-2"
+        @update:selected="onLeftItemChange"
+      >
+        <v-list-item
+          v-for="item in filteredItems"
+          :key="item.value"
+          :title="item.title"
+          :value="item.value"
+          prepend-icon="mdi-database"
+          class="smooth-item rounded mb-1 text-white"
+        />
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-main class="bg-fond min-vh-100">
+      <div class="pa-6 h-100">
+        <NuxtPage />
+      </div>
+    </v-main>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useTheme } from 'vuetify'
+
+const theme = useTheme()
+const isDark = computed(() => theme.global.name.value === 'dark')
+function toggleTheme() {
+  theme.global.name.value = isDark.value ? 'light' : 'dark'
+}
+
+const drawer = ref(true)
+const schemaSearch = ref('')
+
+const activeTopTab = ref<string | undefined>(undefined)
+const selectedLeftItem = ref<string[]>(['Produits'])
+
+let lastLeftItem = ['Produits']
+let lastTopTab = 'calendrier'
+
+const onTopTabChange = (value: any) => {
+  if (value === undefined && selectedLeftItem.value.length === 0) {
+    activeTopTab.value = lastTopTab
+    return
+  }
+  if (value !== undefined) {
+    lastTopTab = value
+    selectedLeftItem.value = []
+  }
+}
+
+const onLeftItemChange = (value: any) => {
+  if ((!value || value.length === 0) && activeTopTab.value === undefined) {
+    selectedLeftItem.value = lastLeftItem
+    return
+  }
+  if (value && value.length > 0) {
+    lastLeftItem = value
+    activeTopTab.value = undefined
+  }
+}
+
+const items = [
+  { title: 'Produits', value: 'Produits' },
+  { title: 'Paniers', value: 'Paniers' },
+  { title: 'Type de produits', value: 'Type de produits' },
+  { title: 'Adhérents', value: 'Adhérents' },
+  { title: 'Commandes', value: 'Commandes' },
+  { title: 'Participations', value: 'Participations' },
+]
+
+const filteredItems = computed(() => {
+  if (!schemaSearch.value) return items
+  return items.filter(item => 
+    item.title.toLowerCase().includes(schemaSearch.value.toLowerCase())
+  )
+})
+</script>
+
+<style scoped>
+
+.custom-nav-btn {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.smooth-item { 
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out !important; 
+}
+.smooth-item :deep(.v-list-item__prepend .v-icon) { 
+  opacity: 1 !important; 
+}
+:deep(.v-list-item--active .v-list-item__prepend .v-icon) { 
+  color: #3C3C3C !important; 
+}
+</style>
