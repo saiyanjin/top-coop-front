@@ -5,14 +5,14 @@
       <span>Produits</span>
     </div>
 
-    <v-sheet rounded="xl" class="overflow-hidden">
+    <v-sheet class="overflow-hidden">
       <v-data-table
         :headers="headers_produits"
         :items="produits"
         :search="schemaSearch"
       >
         <template v-slot:top>
-          <v-toolbar flat class="px-4 bg-white">
+          <v-toolbar flat class="bg-white">
             <v-text-field
               v-model="schemaSearch"
               prepend-inner-icon="mdi-magnify"
@@ -197,7 +197,7 @@
             class="bg-orange text-white px-8 font-weight-bold"
             @click="save"
           >
-            {{ isEditing ? 'Sauvegarder' : 'Ajouter' }}
+            {{ isEditing ? 'Modifier' : 'Ajouter' }}
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -252,8 +252,8 @@ const headers_produits = [
   { title: "Date d'arrivée", key: 'dateArrivee' },
   { title: "Date de départ", key: 'dateSortie' },
   { title: 'Date de péremption', key: 'datePeremption' },
-  { title: 'Quantité', key: 'quantite', align: 'end' },
-  { title: 'Unité', key: 'unite', align: 'end' },
+  { title: 'Quantité', key: 'quantite' },
+  { title: 'Unité', key: 'unite'},
   { title: 'Actions', key: 'actions', align: 'end', sortable: false },
 ] as const
 
