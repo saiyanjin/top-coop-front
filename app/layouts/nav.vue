@@ -54,7 +54,7 @@
       <v-list 
         v-model:selected="selectedLeftItem" 
         active-class="bg-vertClair text-SlightlyDark"
-        class="bg-transparent px-2"
+        class="bg-transparent"
         @update:selected="onLeftItemChange"
       >
         <v-list-item
@@ -63,7 +63,7 @@
           :title="item.title"
           :value="item.value"
           prepend-icon="mdi-database"
-          class="smooth-item rounded mb-1 text-white"
+          class="smooth-item mb-1 text-white"
         />
       </v-list>
     </v-navigation-drawer>
