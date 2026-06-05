@@ -19,7 +19,7 @@
             Calendrier
           </v-btn>
           <v-btn value="commandes" prepend-icon="mdi-file-document-outline" class="custom-nav-btn text-white text-title-medium pa-3 rounded-lg">
-            Commandes
+            Gestion des stocks
           </v-btn>
         </v-btn-toggle>
       </div>
