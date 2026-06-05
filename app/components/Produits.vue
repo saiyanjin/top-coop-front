@@ -10,6 +10,7 @@
         :headers="headers_produits"
         :items="produits"
         :search="schemaSearch"
+        :hide-default-footer="produits.length < 11"
       >
         <template v-slot:top>
           <v-toolbar flat class="bg-white">
@@ -44,7 +45,6 @@
             prepend-icon="mdi-tag-outline" 
             label
             color="vertFonce"
-            class="border-thin opacity-25"
           >
           </v-chip>
         </template>
@@ -62,7 +62,7 @@
         <template v-slot:item.actions="{ item }">
           <div class="d-flex ga-3 justify-end">
             <v-icon color="vertFonce" icon="mdi-pencil" size="small" class="cursor-pointer" @click="edit(item)"></v-icon>
-            <v-icon color="orange" icon="mdi-delete" size="small" class="cursor-pointer" @click="remove(item.id)"></v-icon>
+            <v-icon color="orange" icon="mdi-delete" size="small" class="cursor-pointer" @click="remove(item)"></v-icon>
           </div>
         </template>
 
@@ -109,7 +109,6 @@
               rounded="lg"
               hide-details
               color="vertFonce"
-              no-data-text="Aucun type trouvé"
             />
 
             <div class="d-flex align-center justify-center ga-5">
@@ -202,12 +201,55 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      v-model="supprimerProduitDialog"
+      max-width="450"
+      persistent
+    >
+      <v-card class="rounded-xl pa-6 d-flex align-center justify-center">
+        <v-card-title class="font-weight-bold d-flex align-center justify-center">
+          Suppression
+        </v-card-title>
+
+        <v-card-text class="pt-2 text-center">
+          Souhaitez-vous vraiment supprimer le produit 
+          <span class="text-orange font-weight-bold">
+            {{ produitASupprimer ? getLabelTypeProduit(produitASupprimer.typeProduit) : '' }}
+          </span> ? 
+          Cette action est irréversible.
+        </v-card-text>
+
+        <v-card-actions class="ga-6 pt-4">
+          <v-btn
+            rounded="lg"
+            variant="flat"
+            color="vertFonce"
+            size="large"
+            class="font-weight-bold px-15"
+            @click="supprimerProduitDialog = false"
+          >
+            Non
+          </v-btn>
+          <v-btn
+            rounded="lg"
+            variant="flat"
+            size="large"
+            class="bg-orange text-white px-15 font-weight-bold"
+            @click="confirmerSuppression"
+          >
+            Oui
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
+// Définition de l'interface TypeScript pour un Produit
 interface Produit {
   id?: number
   typeProduit: number | null
@@ -245,6 +287,10 @@ const formModel = ref<Produit>(createNewRecord())
 const schemaSearch = ref('')
 const ajouterProduit = ref(false)
 
+// États liés à la suppression
+const supprimerProduitDialog = ref(false)
+const produitASupprimer = ref<Produit | null>(null)
+
 const isEditing = computed(() => !!formModel.value.id)
 
 const headers_produits = [
@@ -271,12 +317,25 @@ function edit(item: Produit) {
   ajouterProduit.value = true
 }
 
-function remove(id?: number) {
-  if (id === undefined) return
-  const index = produits.value.findIndex(p => p.id === id)
+// Ouvre le dialogue de confirmation en stockant l'objet sélectionné
+function remove(item: Produit) {
+  if (!item || item.id === undefined) return
+  produitASupprimer.value = item
+  supprimerProduitDialog.value = true
+}
+
+// Exécute la suppression après confirmation
+function confirmerSuppression() {
+  if (!produitASupprimer.value || produitASupprimer.value.id === undefined) return
+  
+  const index = produits.value.findIndex(p => p.id === produitASupprimer.value!.id)
   if (index !== -1) {
     produits.value.splice(index, 1)
   }
+  
+  // Réinitialisation des états
+  supprimerProduitDialog.value = false
+  produitASupprimer.value = null
 }
 
 function save() {
@@ -294,6 +353,8 @@ function save() {
 
 function reset() {
   ajouterProduit.value = false
+  supprimerProduitDialog.value = false
+  produitASupprimer.value = null
   formModel.value = createNewRecord()
   produits.value = [
     { id: 1, typeProduit: 1, dateArrivee: new Date('2026-06-01'), dateSortie: null, datePeremption: new Date('2026-06-15'), quantite: 12, unite: 'kg' },
@@ -301,7 +362,8 @@ function reset() {
   ]
 }
 
-function getLabelTypeProduit(id: number): string {
+function getLabelTypeProduit(id: number | null): string {
+  if (id === null) return 'Inconnu'
   const found = types_produit.find(t => t.id === id)
   return found ? found.value : 'Inconnu'
 }
