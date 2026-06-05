@@ -8,7 +8,7 @@
       <v-sheet class="flex-grow-1 overflow-hidden">
         <v-calendar
           ref="calendar"
-          :events="events"
+          :events="participations"
           :model-value="today"
           :first-day-of-week="1"
           :now="today"
@@ -25,6 +25,7 @@
   import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
   const calendar = ref()
+  const nbrJourSemaine = 7;
   
   const currentMonth = computed(() => {
     const [year, month, day] = today.value.split('-');
@@ -35,7 +36,7 @@
   })
   
   const today = ref('2026-06-05')
-  const events = [
+  const participations = [
     {
       name: 'Mise en rayon',
       start: '2026-06-01 09:00',
@@ -77,11 +78,11 @@
   }
 
   function prev () {
-    offsetDate(-7);
+    offsetDate(-nbrJourSemaine);
   }
 
   function next () {
-    offsetDate(7);
+    offsetDate(nbrJourSemaine);
   }
     
 </script>
