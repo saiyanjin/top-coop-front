@@ -6,8 +6,7 @@
 
       <div class="ml-15 d-flex align-center">
         <div class="d-flex align-center text-white ml-14">
-          <img src="/images/Logo_TopCoop.svg" alt="Logo TopCoop" class="mr-2" width="150" /> 
-          <!-- fgdfg -->
+          <img src="/images/Logo_TopCoop.svg" alt="Logo TopCoop" class="mr-2" width="150" />
         </div>
 
         <v-btn-toggle
