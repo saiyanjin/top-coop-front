@@ -212,6 +212,7 @@
 import { ref, computed, onMounted } from "vue";
 import { UserRole } from "~/constants/roles";
 import { API_ROUTES } from "~/constants/api";
+import { id } from "vuetify/locale";
 
 const config = useRuntimeConfig();
 const routes = API_ROUTES(config.public.apiBase);
@@ -273,23 +274,15 @@ function remove(item: Utilisateur) {
 function confirmDelete() {
   if (!itemToDelete.value || itemToDelete.value.id === undefined) return;
 
-  const index = adherents.value.findIndex(
-    (p) => p.id === itemToDelete.value!.id,
-  );
-  if (index !== -1) {
-    adherents.value.splice(index, 1);
-  }
+  deleteUser(itemToDelete.value.id)
 
   dialogDelete.value = false;
   itemToDelete.value = null;
 }
 
 function save() {
-  if (isEditing.value) {
-    const index = adherents.value.findIndex((p) => p.id === formModel.value.id);
-    if (index !== -1) {
-      adherents.value[index] = formModel.value;
-    }
+  if (isEditing.value && formModel.value.id) {
+    updateUser(formModel.value.id);
   } else {
     createUser();
   }
@@ -352,4 +345,42 @@ const createUser = async () => {
     console.log(error.message);
   }
 };
+
+const deleteUser = async (id : string) => {
+  try {
+    const data = await $fetch<Utilisateur>(routes.NEST_USERS + '/' + id , {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${useToken().getToken()}`,
+      },
+    });
+    const index = adherents.value.findIndex((p) => p.id === id);
+    if (index == -1) {
+      return
+    }
+    adherents.value.splice(index, 1);
+  } catch (error: any) {
+    console.log(error.message);
+  }
+}
+
+const updateUser = async (id : string) => {
+    try {
+      const {id,dateCreation,...reste} = formModel.value
+      const data = await $fetch<Utilisateur>(routes.NEST_USERS + '/' + id , {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${useToken().getToken()}`,
+      },
+      body: reste
+    });
+    const index = adherents.value.findIndex((p) => p.id === id);
+    if (index == -1) {
+      return
+    }
+    adherents.value.splice(index, 1, data);
+  } catch (error: any) {
+    console.log(error.message);
+  }
+}
 </script>

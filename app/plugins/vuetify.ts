@@ -1,10 +1,27 @@
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles' 
 import { createVuetify } from 'vuetify'
+import DateFnsAdapter from '@date-io/date-fns'
+import { fr as frLocale } from 'date-fns/locale'
+import { fr } from 'vuetify/locale'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     ssr: true,
+    locale: {
+      locale: 'fr',
+      fallback: 'en',
+      messages: { fr },
+    },
+
+    date: {
+      adapter: DateFnsAdapter,
+      formats: {
+      },
+      locale: {
+        fr: frLocale
+      }
+    },
     theme: {
       defaultTheme: 'light',
       themes: {
