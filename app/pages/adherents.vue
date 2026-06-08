@@ -3,7 +3,7 @@
     class="w-100 bg-white rounded-lg elevation-1"
     height="calc(100vh - 112px)"
   >
-    <Calendrier class=""/>
+    <Adherents class="flex-grow-1"/>
   </v-sheet>
 </template>
 

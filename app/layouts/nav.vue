@@ -103,6 +103,10 @@ const onTopTabChange = (value: any) => {
   if (value !== undefined) {
     lastTopTab = value
     selectedLeftItem.value = []
+
+    if (value === 'calendrier') {
+      navigateTo('/')
+    }
   }
 }
 
@@ -114,6 +118,13 @@ const onLeftItemChange = (value: any) => {
   if (value && value.length > 0) {
     lastLeftItem = value
     activeTopTab.value = undefined
+
+    if (value[0] === 'Produits') {
+      navigateTo('/produits')
+    }
+    if (value[0] === 'Adherents') {
+      navigateTo('/adherents')
+    }
   }
 }
 
@@ -121,7 +132,7 @@ const items = [
   { title: 'Produits', value: 'Produits' },
   { title: 'Paniers', value: 'Paniers' },
   { title: 'Type de produits', value: 'Type de produits' },
-  { title: 'Adhérents', value: 'Adhérents' },
+  { title: 'Adhérents', value: 'Adherents' },
   { title: 'Commandes', value: 'Commandes' },
   { title: 'Participations', value: 'Participations' },
 ]
