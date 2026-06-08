@@ -13,7 +13,7 @@
         :hide-default-footer="adherents.length < 11"
       >
         <template v-slot:top>
-          <v-toolbar flat class="bg-white">
+          <v-toolbar flat class="bg-blanc">
             <v-text-field
               v-model="schemaSearch"
               prepend-inner-icon="mdi-magnify"
@@ -43,7 +43,7 @@
         <template v-slot:item.role="{ value }">
           <v-chip 
             :text="value"
-            prepend-icon="mdi-shield-account" 
+            :prepend-icon="value === 'admin' ? 'mdi-shield-account' : undefined" 
             label
             color="vertFonce"
             class="text-capitalize"
@@ -256,7 +256,7 @@ const headers = [
   { title: 'Email', key: 'email' },
   { title: 'Ville', key: 'ville' },
   { title: 'Rôle', key: 'role' },
-  { title: 'Date création', key: 'date_creation' },
+  { title: 'Date de création', key: 'date_creation' },
   { title: 'Actions', key: 'actions', align: 'end', sortable: false },
 ] as const
 
@@ -322,6 +322,18 @@ function reset() {
       mot_de_passe: 'hashedpassword', 
       role: 'admin', 
       date_creation: new Date('2026-06-05') 
+    },
+    { 
+      id: 'usr21', 
+      nom: 'Tutu', 
+      prenom: 'Toto', 
+      email: 'tototutu@gmail.com', 
+      adresse: 'test', 
+      code_postal: 75000, 
+      ville: 'Paris', 
+      mot_de_passe: 'hashedpassword', 
+      role: 'adhérent', 
+      date_creation: new Date('2026-06-08'),
     },
   ]
 }

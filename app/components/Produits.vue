@@ -13,7 +13,7 @@
         :hide-default-footer="produits.length < 11"
       >
         <template v-slot:top>
-          <v-toolbar flat class="bg-white">
+          <v-toolbar flat class="bg-blanc">
             <v-text-field
               v-model="schemaSearch"
               prepend-inner-icon="mdi-magnify"

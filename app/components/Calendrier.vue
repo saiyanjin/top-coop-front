@@ -21,8 +21,6 @@
 
 <script setup>
   import { onMounted, ref, computed } from 'vue'
-  import { createVuetify } from 'vuetify'
-  import { aliases, mdi } from 'vuetify/iconsets/mdi-svg'
 
   const calendar = ref()
   const nbrJourSemaine = 7;
@@ -55,16 +53,6 @@
 
   onMounted(() => {
     calendar.value.scrollToTime('08:00')
-  })
-
-  createVuetify({
-    icons: {
-      defaultSet: 'mdi',
-      aliases,
-      sets: {
-        mdi,
-      },
-    },
   })
 
   function offsetDate (days) {

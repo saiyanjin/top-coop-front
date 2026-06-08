@@ -1,6 +1,6 @@
 <template>
   <v-sheet 
-    class="w-100 bg-white rounded-lg elevation-1"
+    class="w-100 bg-blanc rounded-lg elevation-1 d-flex"
     height="calc(100vh - 112px)"
   >
     <Adherents class="flex-grow-1"/>
