@@ -4,7 +4,7 @@
     height="calc(100vh - 128px)" 
   >
   
-    <Calendrier class=""/>
+    <Adherents class=""/>
   </v-sheet>
 </template>
 
