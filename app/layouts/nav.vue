@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar class="bg-vertFonce border-b-sm border-vertClair" elevation="0" height="64">
+    <v-app-bar class="bg-vertFonce border-b-sm border-vertClair" elevation="0" height="80">
       <v-btn @click.stop="drawer = !drawer" :icon="drawer ? 'mdi-menu-open' : 'mdi-menu-close'"/>
       <span class="mr-15">Menu</span>
 
