@@ -249,17 +249,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
-// Définition de l'interface TypeScript pour un Produit
-interface Produit {
-  id?: number
-  typeProduit: number | null
-  dateArrivee: Date | null
-  dateSortie: Date | null
-  datePeremption: Date | null
-  quantite: number
-  unite: string
-}
-
 const types_produit = [
   { id: 1, value: 'Apple' },
   { id: 2, value: 'Banana' },
@@ -287,7 +276,6 @@ const formModel = ref<Produit>(createNewRecord())
 const schemaSearch = ref('')
 const ajouterProduit = ref(false)
 
-// États liés à la suppression
 const supprimerProduitDialog = ref(false)
 const produitASupprimer = ref<Produit | null>(null)
 
@@ -317,14 +305,12 @@ function edit(item: Produit) {
   ajouterProduit.value = true
 }
 
-// Ouvre le dialogue de confirmation en stockant l'objet sélectionné
 function remove(item: Produit) {
   if (!item || item.id === undefined) return
   produitASupprimer.value = item
   supprimerProduitDialog.value = true
 }
 
-// Exécute la suppression après confirmation
 function confirmerSuppression() {
   if (!produitASupprimer.value || produitASupprimer.value.id === undefined) return
   
@@ -333,7 +319,6 @@ function confirmerSuppression() {
     produits.value.splice(index, 1)
   }
   
-  // Réinitialisation des états
   supprimerProduitDialog.value = false
   produitASupprimer.value = null
 }
