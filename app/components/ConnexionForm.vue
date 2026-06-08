@@ -58,7 +58,6 @@
 </template>
 
 <script setup lang="ts">
-// Appel du composable (auto-importé par Nuxt)
 const {
   email,
   password,
