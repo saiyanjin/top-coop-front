@@ -25,7 +25,6 @@ export const useConnexionForm = () => {
 
   // ---------- Logique d'authentification ----------
   const authentification = async () => {
-    // Correction ici : .value est nécessaire pour tester la ref
     if (!isFormValid.value) return 
 
     isSubmitting.value = true
@@ -50,7 +49,6 @@ export const useConnexionForm = () => {
     }
   }
 
-  // On retourne tout ce que le composant .vue a besoin de consommer
   return {
     email,
     password,
