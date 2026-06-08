@@ -17,7 +17,6 @@
         density="comfortable"
         color="vertFonce"
         prepend-inner-icon="mdi-email-outline"
-        :rules="emailRules"
         required
         rounded="lg"
         class="mb-3"
@@ -33,7 +32,6 @@
         prepend-inner-icon="mdi-lock-outline"
         :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
         @click:append-inner="showPassword = !showPassword"
-        :rules="passwordRules"
         required
         rounded="lg"
         class="mb-6"
@@ -64,8 +62,8 @@ const {
   isFormValid,
   isSubmitting,
   showPassword,
-  emailRules,
-  passwordRules,
+  // emailRules,
+  // passwordRules,
   authentification
 } = useConnexionForm()
 </script>

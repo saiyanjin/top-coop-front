@@ -27,7 +27,7 @@
       <v-spacer></v-spacer>
 
       <v-btn @click="toggleTheme" :icon="isDark ? 'mdi-weather-night' : 'mdi-white-balance-sunny'" />
-      <v-btn icon="mdi-account" variant="text" class="text-white"></v-btn>
+      <v-btn icon="mdi-logout" variant="text" class="text-white" @click="logout"></v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -132,6 +132,12 @@ const filteredItems = computed(() => {
     item.title.toLowerCase().includes(schemaSearch.value.toLowerCase())
   )
 })
+
+const logout = async () => {
+  useToken().setToken(null)
+  await navigateTo('/connexion')
+}
+
 </script>
 
 <style scoped>

@@ -14,14 +14,14 @@ export const useConnexionForm = () => {
   const password = ref('')
 
   // ---------- Règles de validation ----------
-  const emailRules = [
-    (v: string) => !!v || "L'adresse email est requise.",
-    (v: string) => /.+@.+\..+/.test(v) || "L'adresse email doit être valide."
-  ]
+  // const emailRules = [
+  //   (v: string) => !!v || "L'adresse email est requise.",
+  //   (v: string) => /.+@.+\..+/.test(v) || "L'adresse email doit être valide."
+  // ]
 
-  const passwordRules = [
-    (v: string) => !!v || 'Le mot de passe est requis.',
-  ]
+  // const passwordRules = [
+  //   (v: string) => !!v || 'Le mot de passe est requis.',
+  // ]
 
   // ---------- Logique d'authentification ----------
   const authentification = async () => {
@@ -55,8 +55,8 @@ export const useConnexionForm = () => {
     isFormValid,
     isSubmitting,
     showPassword,
-    emailRules,
-    passwordRules,
+    // emailRules,
+    // passwordRules,
     authentification
   }
 }
