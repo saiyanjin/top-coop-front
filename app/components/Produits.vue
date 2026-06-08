@@ -198,17 +198,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
-// Définition de l'interface TypeScript pour un Produit
-interface Produit {
-  id?: number
-  typeProduit: number | null
-  dateArrivee: Date | null
-  dateSortie: Date | null
-  datePeremption: Date | null
-  quantite: number
-  unite: string
-}
-
 const types_produit = [
   { id: 1, value: 'Apple' },
   { id: 2, value: 'Banana' },
