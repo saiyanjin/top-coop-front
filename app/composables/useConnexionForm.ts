@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { API_ROUTES } from '~/constants/api'
 import { useToken } from '~/composables/useToken'
+import { UserRole } from '~/constants/roles'
 
 export const useConnexionForm = () => {
   const config = useRuntimeConfig()
@@ -30,15 +31,15 @@ export const useConnexionForm = () => {
     isSubmitting.value = true
 
     try {
-      const data = await $fetch<{ access_token: string, role: string }>(routes.NEST_LOGIN, {
+      const data = await $fetch<{ access_token: string, role: UserRole }>(routes.NEST_LOGIN, {
         body: { email: email.value, motDePasse: password.value },
         method: "POST"
       })
 
-      console.log(data)
+      // console.log(data)
 
       if (data?.access_token) {
-        if (data.role == 'USER') {
+        if (data.role === UserRole.USER) {
           console.log("Accès au CRUD uniquement aux comptes administrateurs")
           return
         }
