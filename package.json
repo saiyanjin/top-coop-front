@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",
+    "@types/node": "^25.9.2",
     "vite-plugin-vuetify": "^2.1.3"
   }
 }

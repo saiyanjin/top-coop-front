@@ -8,7 +8,7 @@
       </span>
     </h2>
 
-    <v-form ref="formRef" class="mt-10" v-model="isFormValid" @submit.prevent="Authentification">
+    <v-form ref="formRef" class="mt-10" v-model="isFormValid" @submit.prevent="authentification">
       <v-text-field
         v-model="email"
         label="Adresse email"
@@ -58,53 +58,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useApi } from '~/composables/useApi'
-import { useToken } from '~/composables/useToken'
-
-const isFormValid = ref(false)
-const isSubmitting = ref(false)
-const showPassword = ref(false)
-const email = ref('')
-const password = ref('')
-
-// ---------- les règles ----------
-const emailRules = [
-  (v: string) => !!v || "L'adresse email est requise.",
-  (v: string) => /.+@.+\..+/.test(v) || "L'adresse email doit être valide."
-]
-
-const passwordRules = [
-  (v: string) => !!v || 'Le mot de passe est requis.',
-]
-
-const Authentification = async () => {
-  if (!isFormValid) {
-    return 
-  }
-  isSubmitting.value = true
-
-  try {
-      let data;
-      data = await $fetch<{access_token: string}>('http://localhost:3002/auth/login', {
-      body: {email : email.value, motDePasse : password.value},
-      method : "POST"
-    })
-    
-    console.log(data)
-
-    if (data && data.access_token) {
-      useToken().setToken(data.access_token)
-      await navigateTo("/")
-    } else {
-      console.log(data)
-    }
-
-  } catch (error:any) {
-    console.error("Erreur API Nest :", error.message)
-  } finally {
-    isSubmitting.value = false
-  }
-
-}
+// Appel du composable (auto-importé par Nuxt)
+const {
+  email,
+  password,
+  isFormValid,
+  isSubmitting,
+  showPassword,
+  emailRules,
+  passwordRules,
+  authentification
+} = useConnexionForm()
 </script>
