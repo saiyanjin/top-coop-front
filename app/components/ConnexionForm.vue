@@ -78,8 +78,6 @@ const passwordRules = [
   (v: string) => !!v || 'Le mot de passe est requis.',
 ]
 
-
-
 const Authentification = async () => {
   if (!isFormValid) {
     return 
