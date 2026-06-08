@@ -143,7 +143,7 @@ export const useAdherents = () => {
 
   const updateUser = async (id: string) => {
     try {
-      const { id: userId, dateCreation, ...reste } = formModel.value;
+      const { id: userId, dateCreation, motDePasse, ...reste } = formModel.value;
       const data = await $fetch<Utilisateur>(routes.NEST_USERS + '/' + id, {
         method: "PATCH",
         headers: {
