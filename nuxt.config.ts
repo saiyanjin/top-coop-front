@@ -35,4 +35,10 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  runtimeConfig: {
+    public: {
+      apiBase: process.env.NEST_API_URL || 'http://localhost:3002',
+    }
+  }
 })

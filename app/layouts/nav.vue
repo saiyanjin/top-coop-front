@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar class="bg-vertFonce border-b-sm border-vertClair" elevation="0" height="80">
+    <v-app-bar class="bg-vertFonce border-b-sm border-vertClair pr-5" elevation="0" height="80">
       <v-btn @click.stop="drawer = !drawer" :icon="drawer ? 'mdi-menu-open' : 'mdi-menu-close'"/>
       <span class="mr-15">Menu</span>
 
@@ -27,7 +27,7 @@
       <v-spacer></v-spacer>
 
       <v-btn @click="toggleTheme" :icon="isDark ? 'mdi-weather-night' : 'mdi-white-balance-sunny'" />
-      <v-btn icon="mdi-account" variant="text" class="text-white"></v-btn>
+      <v-btn icon="mdi-logout" variant="text" class="text-white" @click="logout"></v-btn>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -77,65 +77,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useTheme } from 'vuetify'
-
-const theme = useTheme()
-const isDark = computed(() => theme.global.name.value === 'dark')
-function toggleTheme() {
-  theme.global.name.value = isDark.value ? 'light' : 'dark'
-}
-
-const drawer = ref(true)
-const schemaSearch = ref('')
-
-const activeTopTab = ref<string | undefined>(undefined)
-const selectedLeftItem = ref<string[]>(['Produits'])
-
-let lastLeftItem = ['Produits']
-let lastTopTab = 'calendrier'
-
-const onTopTabChange = (value: any) => {
-  if (value === undefined && selectedLeftItem.value.length === 0) {
-    activeTopTab.value = lastTopTab
-    return
-  }
-  if (value !== undefined) {
-    lastTopTab = value
-    selectedLeftItem.value = []
-  }
-}
-
-const onLeftItemChange = (value: any) => {
-  if ((!value || value.length === 0) && activeTopTab.value === undefined) {
-    selectedLeftItem.value = lastLeftItem
-    return
-  }
-  if (value && value.length > 0) {
-    lastLeftItem = value
-    activeTopTab.value = undefined
-  }
-}
-
-const items = [
-  { title: 'Produits', value: 'Produits' },
-  { title: 'Paniers', value: 'Paniers' },
-  { title: 'Type de produits', value: 'Type de produits' },
-  { title: 'Adhérents', value: 'Adhérents' },
-  { title: 'Commandes', value: 'Commandes' },
-  { title: 'Participations', value: 'Participations' },
-]
-
-const filteredItems = computed(() => {
-  if (!schemaSearch.value) return items
-  return items.filter(item => 
-    item.title.toLowerCase().includes(schemaSearch.value.toLowerCase())
-  )
-})
+const {
+  isDark,
+  toggleTheme,
+  drawer,
+  schemaSearch,
+  activeTopTab,
+  selectedLeftItem,
+  filteredItems,
+  onTopTabChange,
+  onLeftItemChange,
+  logout
+} = useNav()
 </script>
 
 <style scoped>
-
 .custom-nav-btn {
   opacity: 1;
   transition: opacity 0.3s ease;
