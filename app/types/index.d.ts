@@ -16,7 +16,7 @@ declare global {
 
     // ---------- Adherents ----------
     
-    export interface Utilisateur {
+    interface Utilisateur {
       id?: string;
       nom: string;
       prenom: string;
