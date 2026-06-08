@@ -75,5 +75,4 @@ const emailRules = [
 const passwordRules = [
   (v: string) => !!v || 'Le mot de passe est requis.',
 ]
-
 </script>
