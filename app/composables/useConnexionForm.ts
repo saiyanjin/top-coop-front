@@ -30,12 +30,18 @@ export const useConnexionForm = () => {
     isSubmitting.value = true
 
     try {
-      const data = await $fetch<{ access_token: string }>(routes.NEST_LOGIN, {
+      const data = await $fetch<{ access_token: string, role: string }>(routes.NEST_LOGIN, {
         body: { email: email.value, motDePasse: password.value },
         method: "POST"
       })
 
+      console.log(data)
+
       if (data?.access_token) {
+        if (data.role == 'USER') {
+          console.log("Accès au CRUD uniquement aux comptes administrateurs")
+          return
+        }
         useToken().setToken(data.access_token)
         await navigateTo("/")
       } else {
