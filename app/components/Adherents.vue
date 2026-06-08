@@ -291,7 +291,6 @@ function save() {
       adherents.value[index] = formModel.value;
     }
   } else {
-    formModel.value.id = Date.now().toString();
     createUser();
   }
   dialog.value = false;
@@ -321,7 +320,7 @@ interface Utilisateur {
   ville: string;
   motDePasse: string;
   role: UserRole;
-  dateCreation: Date | string | null;
+  dateCreation?: Date | string | null;
 }
 
 const getUsers = async () => {
@@ -332,8 +331,6 @@ const getUsers = async () => {
         Authorization: `Bearer ${useToken().getToken()}`,
       },
     });
-
-    console.log(data);
 
     adherents.value = data;
   } catch (error: any) {
@@ -350,7 +347,6 @@ const createUser = async () => {
       },
       body: formModel.value,
     });
-    console.log("data", data);
     adherents.value.push(data);
   } catch (error: any) {
     console.log(error.message);
