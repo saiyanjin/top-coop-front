@@ -122,7 +122,7 @@
             <v-text-field
               v-if="!isEditing"
               label="Mot de passe"
-              v-model="formModel.mot_de_passe"
+              v-model="formModel.motDePasse"
               type="password"
               variant="outlined"
               rounded="lg"
@@ -143,7 +143,7 @@
               <v-col cols="4">
                 <v-text-field
                   label="Code postal"
-                  v-model="formModel.code_postal"
+                  v-model="formModel.codePostal"
                   type="number"
                   variant="outlined"
                   rounded="lg"
@@ -166,7 +166,7 @@
             <v-select
               label="Rôle"
               v-model="formModel.role"
-              :items="['adhérent', 'admin']"
+              :items="rolesUser"
               variant="outlined"
               rounded="lg"
               color="vertFonce"
@@ -175,7 +175,7 @@
 
             <v-date-input
               label="Date de création"
-              v-model="formModel.date_creation"
+              v-model="formModel.dateCreation"
               prepend-icon=""
               prepend-inner-icon="$calendar"
               rounded="lg"
@@ -212,19 +212,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { UserRole } from '~/constants/roles'
+import { API_ROUTES } from '~/constants/api'
 
-interface Utilisateur {
-  id?: string
-  nom: string
-  prenom: string
-  email: string
-  adresse: string
-  code_postal: number | null
-  ville: string
-  mot_de_passe: string
-  role: string
-  date_creation: Date | string | null
-}
+  const config = useRuntimeConfig()
+  const routes = API_ROUTES(config.public.apiBase)
 
 function createNewRecord(): Utilisateur {
   return {
@@ -232,14 +224,15 @@ function createNewRecord(): Utilisateur {
     prenom: '',
     email: '',
     adresse: '',
-    code_postal: null,
+    codePostal: '',
     ville: '',
-    mot_de_passe: '',
-    role: 'adhérent',
-    date_creation: new Date(),
+    motDePasse: '',
+    role: UserRole.USER,
+    dateCreation: new Date(),
   }
 }
 
+const rolesUser = ref([UserRole.USER, UserRole.ADMIN])
 const adherents = ref<Utilisateur[]>([])
 const formModel = ref<Utilisateur>(createNewRecord())
 const schemaSearch = ref('')
@@ -261,7 +254,7 @@ const headers = [
 ] as const
 
 onMounted(() => {
-  reset()
+  getUsers()
 })
 
 function add() {
@@ -310,32 +303,7 @@ function reset() {
   dialogDelete.value = false
   itemToDelete.value = null
   formModel.value = createNewRecord()
-  adherents.value = [
-    { 
-      id: 'usr-1', 
-      nom: 'Nouhet', 
-      prenom: 'Pierre', 
-      email: 'nouhet.pierre@gmail.com', 
-      adresse: '73 rue de gergovie', 
-      code_postal: 75014, 
-      ville: 'Paris', 
-      mot_de_passe: 'hashedpassword', 
-      role: 'admin', 
-      date_creation: new Date('2026-06-05') 
-    },
-    { 
-      id: 'usr21', 
-      nom: 'Tutu', 
-      prenom: 'Toto', 
-      email: 'tototutu@gmail.com', 
-      adresse: 'test', 
-      code_postal: 75000, 
-      ville: 'Paris', 
-      mot_de_passe: 'hashedpassword', 
-      role: 'adhérent', 
-      date_creation: new Date('2026-06-08'),
-    },
-  ]
+  adherents.value = []
 }
 
 function formatDateAffichage(date: Date | null | string): string {
@@ -343,4 +311,38 @@ function formatDateAffichage(date: Date | null | string): string {
   const d = typeof date === 'string' ? new Date(date) : date
   return d.toLocaleDateString('fr-FR')
 }
+
+
+
+
+interface Utilisateur {
+  id?: string
+  nom: string
+  prenom: string
+  email: string
+  adresse: string
+  codePostal: string
+  ville: string
+  motDePasse: string
+  role: UserRole
+  dateCreation: Date | string | null
+}
+
+const getUsers = async () => {
+    try {
+      const data = await $fetch<Utilisateur[]>(routes.NEST_GET_USERS, {
+        method: "GET",
+        headers:{
+          Authorization:`Bearer ${useToken().getToken()}`
+        }
+      })
+
+      console.log(data)
+
+      adherents.value = data
+
+      } catch (error: any) {
+      console.error("Erreur API Nest :", error.data?.message || error.message)
+    }
+  }
 </script>
