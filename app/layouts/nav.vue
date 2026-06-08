@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-app-bar class="bg-vertFonce border-b-sm border-vertClair pr-5" elevation="0" height="80">
+    <v-app-bar class="bg-vertFonce border-b-sm border-vertClair" elevation="0" height="64">
       <v-btn @click.stop="drawer = !drawer" :icon="drawer ? 'mdi-menu-open' : 'mdi-menu-close'"/>
       <span class="mr-15">Menu</span>
 
       <div class="ml-15 d-flex align-center">
         <div class="d-flex align-center text-white ml-14">
-          <img src="/images/Logo_TopCoop.svg" alt="Logo TopCoop" class="mr-2" width="150" />
+          <img src="/images/Logo_TopCoop.svg" alt="Logo TopCoop" class="mr-2" width="140" />
         </div>
 
         <v-btn-toggle

@@ -17,6 +17,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             orange: '#ce8536',
             fond: '#ECEFEC',
             SlightlyDark: '#3C3C3C',
+            blanc: '#fff',
           },
         },
         dark: {
@@ -28,6 +29,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             orange: '#ce8536', 
             fond: '#ECEFEC',
             SlightlyDark: '#3C3C3C',
+            blanc: "#222",
           },
         },
       },
