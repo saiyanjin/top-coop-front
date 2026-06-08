@@ -11,6 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "nuxt": "^4.4.7",
     "vue": "^3.5.34",
     "vue-router": "^5.0.7",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",
+    "@types/node": "^25.9.2",
     "vite-plugin-vuetify": "^2.1.3"
   }
 }
