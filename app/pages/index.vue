@@ -1,9 +1,9 @@
 <template>
   <v-sheet 
-    class="w-100 bg-white rounded-lg elevation-1 d-flex flex-column overflow-hidden"
+    class="w-100 bg-white rounded-lg elevation-1"
     height="calc(100vh - 112px)"
   >
-    <Calendrier class="flex-grow-1 overflow-hidden"/>
+    <Calendrier />
   </v-sheet>
 </template>
 
