@@ -5,7 +5,7 @@
   >
   
     <!-- <Calendrier class=""/> -->
-    <!-- <Adherents class=""/> -->
+    <Adherents class=""/>
     <!-- <produits /> -->
   </v-sheet>
 </template>
