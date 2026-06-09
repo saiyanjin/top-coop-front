@@ -32,8 +32,67 @@
     </v-tabs-window-item>
 
     <v-tabs-window-item value="participants">
-      <v-sheet height="calc(100vh - 200px)">
-        Two
+      <v-sheet height="calc(100vh - 200px)" class="px-15 py-5 overflow-hidden d-flex flex-column bg-transparent">
+        
+        <div class="d-flex my-10">
+          <v-text-field
+            v-model="searchQuery"
+            label="Rechercher un participant ..."
+            prepend-inner-icon="mdi-magnify"
+            variant="outlined"
+            density="comfortable"
+            rounded="lg"
+            color="vertFonce"
+            hide-details
+            clearable
+            max-width="400"
+          ></v-text-field>
+        </div>
+
+        <v-sheet class="flex-grow-1 overflow-y-auto bg-transparent mb-4">
+          <v-row v-if="paginatedParticipants.length > 0">
+            <v-col 
+              v-for="(participant, index) in paginatedParticipants" 
+              :key="index" 
+              cols="12" 
+              sm="6"
+              class="py-2"
+            >
+              <v-sheet 
+                class="d-flex align-center justify-space-between px-4 py-3 rounded-lg border-md border-gris"
+                :class="(index + 1) % 4 < 2 ? 'bg-vertClair' : 'bg-vertClair60'"
+                elevation="0"
+              >
+                <span class="text-subtitle-1 font-weight-bold text-black">
+                  {{ participant.nom }} {{ participant.prenom }}
+                </span>
+                <span class="text-body-2 text-grey-darken-3">
+                  Heures restantes : <strong class="text-black">{{ participant.heuresRestantes }}h</strong>
+                </span>
+              </v-sheet>
+            </v-col>
+          </v-row>
+
+          <v-row v-else justify="center" class="mt-5">
+            <v-col cols="12" class="text-center text-grey text-body-1">
+              Aucun participant ne correspond à votre recherche.
+            </v-col>
+          </v-row>
+        </v-sheet>
+
+        <v-divider></v-divider>
+        <div class="d-flex align-center justify-end flex-shrink-0 pt-3 ga-2 pa-0 text-body-2">
+          <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+          
+          <v-btn icon="mdi-chevron-double-left" variant="text" size="small" :disabled="currentPage === 1" @click="currentPage = 1" />
+          
+          <v-btn icon="mdi-chevron-left" variant="text" size="small" :disabled="currentPage === 1" @click="currentPage--" />
+          
+          <v-btn icon="mdi-chevron-right" variant="text" size="small" :disabled="currentPage === totalPages" @click="currentPage++" />
+          
+          <v-btn icon="mdi-chevron-double-right" variant="text" size="small" :disabled="currentPage === totalPages" @click="currentPage = totalPages" />
+        </div>
+
       </v-sheet>
     </v-tabs-window-item>
 
@@ -96,7 +155,7 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, computed } from 'vue'
+  import { onMounted, ref, computed, watch } from 'vue'
 
   interface ActivityLogItem {
     id: string;
@@ -188,4 +247,66 @@
   function next () {
     offsetDate(nbrJourSemaine)
   }
+
+
+  // --- LOGIQUE DE PAGINATION POUR L'ONGLET PARTICIPANTS ---
+  interface Participant {
+    nom: string;
+    prenom: string;
+    heuresRestantes: number;
+  }
+
+  const searchQuery = ref('')
+  const currentPage = ref(1)
+  const itemsPerPage = 10
+
+  // Liste de faux participants pour tester (N'hésite pas à la vider ou l'agrandir)
+  const participantsList = ref<Participant[]>([
+    { nom: 'Matthieu', prenom: 'Flament', heuresRestantes: 1 },
+    { nom: 'Dupont', prenom: 'Jean', heuresRestantes: 1 },
+    { nom: 'Martin', prenom: 'Sophie', heuresRestantes: 1 },
+    { nom: 'Bernard', prenom: 'Thomas', heuresRestantes: 1 },
+    { nom: 'Petit', prenom: 'Marie', heuresRestantes: 1 },
+    { nom: 'Durand', prenom: 'Lucas', heuresRestantes: 1 },
+    { nom: 'Leroy', prenom: 'Julie', heuresRestantes: 1 },
+    { nom: 'Moreau', prenom: 'Pierre', heuresRestantes: 1 },
+    { nom: 'Simon', prenom: 'Chloé', heuresRestantes: 1 },
+    { nom: 'Laurent', prenom: 'Maxime', heuresRestantes: 1 },
+    { nom: 'Lefebvre', prenom: 'Emma', heuresRestantes: 1 },
+    { nom: 'Michel', prenom: 'Antoine', heuresRestantes: 1 },
+  ])
+
+  // 1. Filtrage dynamique avec la barre de recherche (Gère les espaces Nom + Prénom)
+  const filteredParticipants = computed(() => {
+    if (!searchQuery.value) return participantsList.value
+    
+    // On nettoie la saisie en minuscules et on enlève les espaces superflus au début/fin
+    const query = searchQuery.value.toLowerCase().trim()
+    
+    return participantsList.value.filter(p => {
+      const nomComplet = `${p.nom} ${p.prenom}`.toLowerCase()
+      const prenomComplet = `${p.prenom} ${p.nom}`.toLowerCase()
+      
+      // On valide si la saisie correspond à "Nom Prénom" ou "Prénom Nom"
+      return nomComplet.includes(query) || prenomComplet.includes(query)
+    })
+  })
+
+  // 2. Calcul automatique du nombre total de pages réelles
+  const totalPages = computed(() => {
+    const totalItems = filteredParticipants.value.length
+    return totalItems === 0 ? 1 : Math.ceil(totalItems / itemsPerPage)
+  })
+
+  // 3. Extraction dynamique des participants à afficher pour la page courante
+  const paginatedParticipants = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage
+    const end = start + itemsPerPage
+    return filteredParticipants.value.slice(start, end)
+  })
+
+  // 4. Reset la page à 1 si une recherche commence
+  watch(searchQuery, () => {
+    currentPage.value = 1
+  })
 </script>

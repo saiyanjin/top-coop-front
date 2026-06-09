@@ -15,3 +15,7 @@
   word-wrap: break-word;
   background-color: rgba(0, 0, 0, 0.65);
 }
+
+.bg-vertClair60 {
+  background-color: rgba(204, 230, 187, 0.6);
+}
