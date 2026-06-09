@@ -2,23 +2,22 @@ import { ref, computed, onMounted } from "vue";
 import { UserRole } from "~/constants/roles";
 import { API_ROUTES } from "~/constants/api";
 
-
 export const useProduits = () => {
   const config = useRuntimeConfig();
   const routes = API_ROUTES(config.public.apiBase);
 
   function createNewRecord(): Produit {
     return {
-      typeProduitId: '',
-      dateArrive: new Date,
-      dateSortie: new Date,
-      datePeremption: new Date,
+      typeProduitId: "",
+      dateArrive: new Date(),
+      dateSortie: new Date(),
+      datePeremption: new Date(),
       quantite: 0,
     };
   }
 
   const produits = ref<Produit[]>([]);
-  const typeProduit = ref<string[]>([]);
+  const typeProduit = ref<TypeProduit[]>([]);
   const formModel = ref<Produit>(createNewRecord());
   const schemaSearch = ref("");
   const dialog = ref(false);
@@ -42,7 +41,7 @@ export const useProduits = () => {
   });
 
   function fermerDialog() {
-    dialog.value = false
+    dialog.value = false;
   }
 
   function add() {
@@ -116,12 +115,12 @@ export const useProduits = () => {
           Authorization: `Bearer ${useToken().getToken()}`,
         },
       });
-      
-      data.map((tp) => typeProduit.value.push(tp.nom))
-    } catch (error : any) {
+
+      typeProduit.value = data;
+    } catch (error: any) {
       console.error("Erreur API Nest :", error.data?.message || error.message);
     }
-  }
+  };
 
   const createProduit = async () => {
     try {
@@ -132,7 +131,7 @@ export const useProduits = () => {
         },
         body: formModel.value,
       });
-      const { id, ...reste } = data;
+      const { id, dateSortie, ...reste } = data;
       produits.value.push(reste);
       console.log(reste);
     } catch (error: any) {
@@ -142,7 +141,7 @@ export const useProduits = () => {
 
   const deleteProduit = async (id: string) => {
     try {
-      const data = await $fetch<Produit>(routes.NEST_PRODUITS + '/' + id, {
+      const data = await $fetch<Produit>(routes.NEST_PRODUITS + "/" + id, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${useToken().getToken()}`,
@@ -158,24 +157,24 @@ export const useProduits = () => {
       console.log(error.message);
     }
   };
-  
+
   const updateProduit = async (id: string) => {
     try {
       if (id) {
         const { id, ...reste } = formModel.value;
-        const data = await $fetch<Produit>(routes.NEST_PRODUITS + '/' + id, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${useToken().getToken()}`,
-        },
-        body: reste
-      });
-      // console.log('reste envoyé = ',reste)
-      const index = produits.value.findIndex((p) => p.id === id);
-      if (index == -1) {
-        return;
-      }
-      produits.value.splice(index, 1, data);
+        const data = await $fetch<Produit>(routes.NEST_PRODUITS + "/" + id, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${useToken().getToken()}`,
+          },
+          body: reste,
+        });
+        // console.log('reste envoyé = ',reste)
+        const index = produits.value.findIndex((p) => p.id === id);
+        if (index == -1) {
+          return;
+        }
+        produits.value.splice(index, 1, data);
       }
     } catch (error: any) {
       console.log(error.message);
@@ -199,6 +198,6 @@ export const useProduits = () => {
     save,
     reset,
     formatDateAffichage,
-    fermerDialog
+    fermerDialog,
   };
 };

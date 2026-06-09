@@ -105,13 +105,15 @@
         <v-select
           label="Type de produit"
           :items="typeProduit"
+          item-title="nom"
+          item-value="id"
           v-model="formModel.typeProduitId"
           variant="outlined"
           rounded="lg"
           color="vertFonce"
           hide-details
         ></v-select>
-        
+
         <v-row>
           <v-col cols="6">
             <v-date-input
@@ -148,15 +150,14 @@
 
         <v-row>
           <v-col cols="4">
-            <v-text-field
+            <v-number-input
               label="Quantité"
               v-model="formModel.quantite"
               variant="outlined"
-              type="number"
               rounded="lg"
               color="vertFonce"
               hide-details
-            ></v-text-field>
+            ></v-number-input>
           </v-col>
           <!-- <v-col cols="8">
             <v-text-field
@@ -169,7 +170,6 @@
             ></v-text-field>
           </v-col> -->
         </v-row>
-
       </v-form>
     </BaseModal>
 
@@ -213,5 +213,5 @@ const {
   reset,
   formatDateAffichage,
   fermerDialog,
-} = useProduits()
+} = useProduits();
 </script>
