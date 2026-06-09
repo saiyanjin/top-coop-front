@@ -94,7 +94,7 @@
       v-model="dialog"
       :title="isEditing ? 'Modifier l\'adhérent' : 'Ajouter un adhérent'"
       :submit-text="isEditing ? 'Modifier' : 'Ajouter'"
-      @cancel="dialog = false"
+      @cancel="fermerDialog"
       @submit="save"
     >
       <v-form class="d-flex flex-column ga-5">
@@ -133,7 +133,7 @@
 
         <!-- ---------- MOT DE PASSE ---------- -->
 
-        <div v-if="isEditing" class="d-flex align-center justify-center ga-4">
+        <div v-if="isEditing" class="d-flex align-center ga-4">
           <v-text-field
             label="Mot de passe"
             v-model="formModel.motDePasse"
@@ -183,8 +183,8 @@
             <v-text-field
               label="Code postal"
               v-model="formModel.codePostal"
-              type="number"
               variant="outlined"
+              type="number"
               rounded="lg"
               color="vertFonce"
               hide-details
@@ -254,6 +254,7 @@ const {
   reset,
   formatDateAffichage,
   isPasswordDisabled,
-  showPassword
+  showPassword,
+  fermerDialog
 } = useAdherents()
 </script>

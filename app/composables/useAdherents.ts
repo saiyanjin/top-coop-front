@@ -48,6 +48,11 @@ export const useAdherents = () => {
   const isPasswordDisabled = ref<boolean>(true)
   const showPassword = ref(false)
 
+  function fermerDialog() {
+    dialog.value = false
+    isPasswordDisabled.value = true
+  }
+
   function add() {
     formModel.value = createNewRecord();
     dialog.value = true;
@@ -134,6 +139,7 @@ export const useAdherents = () => {
           Authorization: `Bearer ${useToken().getToken()}`,
         },
       });
+      // console.log(data)
       const index = adherents.value.findIndex((p) => p.id === id);
       if (index == -1) {
         return;
@@ -161,7 +167,7 @@ export const useAdherents = () => {
         },
         body: reste
       });
-      console.log('reste envoyé = ',reste)
+      // console.log('reste envoyé = ',reste)
       const index = adherents.value.findIndex((p) => p.id === id);
       if (index == -1) {
         return;
@@ -190,6 +196,7 @@ export const useAdherents = () => {
     reset,
     formatDateAffichage,
     isPasswordDisabled,
-    showPassword
+    showPassword,
+    fermerDialog
   };
 };
