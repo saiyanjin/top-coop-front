@@ -148,12 +148,30 @@
             hide-details
           ></v-text-field>
           
-          <v-btn 
+          <!-- <v-btn 
             :icon="isPasswordDisabled ? 'mdi-pencil-outline' : 'mdi-pencil-off-outline'"
             elevation="1" 
             :class="isPasswordDisabled ? 'bg-orange' : 'bg-vertFonce'"
             @click="isPasswordDisabled = !isPasswordDisabled"
-          ></v-btn>
+          ></v-btn> -->
+
+            <v-tooltip
+              v-model="show"
+              location="top"
+            >
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                :icon="isPasswordDisabled ? 'mdi-pencil-outline' : 'mdi-pencil-off-outline'"
+              elevation="1" 
+              :class="isPasswordDisabled ? 'bg-orange' : 'bg-vertFonce'"
+              @click="isPasswordDisabled = !isPasswordDisabled"
+              >
+              </v-btn>
+            </template>
+            <span v-if="isPasswordDisabled">Éditer le mot de passe</span>
+            <span v-else>Annluer</span>
+          </v-tooltip>
         </div>
 
         <v-text-field
@@ -255,6 +273,7 @@ const {
   formatDateAffichage,
   isPasswordDisabled,
   showPassword,
-  fermerDialog
+  fermerDialog,
+  show
 } = useAdherents()
 </script>

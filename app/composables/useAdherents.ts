@@ -25,7 +25,7 @@ export const useAdherents = () => {
   const formModel = ref<Utilisateur>(createNewRecord());
   const schemaSearch = ref("");
   const dialog = ref(false);
-
+  const show = ref(false)
   const dialogDelete = ref(false);
   const itemToDelete = ref<Utilisateur | null>(null);
 
@@ -197,6 +197,7 @@ export const useAdherents = () => {
     formatDateAffichage,
     isPasswordDisabled,
     showPassword,
+    show,
     fermerDialog
   };
 };
