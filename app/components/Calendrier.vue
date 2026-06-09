@@ -57,7 +57,7 @@
 
         <v-sheet v-if="queryHistory.length > 0" class="flex-grow-1 overflow-y-auto bg-transparent pr-2">
           <v-list class="bg-transparent pa-0">
-            <v-list-item v-for="(item, index) in queryHistory" :key="item.id" class="mb-2 elevation-1 rounded-lg border-sm bg-fond border-gris">
+            <v-list-item v-for="(item, index) in queryHistory" :key="item.id" class="mb-2 elevation-1 rounded-lg border-md bg-fond border-gris">
               
               <template v-slot:prepend>
                 <v-icon color="orange" icon="mdi-information-outline" />
