@@ -5,13 +5,23 @@ declare global {
     // ---------- Produits ----------
     
     interface Produit {
-    id?: number
-    typeProduit: number | null
-    dateArrivee: Date | null
+    id?: string
+    typeProduitId: string
+    dateArrive: Date
     dateSortie: Date | null
     datePeremption: Date | null
     quantite: number
+    }
+
+    // ---------- Type Produits ----------
+    
+    interface TypeProduit {
+    id?: number
+    nom: string
+    quantiteMax: float
     unite: string
+    prix: float
+    dateCreation?: Date;
     }
 
     // ---------- Adherents ----------
@@ -26,7 +36,7 @@ declare global {
       ville: string;
       motDePasse: string;
       role: UserRole;
-      dateCreation?: Date | string | null;
+      dateCreation?: Date;
     }
     
 }
