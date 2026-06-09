@@ -13,6 +13,10 @@
         :items="adherents"
         :search="schemaSearch"
         :hide-default-footer="adherents.length < 11"
+        sort-asc-icon="mdi-sort-ascending"
+        sort-desc-icon="mdi-sort-descending"
+        sort-icon="mdi-swap-vertical"
+        hover
       >
         <template v-slot:top>
           <v-toolbar flat class="bg-blanc">
@@ -163,9 +167,9 @@
               <v-btn
                 v-bind="props"
                 :icon="isPasswordDisabled ? 'mdi-pencil-outline' : 'mdi-pencil-off-outline'"
-              elevation="1" 
-              :class="isPasswordDisabled ? 'bg-orange' : 'bg-vertFonce'"
-              @click="isPasswordDisabled = !isPasswordDisabled"
+                elevation="1" 
+                :class="isPasswordDisabled ? 'bg-orange' : 'bg-vertFonce'"
+                @click="isPasswordDisabled = !isPasswordDisabled"
               >
               </v-btn>
             </template>
@@ -277,3 +281,12 @@ const {
   show
 } = useAdherents()
 </script>
+
+<style scoped>
+  ::v-deep(.v-table__wrapper)  > table > thead > tr > th:not(.v-data-table__th--sorted):not(:hover) .v-data-table-header__sort-icon {
+    opacity: 0.5; /* $data-table-header-sort-icon-default-opacity */
+  }
+  ::v-deep(.v-data-table-header__sort-icon) {
+    margin-inline: .5rem 0; /* $data-table-header-sort-icon-margin-inline */
+  }
+</style>
