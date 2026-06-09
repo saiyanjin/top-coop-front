@@ -1,12 +1,10 @@
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
-  // Active la structure Nuxt 4
   future: {
     compatibilityVersion: 4,
   },
 
-  // C'est ici que l'on déclare proprement les types pour TypeScript
   typescript: {
     tsConfig: {
       compilerOptions: {
