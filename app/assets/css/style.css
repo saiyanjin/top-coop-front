@@ -1,6 +1,17 @@
+/* Adhérents */
+
 .v-table__wrapper > table > thead > tr > th:not(.v-data-table__th--sorted):not(:hover) .v-data-table-header__sort-icon {
   opacity: 0.5;
 }
 .v-data-table-header__sort-icon {
   margin-inline: .5rem 0;
+}
+
+/* Calendrier */
+
+.log-message {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: rgba(0, 0, 0, 0.65);
 }

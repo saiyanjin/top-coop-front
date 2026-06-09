@@ -63,8 +63,8 @@
                 <v-icon color="orange" icon="mdi-information-outline" />
               </template>
 
-              <v-list-item-title class="mt-1 text-wrap line-height-normal">
-                <span class="log-message">{{ item.message }}</span>
+              <v-list-item-title class="mt-1 text-wrap line-height-normal rounded-lg d-flex">
+                <span class="log-message text-white rounded-lg px-2 py-1 text-body-small">{{ item.message }}</span>
               </v-list-item-title>
 
               <v-list-item-subtitle class="mt-1 mb-1 gray--text text-caption">
@@ -132,17 +132,14 @@
     }
   ])
 
-  // Vider tout l'historique
   const clearHistory = () => {
     queryHistory.value = []
   }
 
-  // Supprimer un log spécifique
   const deleteLog = (index: number) => {
     queryHistory.value.splice(index, 1)
   }
 
-  // --- LOGIQUE CALENDRIER ---
   const currentMonth = computed(() => {
     const [year, month, day] = today.value.split('-').map(Number)
     const current = new Date(Number(year), Number(month) - 1, day)
@@ -192,18 +189,3 @@
     offsetDate(nbrJourSemaine)
   }
 </script>
-
-<style scoped>
-.log-message {
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 12px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin: 0; padding: 8px;
-  background-color: rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-}
-.line-height-normal {
-  line-height: 1.4 !important;
-}
-</style>
