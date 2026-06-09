@@ -40,5 +40,9 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NEST_API_URL || 'http://localhost:3002',
     }
-  }
+  },
+
+  css: [
+    './app/assets/css/style.css'
+  ]
 })

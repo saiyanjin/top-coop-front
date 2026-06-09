@@ -281,12 +281,3 @@ const {
   show
 } = useAdherents()
 </script>
-
-<style scoped>
-  ::v-deep(.v-table__wrapper)  > table > thead > tr > th:not(.v-data-table__th--sorted):not(:hover) .v-data-table-header__sort-icon {
-    opacity: 0.5; /* $data-table-header-sort-icon-default-opacity */
-  }
-  ::v-deep(.v-data-table-header__sort-icon) {
-    margin-inline: .5rem 0; /* $data-table-header-sort-icon-margin-inline */
-  }
-</style>
