@@ -19,7 +19,7 @@
         <slot></slot>
       </v-card-text>
 
-      <v-card-actions class="pa-6 d-flex justify-center ga-3">
+      <v-card-actions class="pa-6 d-flex justify-center ga-6">
         <v-btn
           size="large"
           rounded="lg"

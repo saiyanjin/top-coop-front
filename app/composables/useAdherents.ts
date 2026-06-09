@@ -45,6 +45,9 @@ export const useAdherents = () => {
     getUsers();
   });
 
+  const isPasswordDisabled = ref<boolean>(true)
+  const showPassword = ref(false)
+
   function add() {
     formModel.value = createNewRecord();
     dialog.value = true;
@@ -140,10 +143,17 @@ export const useAdherents = () => {
       console.log(error.message);
     }
   };
-
+  
   const updateUser = async (id: string) => {
     try {
-      const { id: userId, dateCreation, motDePasse, ...reste } = formModel.value;
+      let reste: Record<string, any> = {};
+      if (isPasswordDisabled.value) {
+        const { id: userId, dateCreation, motDePasse, ...payload } = formModel.value;
+        reste = payload;
+      } else {
+        const { id: userId, dateCreation, ...payload } = formModel.value;
+        reste = payload;
+      }
       const data = await $fetch<Utilisateur>(routes.NEST_USERS + '/' + id, {
         method: "PATCH",
         headers: {
@@ -151,6 +161,7 @@ export const useAdherents = () => {
         },
         body: reste
       });
+      console.log('reste envoyé = ',reste)
       const index = adherents.value.findIndex((p) => p.id === id);
       if (index == -1) {
         return;
@@ -177,6 +188,8 @@ export const useAdherents = () => {
     confirmDelete,
     save,
     reset,
-    formatDateAffichage
+    formatDateAffichage,
+    isPasswordDisabled,
+    showPassword
   };
 };

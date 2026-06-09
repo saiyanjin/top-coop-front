@@ -131,6 +131,31 @@
           hide-details
         ></v-text-field>
 
+        <!-- ---------- MOT DE PASSE ---------- -->
+
+        <div v-if="isEditing" class="d-flex align-center justify-center ga-4">
+          <v-text-field
+            label="Mot de passe"
+            v-model="formModel.motDePasse"
+            :disabled="isPasswordDisabled"
+            clearable
+            :append-inner-icon="showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+            @click:append-inner="showPassword = !showPassword"
+            :type="showPassword ? 'text' : 'password'"
+            variant="outlined"
+            rounded="lg"
+            color="vertFonce"
+            hide-details
+          ></v-text-field>
+          
+          <v-btn 
+            :icon="isPasswordDisabled ? 'mdi-pencil-outline' : 'mdi-pencil-off-outline'"
+            elevation="1" 
+            :class="isPasswordDisabled ? 'bg-orange' : 'bg-vertFonce'"
+            @click="isPasswordDisabled = !isPasswordDisabled"
+          ></v-btn>
+        </div>
+
         <v-text-field
           v-if="!isEditing"
           label="Mot de passe"
@@ -141,6 +166,8 @@
           color="vertFonce"
           hide-details
         ></v-text-field>
+
+        <!-- ---------- MOT DE PASSE ---------- -->
 
         <v-text-field
           label="Adresse"
@@ -225,6 +252,8 @@ const {
   confirmDelete,
   save,
   reset,
-  formatDateAffichage
+  formatDateAffichage,
+  isPasswordDisabled,
+  showPassword
 } = useAdherents()
 </script>

@@ -6,6 +6,7 @@
   
     <!-- <Calendrier class=""/> -->
     <Adherents class=""/>
+     <!-- <produits /> -->
   </v-sheet>
 </template>
 
