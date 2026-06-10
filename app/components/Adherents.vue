@@ -135,8 +135,6 @@
           hide-details
         ></v-text-field>
 
-        <!-- ---------- MOT DE PASSE ---------- -->
-
         <div v-if="isEditing" class="d-flex align-center ga-4">
           <v-text-field
             label="Mot de passe"
@@ -152,17 +150,10 @@
             hide-details
           ></v-text-field>
           
-          <!-- <v-btn 
-            :icon="isPasswordDisabled ? 'mdi-pencil-outline' : 'mdi-pencil-off-outline'"
-            elevation="1" 
-            :class="isPasswordDisabled ? 'bg-orange' : 'bg-vertFonce'"
-            @click="isPasswordDisabled = !isPasswordDisabled"
-          ></v-btn> -->
-
-            <v-tooltip
-              v-model="show"
-              location="top"
-            >
+          <v-tooltip
+            v-model="show"
+            location="top"
+          >
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
@@ -174,7 +165,7 @@
               </v-btn>
             </template>
             <span v-if="isPasswordDisabled">Éditer le mot de passe</span>
-            <span v-else>Annluer</span>
+            <span v-else>Annuler</span>
           </v-tooltip>
         </div>
 
@@ -188,8 +179,6 @@
           color="vertFonce"
           hide-details
         ></v-text-field>
-
-        <!-- ---------- MOT DE PASSE ---------- -->
 
         <v-text-field
           label="Adresse"
@@ -246,7 +235,7 @@
       @cancel="dialogDelete = false"
       @submit="confirmDelete"
     >
-      <div class="text-center pt-2">
+      <div class="text-center">
         Souhaitez-vous vraiment supprimer l'adhérent
         <span class="text-orange font-weight-bold">
           {{ itemToDelete ? `${itemToDelete.prenom} ${itemToDelete.nom}` : "" }}
@@ -254,6 +243,18 @@
         ? Cette action est irréversible.
       </div>
     </BaseModal>
+
+    <v-snackbar
+      v-model="snackbarShow"
+      timer-color="vertFonce"
+      timer="top"
+      location="bottom right"
+      rounded="lg"
+      color="white"
+    >
+      <div v-html="snackbarText">
+      </div>
+    </v-snackbar>
   </div>
 </template>
 
@@ -278,6 +279,8 @@ const {
   isPasswordDisabled,
   showPassword,
   fermerDialog,
-  show
+  show,
+  snackbarShow,
+  snackbarText
 } = useAdherents()
 </script>

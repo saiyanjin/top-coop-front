@@ -29,6 +29,16 @@ export const useAdherents = () => {
   const dialogDelete = ref(false);
   const itemToDelete = ref<Utilisateur | null>(null);
 
+  // --- ÉTATS POUR LA SNACKBAR ---
+  const snackbarShow = ref(false);
+  const snackbarText = ref("");
+
+  function triggerSnackbar(text: string) {
+    snackbarText.value = text;
+    snackbarShow.value = true;
+  }
+  // ------------------------------
+
   const isEditing = computed(() => !!formModel.value.id);
 
   const headers = [
@@ -126,6 +136,7 @@ export const useAdherents = () => {
         body: formModel.value,
       });
       adherents.value.push(data);
+      triggerSnackbar(`L'adhérent <span class="text-orange">${data.prenom} ${data.nom}</span> a bien été ajouté !`);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -139,12 +150,13 @@ export const useAdherents = () => {
           Authorization: `Bearer ${useToken().getToken()}`,
         },
       });
-      // console.log(data)
       const index = adherents.value.findIndex((p) => p.id === id);
       if (index == -1) {
         return;
       }
+      const deletedUser = adherents.value[index];
       adherents.value.splice(index, 1);
+      triggerSnackbar(`L'adhérent ${deletedUser?.prenom} ${deletedUser?.nom} a bien été supprimé.`); // ? à modifier
     } catch (error: any) {
       console.log(error.message);
     }
@@ -167,12 +179,12 @@ export const useAdherents = () => {
         },
         body: reste
       });
-      // console.log('reste envoyé = ',reste)
       const index = adherents.value.findIndex((p) => p.id === id);
       if (index == -1) {
         return;
       }
       adherents.value.splice(index, 1, data);
+      triggerSnackbar(`L'adhérent <span class="text-orange">${data.prenom} ${data.nom}</span> a bien été modifié !`);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -198,6 +210,8 @@ export const useAdherents = () => {
     isPasswordDisabled,
     showPassword,
     show,
-    fermerDialog
+    fermerDialog,
+    snackbarShow,
+    snackbarText
   };
 };
