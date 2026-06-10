@@ -47,6 +47,21 @@ declare global {
     role: UserRole;
     dateCreation?: Date;
   }
+    
+    // ---------- Calendrier ----------
+    
+    interface ActivityLogItem {
+      id: string;
+      message: string;
+      timestamp: string | Date;
+    }
+    
+    interface Participant {
+      nom: string;
+      prenom: string;
+      heuresRestantes: number;
+    }
+
 }
 
 export {};
