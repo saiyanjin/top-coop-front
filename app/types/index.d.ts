@@ -33,6 +33,15 @@ declare global {
     dateCreation?: Date;
   }
 
+  // ---------- Participations ----------
+
+  interface Participation {
+    id?: string;
+    utilisateur_id: string;
+    creneau_id: number;
+    dateCreation?: Date;
+  }
+
   // ---------- Adherents ----------
 
   interface Utilisateur {

@@ -6,11 +6,13 @@
   
     <!-- <Calendrier class=""/> -->
     <!-- <Adherents class=""/> -->
-    <produits />
+    <!-- <produits /> -->
+    <Participations />
   </v-sheet>
 </template>
 
 <script setup lang="ts">
+import Participations from '~/components/Participations.vue';
 import Produits from '~/components/Produits.vue';
 
 definePageMeta({

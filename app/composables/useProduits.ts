@@ -1,5 +1,4 @@
 import { ref, computed, onMounted } from "vue";
-import { UserRole } from "~/constants/roles";
 import { API_ROUTES } from "~/constants/api";
 
 export const useProduits = () => {
