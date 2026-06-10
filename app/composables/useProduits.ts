@@ -6,19 +6,20 @@ export const useProduits = () => {
   const config = useRuntimeConfig();
   const routes = API_ROUTES(config.public.apiBase);
 
-  function createNewRecord(): Produit {
+  function createNewRecord(): ProduitAvecType {
     return {
       typeProduitId: "",
+      typeProduit: undefined,
       dateArrive: new Date(),
-      dateSortie: new Date(),
-      datePeremption: new Date(),
+      dateSortie: undefined,
+      datePeremption: undefined,
       quantite: 0,
     };
   }
 
-  const produits = ref<Produit[]>([]);
+  const produits = ref<ProduitAvecType[]>([]);
   const typeProduit = ref<TypeProduit[]>([]);
-  const formModel = ref<Produit>(createNewRecord());
+  const formModel = ref<ProduitAvecType>(createNewRecord());
   const schemaSearch = ref("");
   const dialog = ref(false);
   const dialogDelete = ref(false);
@@ -27,7 +28,7 @@ export const useProduits = () => {
   const isEditing = computed(() => !!formModel.value.id);
 
   const headers = [
-    { title: "Type de produit", key: "typeProduit", align: "start" },
+    { title: "Type de produit", key: "typeProduit.nom", align: "start" },
     { title: "Date d'arrivée", key: "dateArrive" },
     { title: "Date de sortie", key: "dateSortie" },
     { title: "Date de péremption", key: "datePeremption" },
@@ -94,7 +95,7 @@ export const useProduits = () => {
 
   const getProduits = async () => {
     try {
-      const data = await $fetch<Produit[]>(routes.NEST_PRODUITS, {
+      const data = await $fetch<ProduitAvecType[]>(routes.NEST_PRODUITS_AVECTYPE, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${useToken().getToken()}`,
@@ -124,16 +125,27 @@ export const useProduits = () => {
 
   const createProduit = async () => {
     try {
+      console.log(formModel.value)
+      if ( !formModel.value.typeProduit?.id) {
+        return
+      } else {
+        formModel.value.typeProduitId = formModel.value.typeProduit?.id
+      }
+      
+      const {
+        typeProduit, dateSortie, id, ...body
+      } = formModel.value
       const data = await $fetch<Produit>(routes.NEST_PRODUITS, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${useToken().getToken()}`,
         },
-        body: formModel.value,
+        body: body
       });
-      const { id, dateSortie, ...reste } = data;
-      produits.value.push(reste);
-      console.log(reste);
+
+      // const { id, dateSortie, typeProduit,...reste } = data;
+      produits.value.push({...data, typeProduit:formModel.value.typeProduit });
+      // console.log(reste);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -161,7 +173,7 @@ export const useProduits = () => {
   const updateProduit = async (id: string) => {
     try {
       if (id) {
-        const { id, ...reste } = formModel.value;
+        const { id, typeProduit, ...reste } = formModel.value;
         const data = await $fetch<Produit>(routes.NEST_PRODUITS + "/" + id, {
           method: "PATCH",
           headers: {

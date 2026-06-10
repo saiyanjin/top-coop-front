@@ -46,18 +46,13 @@
           </v-toolbar>
         </template>
 
-        <template v-slot:item.role="{ value }">
-          <v-chip
-            :text="value"
-            :prepend-icon="value === 'admin' ? 'mdi-shield-account' : undefined"
-            label
-            color="vertFonce"
-            class="text-capitalize"
-          >
-          </v-chip>
+        <template v-slot:item.dateSortie="{ value }">
+          {{ formatDateAffichage(value) }}
         </template>
-
-        <template v-slot:item.date_creation="{ value }">
+        <template v-slot:item.dateArrive="{ value }">
+          {{ formatDateAffichage(value) }}
+        </template>
+        <template v-slot:item.datePeremption="{ value }">
           {{ formatDateAffichage(value) }}
         </template>
 
@@ -102,17 +97,21 @@
       @submit="save"
     >
       <v-form class="d-flex flex-column ga-5">
-        <v-select
-          label="Type de produit"
-          :items="typeProduit"
-          item-title="nom"
-          item-value="id"
-          v-model="formModel.typeProduitId"
-          variant="outlined"
-          rounded="lg"
-          color="vertFonce"
-          hide-details
-        ></v-select>
+        <v-row>
+          <v-col cols="6">
+            <v-select
+              label="Type de produit"
+              :items="typeProduit"
+              item-title="nom"
+              v-model="formModel.typeProduit"
+              return-object
+              variant="outlined"
+              rounded="lg"
+              color="vertFonce"
+              required
+            ></v-select>
+          </v-col>
+        </v-row>
 
         <v-row>
           <v-col cols="6">
@@ -133,7 +132,7 @@
               rounded="lg"
               color="vertFonce"
               prepend-icon=""
-              disabled
+              :disabled = "!isEditing"
             ></v-date-input>
           </v-col>
         </v-row>
@@ -159,16 +158,6 @@
               hide-details
             ></v-number-input>
           </v-col>
-          <!-- <v-col cols="8">
-            <v-text-field
-              label="Unité"
-              v-model="formModel.unite"
-              variant="outlined"
-              rounded="lg"
-              color="vertFonce"
-              hide-details
-            ></v-text-field>
-          </v-col> -->
         </v-row>
       </v-form>
     </BaseModal>

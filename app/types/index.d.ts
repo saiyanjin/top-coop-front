@@ -7,19 +7,29 @@ declare global {
     id?: string;
     typeProduitId: string;
     dateArrive: Date;
-    dateSortie?: Date | null;
-    datePeremption: Date | null;
+    dateSortie?: Date;
+    datePeremption?: Date;
+    quantite: number;
+  }
+
+  interface ProduitAvecType {
+    id?: string;
+    typeProduitId: string;
+    typeProduit?: TypeProduit;
+    dateArrive: Date;
+    dateSortie?: Date ;
+    datePeremption?: Date ;
     quantite: number;
   }
 
   // ---------- Type Produits ----------
 
   interface TypeProduit {
-    id?: number;
+    id?: string;
     nom: string;
-    quantiteMax: float;
+    quantiteMax: number;
     unite: string;
-    prix: float;
+    prix: number;
     dateCreation?: Date;
   }
 
