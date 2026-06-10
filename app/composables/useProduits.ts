@@ -23,7 +23,15 @@ export const useProduits = () => {
   const schemaSearch = ref("");
   const dialog = ref(false);
   const dialogDelete = ref(false);
-  const itemToDelete = ref<Produit | null>(null);
+  const itemToDelete = ref<ProduitAvecType | null>(null);
+
+  const snackbarShow = ref(false);
+  const snackbarText = ref("");
+
+  function triggerSnackbar(text: string) {
+    snackbarText.value = text;
+    snackbarShow.value = true;
+  }
 
   const isEditing = computed(() => !!formModel.value.id);
 
@@ -34,6 +42,12 @@ export const useProduits = () => {
     { title: "Date de péremption", key: "datePeremption" },
     { title: "Quantité", key: "quantite" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
+  ] as const;
+
+  const dateColumns = [
+    "dateArrive",
+    "dateSortie",
+    "datePeremption"
   ] as const;
 
   onMounted(() => {
@@ -64,7 +78,7 @@ export const useProduits = () => {
   function confirmDelete() {
     if (!itemToDelete.value || itemToDelete.value.id === undefined) return;
 
-    deleteProduit(itemToDelete.value.id);
+    deleteProduit(itemToDelete.value);
 
     dialogDelete.value = false;
     itemToDelete.value = null;
@@ -143,28 +157,30 @@ export const useProduits = () => {
         body: body
       });
 
-      // const { id, dateSortie, typeProduit,...reste } = data;
       produits.value.push({...data, typeProduit:formModel.value.typeProduit });
-      // console.log(reste);
+      triggerSnackbar(`Le produit <span class="text-orange">${formModel.value.typeProduit?.nom}</span> a bien été ajouté !`);
     } catch (error: any) {
       console.log(error.message);
     }
   };
 
-  const deleteProduit = async (id: string) => {
+  const deleteProduit = async (produit: ProduitAvecType) => {
+    if (!produit.id) {
+      return;
+    }
     try {
-      const data = await $fetch<Produit>(routes.NEST_PRODUITS + "/" + id, {
+      await $fetch<Produit>(routes.NEST_PRODUITS + "/" + produit.id, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${useToken().getToken()}`,
         },
       });
-      // console.log(data)
-      const index = produits.value.findIndex((p) => p.id === id);
+      const index = produits.value.findIndex((p) => p.id === produit.id);
       if (index == -1) {
         return;
       }
       produits.value.splice(index, 1);
+      triggerSnackbar(`Le produit <span class="text-orange">${produit.typeProduit?.nom}</span> a bien été supprimé !`);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -173,6 +189,11 @@ export const useProduits = () => {
   const updateProduit = async (id: string) => {
     try {
       if (id) {
+        if (!formModel.value.typeProduit?.id) {
+          return;
+        }
+        formModel.value.typeProduitId = formModel.value.typeProduit.id;
+
         const { id, typeProduit, ...reste } = formModel.value;
         const data = await $fetch<Produit>(routes.NEST_PRODUITS + "/" + id, {
           method: "PATCH",
@@ -181,12 +202,12 @@ export const useProduits = () => {
           },
           body: reste,
         });
-        // console.log('reste envoyé = ',reste)
         const index = produits.value.findIndex((p) => p.id === id);
         if (index == -1) {
           return;
         }
-        produits.value.splice(index, 1, data);
+        produits.value.splice(index, 1, { ...data, typeProduit });
+        triggerSnackbar(`Le produit <span class="text-orange">${typeProduit?.nom}</span> a bien été mis à jour !`);
       }
     } catch (error: any) {
       console.log(error.message);
@@ -203,6 +224,7 @@ export const useProduits = () => {
     itemToDelete,
     isEditing,
     headers,
+    dateColumns,
     add,
     edit,
     remove,
@@ -211,5 +233,7 @@ export const useProduits = () => {
     reset,
     formatDateAffichage,
     fermerDialog,
+    snackbarShow,
+    snackbarText,
   };
 };

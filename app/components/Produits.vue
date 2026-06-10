@@ -46,13 +46,21 @@
           </v-toolbar>
         </template>
 
-        <template v-slot:item.dateSortie="{ value }">
+        <!-- <template v-slot:item.dateSortie="{ value }">
           {{ formatDateAffichage(value) }}
         </template>
         <template v-slot:item.dateArrive="{ value }">
           {{ formatDateAffichage(value) }}
         </template>
         <template v-slot:item.datePeremption="{ value }">
+          {{ formatDateAffichage(value) }}
+        </template> -->
+
+        <template
+          v-for="col in dateColumns"
+          :key="col"
+          v-slot:[`item.${col}`]="{ value }"
+        >
           {{ formatDateAffichage(value) }}
         </template>
 
@@ -175,11 +183,23 @@
       <div class="text-center pt-2">
         Souhaitez-vous vraiment supprimer le produit
         <span class="text-orange font-weight-bold">
-          {{ itemToDelete ? `${itemToDelete.typeProduitId}` : "" }}
+          {{ itemToDelete?.typeProduit?.nom ?? "" }}
         </span>
         ? Cette action est irréversible.
       </div>
     </BaseModal>
+
+    <v-snackbar
+      v-model="snackbarShow"
+      timer-color="vertFonce"
+      timer="top"
+      location="bottom right"
+      rounded="lg"
+      color="white"
+    >
+      <div v-html="snackbarText">
+      </div>
+    </v-snackbar>
   </div>
 </template>
 
@@ -194,6 +214,7 @@ const {
   itemToDelete,
   isEditing,
   headers,
+  dateColumns,
   add,
   edit,
   remove,
@@ -202,5 +223,7 @@ const {
   reset,
   formatDateAffichage,
   fermerDialog,
+  snackbarShow,
+  snackbarText,
 } = useProduits();
 </script>
