@@ -65,7 +65,7 @@ declare global {
     // ---------- Gestion des Stocks ----------
 
     interface Commande_Produit {
-      
+      // à faire 
     }
 
 }
