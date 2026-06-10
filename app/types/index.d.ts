@@ -36,6 +36,12 @@ declare global {
       message: string;
       timestamp: string | Date;
     }
+    
+    interface Participant {
+      nom: string;
+      prenom: string;
+      heuresRestantes: number;
+    }
 
 }
 

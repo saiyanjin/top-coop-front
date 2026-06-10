@@ -86,12 +86,6 @@ export const useCalendrier = () => {
     offsetDate(nbrJourSemaine)
   }
 
-  interface Participant {
-    nom: string;
-    prenom: string;
-    heuresRestantes: number;
-  }
-
   const searchQuery = ref('')
   const currentPage = ref(1)
   const itemsPerPage = 10
