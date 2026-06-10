@@ -1,33 +1,52 @@
 // types/index.d.ts
 
 declare global {
+  // ---------- Produits ----------
 
-    // ---------- Produits ----------
-    
-    interface Produit {
-      id?: number
-      typeProduit: number | null
-      dateArrivee: Date | null
-      dateSortie: Date | null
-      datePeremption: Date | null
-      quantite: number
-      unite: string
-    }
+  interface Produit {
+    id?: string;
+    typeProduitId: string;
+    dateArrive: Date;
+    dateSortie?: Date;
+    datePeremption?: Date;
+    quantite: number;
+  }
 
-    // ---------- Adherents ----------
-    
-    interface Utilisateur {
-      id?: string;
-      nom: string;
-      prenom: string;
-      email: string;
-      adresse: string;
-      codePostal: string;
-      ville: string;
-      motDePasse: string;
-      role: UserRole;
-      dateCreation?: Date | string | null;
-    }
+  interface ProduitAvecType {
+    id?: string;
+    typeProduitId: string;
+    typeProduit?: TypeProduit;
+    dateArrive: Date;
+    dateSortie?: Date ;
+    datePeremption?: Date ;
+    quantite: number;
+  }
+
+  // ---------- Type Produits ----------
+
+  interface TypeProduit {
+    id?: string;
+    nom: string;
+    quantiteMax: number;
+    unite: string;
+    prix: number;
+    dateCreation?: Date;
+  }
+
+  // ---------- Adherents ----------
+
+  interface Utilisateur {
+    id?: string;
+    nom: string;
+    prenom: string;
+    email: string;
+    adresse: string;
+    codePostal: string;
+    ville: string;
+    motDePasse: string;
+    role: UserRole;
+    dateCreation?: Date;
+  }
     
     // ---------- Calendrier ----------
     

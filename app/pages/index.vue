@@ -4,13 +4,15 @@
     height="calc(100vh - 128px)" 
   >
   
-    <Calendrier />
+    <!-- <Calendrier class=""/> -->
     <!-- <Adherents class=""/> -->
-    <!-- <produits /> -->
+    <produits />
   </v-sheet>
 </template>
 
 <script setup lang="ts">
+import Produits from '~/components/Produits.vue';
+
 definePageMeta({
   layout: 'nav'
 })
