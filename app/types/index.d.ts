@@ -29,6 +29,14 @@ declare global {
       dateCreation?: Date | string | null;
     }
     
+    // ---------- Calendrier ----------
+    
+    interface ActivityLogItem {
+      id: string;
+      message: string;
+      timestamp: string | Date;
+    }
+
 }
 
 export {};

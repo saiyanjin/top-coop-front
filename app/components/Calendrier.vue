@@ -157,12 +157,6 @@
 <script setup lang="ts">
   import { onMounted, ref, computed, watch } from 'vue'
 
-  interface ActivityLogItem {
-    id: string;
-    message: string;
-    timestamp: string | Date;
-  }
-
   const calendar = ref()
   const nbrJourSemaine = 7
   const tab = ref("calendrier")
