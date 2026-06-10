@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { API_ROUTES } from '~/constants/api'
 import { useToken } from '~/composables/useToken'
-import { UserRole } from '~/constants/roles'
+import { UserRole } from '~/constants/enum'
 
 export const useConnexionForm = () => {
   const config = useRuntimeConfig()

@@ -62,6 +62,12 @@ declare global {
       heuresRestantes: number;
     }
 
+    // ---------- Gestion des Stocks ----------
+
+    interface Commande_Produit {
+      
+    }
+
 }
 
 export {};

@@ -56,7 +56,7 @@
         </v-sheet>
 
         <div class="d-flex align-center justify-end">
-          <v-btn color="orange" size="x-large" rounded="lg" class="mb-4" elevation="1">
+          <v-btn color="orange" size="x-large" rounded="lg" class="mb-4" elevation="1" density="comfortable">
             Valider la commande
           </v-btn>
         </div>
