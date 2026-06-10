@@ -17,8 +17,18 @@ declare global {
     typeProduitId: string;
     typeProduit?: TypeProduit;
     dateArrive: Date;
-    dateSortie?: Date ;
-    datePeremption?: Date ;
+    dateSortie?: Date;
+    datePeremption?: Date;
+    quantite: number;
+  }
+
+  interface ProduitAvecTypeCommande {
+    id?: string;
+    typeProduitId: string;
+    typeProduit: TypeProduit;
+    dateArrive: Date;
+    dateSortie?: Date;
+    datePeremption?: Date;
     quantite: number;
   }
 
@@ -47,31 +57,30 @@ declare global {
     role: UserRole;
     dateCreation?: Date;
   }
-    
-    // ---------- Calendrier ----------
-    
-    interface ActivityLogItem {
-      id: string;
-      message: string;
-      timestamp: string | Date;
-    }
-    
-    interface Participant {
-      nom: string;
-      prenom: string;
-      heuresRestantes: number;
-    }
 
-    // ---------- Gestion des Stocks ----------
-    interface ProduitRestock {
-      nom?: string;
-      quantite?: number;
-    }
+  // ---------- Calendrier ----------
 
-    interface Commande_Produit {
-      // à faire 
-    }
+  interface ActivityLogItem {
+    id: string;
+    message: string;
+    timestamp: string | Date;
+  }
 
+  interface Participant {
+    nom: string;
+    prenom: string;
+    heuresRestantes: number;
+  }
+
+  // ---------- Gestion des Stocks ----------
+  interface ProduitRestock {
+    nom?: string;
+    quantite?: number;
+  }
+
+  interface Commande_Produit {
+    // à faire
+  }
 }
 
 export {};
