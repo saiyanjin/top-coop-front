@@ -63,6 +63,10 @@ declare global {
     }
 
     // ---------- Gestion des Stocks ----------
+    interface ProduitRestock {
+      nom?: string;
+      quantite?: number;
+    }
 
     interface Commande_Produit {
       // à faire 

@@ -28,7 +28,7 @@
         <v-sheet class="flex-grow-1 overflow-y-auto bg-transparent mb-4">
           <v-row v-if="paginatedParticipants.length > 0">
             <v-col 
-              v-for="(participant, index) in paginatedParticipants" 
+              v-for="(produits, index) in paginatedParticipants" 
               :key="index" 
               cols="12" 
               sm="6"
@@ -39,10 +39,10 @@
                 elevation="0"
               >
                 <span class="text-subtitle-1 font-weight-bold text-black">
-                  {{ participant.nom }} {{ participant.prenom }}
+                  {{ produits.nom }}
                 </span>
                 <span class="text-body-2 text-grey-darken-3">
-                  Heures restantes : <strong class="text-black">{{ participant.heuresRestantes }}h</strong>
+                  Quantité : <strong class="text-black">{{ produits.quantite }}</strong>
                 </span>
               </v-sheet>
             </v-col>
@@ -144,7 +144,8 @@
     searchQuery,
     currentPage,
     totalPages,
-    paginatedParticipants
+    paginatedParticipants,
+    produits
   } = useGestionStock()
 
 </script>

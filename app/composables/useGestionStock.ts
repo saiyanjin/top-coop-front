@@ -1,9 +1,11 @@
 import { onMounted, ref, computed, watch } from 'vue'
+import { API_ROUTES } from "~/constants/api";
 
 export const useGestionStock = () => {
-  const calendar = ref()
-  const nbrJourSemaine = 7
-  const tab = ref("calendrier")
+  const config = useRuntimeConfig();
+  const routes = API_ROUTES(config.public.apiBase);
+
+  const tab = ref("restock")
 
   const queryHistory = ref<ActivityLogItem[]>([
     {
@@ -37,29 +39,47 @@ export const useGestionStock = () => {
   }
 
   onMounted(() => {
-    if (calendar.value) {
-      calendar.value.scrollToTime('08:00')
-    }
+    getProduits()
   })
 
   const searchQuery = ref('')
   const currentPage = ref(1)
   const itemsPerPage = 10
 
-  const participantsList = ref<Participant[]>([
-    { nom: 'Matthieu', prenom: 'Flament', heuresRestantes: 1 },
-    { nom: 'Dupont', prenom: 'Jean', heuresRestantes: 1 },
-    { nom: 'Martin', prenom: 'Sophie', heuresRestantes: 1 },
-    { nom: 'Bernard', prenom: 'Thomas', heuresRestantes: 1 },
-    { nom: 'Petit', prenom: 'Marie', heuresRestantes: 1 },
-    { nom: 'Durand', prenom: 'Lucas', heuresRestantes: 1 },
-    { nom: 'Leroy', prenom: 'Julie', heuresRestantes: 1 },
-    { nom: 'Moreau', prenom: 'Pierre', heuresRestantes: 1 },
-    { nom: 'Simon', prenom: 'Chloé', heuresRestantes: 1 },
-    { nom: 'Laurent', prenom: 'Maxime', heuresRestantes: 1 },
-    { nom: 'Lefebvre', prenom: 'Emma', heuresRestantes: 1 },
-    { nom: 'Michel', prenom: 'Antoine', heuresRestantes: 1 },
-  ])
+  function createNewRecord(): ProduitAvecType {
+    return {
+      typeProduitId: "",
+      typeProduit: undefined,
+      dateArrive: new Date(),
+      dateSortie: undefined,
+      datePeremption: undefined,
+      quantite: 0,
+    };
+  }
+
+  const produits = ref<ProduitAvecType[]>([]);
+  const typeProduit = ref<TypeProduit[]>([]);
+  const formModel = ref<ProduitAvecType>(createNewRecord());
+  
+  const participantsList = ref<ProduitRestock[]>([])
+
+  const getProduits = async () => {
+    try {
+      const data = await $fetch<ProduitAvecType[]>(routes.NEST_PRODUITS_AVECTYPE, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${useToken().getToken()}`,
+        },
+      });
+
+      console.log("data : ",data)
+      produits.value = data;
+      // console.log("produits quantite : ", produits.value[0]?.quantite)
+      // console.log("produits nom : ", produits.value[0]?.typeProduit?.nom)
+    } catch (error: any) {
+      console.error("Erreur API Nest :", error.data?.message || error.message);
+    }
+  };
 
   const filteredParticipants = computed(() => {
     if (!searchQuery.value) return participantsList.value
@@ -67,10 +87,9 @@ export const useGestionStock = () => {
     const query = searchQuery.value.toLowerCase().trim()
     
     return participantsList.value.filter(p => {
-      const nomComplet = `${p.nom} ${p.prenom}`.toLowerCase()
-      const prenomComplet = `${p.prenom} ${p.nom}`.toLowerCase()
+      const nomComplet = `${p.nom}`.toLowerCase()
       
-      return nomComplet.includes(query) || prenomComplet.includes(query)
+      return nomComplet.includes(query)
     })
   })
 
@@ -97,6 +116,7 @@ export const useGestionStock = () => {
     searchQuery,
     currentPage,
     totalPages,
-    paginatedParticipants
+    paginatedParticipants,
+    produits
   };
 }
