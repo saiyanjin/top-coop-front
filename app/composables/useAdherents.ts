@@ -17,6 +17,7 @@ export const useAdherents = () => {
       ville: "",
       motDePasse: "",
       role: UserRole.USER,
+      dateCreation: undefined
     };
   }
 
@@ -29,7 +30,6 @@ export const useAdherents = () => {
   const dialogDelete = ref(false);
   const itemToDelete = ref<Utilisateur | null>(null);
 
-  // --- ÉTATS POUR LA SNACKBAR ---
   const snackbarShow = ref(false);
   const snackbarText = ref("");
 
@@ -37,7 +37,6 @@ export const useAdherents = () => {
     snackbarText.value = text;
     snackbarShow.value = true;
   }
-  // ------------------------------
 
   const isEditing = computed(() => !!formModel.value.id);
 
@@ -47,7 +46,7 @@ export const useAdherents = () => {
     { title: "Email", key: "email" },
     { title: "Ville", key: "ville" },
     { title: "Rôle", key: "role" },
-    { title: "Date de création", key: "date_creation" },
+    { title: "Date de création", key: "dateCreation" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
   ] as const;
 

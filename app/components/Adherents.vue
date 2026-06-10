@@ -57,7 +57,7 @@
           </v-chip>
         </template>
 
-        <template v-slot:item.date_creation="{ value }">
+        <template v-slot:item.dateCreation="{ value }">
           {{ formatDateAffichage(value) }}
         </template>
 
