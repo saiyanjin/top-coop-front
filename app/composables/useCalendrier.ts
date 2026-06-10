@@ -90,7 +90,7 @@ export const useCalendrier = () => {
   const currentPage = ref(1)
   const itemsPerPage = 10
 
-  const participantsList = ref<Participation[]>([
+  const participantsList = ref<Participant[]>([
     { nom: 'Matthieu', prenom: 'Flament', heuresRestantes: 1 },
     { nom: 'Dupont', prenom: 'Jean', heuresRestantes: 1 },
     { nom: 'Martin', prenom: 'Sophie', heuresRestantes: 1 },
