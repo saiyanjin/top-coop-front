@@ -155,7 +155,7 @@ export const useAdherents = () => {
       }
       const deletedUser = adherents.value[index];
       adherents.value.splice(index, 1);
-      triggerSnackbar(`L'adhérent ${deletedUser?.prenom} ${deletedUser?.nom} a bien été supprimé.`); // ? à modifier
+      triggerSnackbar(`L'adhérent <span class="text-orange">${deletedUser?.prenom} ${deletedUser?.nom}</span> a bien été supprimé.`); // ? à modifier
     } catch (error: any) {
       console.log(error.message);
     }
