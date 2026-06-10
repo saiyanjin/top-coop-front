@@ -5,13 +5,13 @@ declare global {
     // ---------- Produits ----------
     
     interface Produit {
-    id?: number
-    typeProduit: number | null
-    dateArrivee: Date | null
-    dateSortie: Date | null
-    datePeremption: Date | null
-    quantite: number
-    unite: string
+      id?: number
+      typeProduit: number | null
+      dateArrivee: Date | null
+      dateSortie: Date | null
+      datePeremption: Date | null
+      quantite: number
+      unite: string
     }
 
     // ---------- Adherents ----------
@@ -29,6 +29,20 @@ declare global {
       dateCreation?: Date | string | null;
     }
     
+    // ---------- Calendrier ----------
+    
+    interface ActivityLogItem {
+      id: string;
+      message: string;
+      timestamp: string | Date;
+    }
+    
+    interface Participant {
+      nom: string;
+      prenom: string;
+      heuresRestantes: number;
+    }
+
 }
 
 export {};
