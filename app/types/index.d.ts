@@ -1,6 +1,7 @@
 // types/index.d.ts
 
 declare global {
+
   // ---------- Produits ----------
 
   interface Produit {
@@ -16,16 +17,6 @@ declare global {
     id?: string;
     typeProduitId: string;
     typeProduit?: TypeProduit;
-    dateArrive: Date;
-    dateSortie?: Date;
-    datePeremption?: Date;
-    quantite: number;
-  }
-
-  interface ProduitAvecTypeCommande {
-    id?: string;
-    typeProduitId: string;
-    typeProduit: TypeProduit;
     dateArrive: Date;
     dateSortie?: Date;
     datePeremption?: Date;
@@ -73,9 +64,20 @@ declare global {
   }
 
   // ---------- Gestion des Stocks ----------
+  
   interface ProduitRestock {
     nom?: string;
     quantite?: number;
+  }
+
+  interface ProduitAvecTypeCommande {
+    id?: string;
+    typeProduitId: string;
+    typeProduit: TypeProduit;
+    dateArrive: Date;
+    dateSortie?: Date;
+    datePeremption?: Date;
+    quantite: number;
   }
 
   interface Commande_Produit {
