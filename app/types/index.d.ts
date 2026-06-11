@@ -83,6 +83,25 @@ declare global {
   interface ProduitIHM extends ProduitAvecTypeCommande {
     quantiteInitiale?: number;
   }
+
+  interface Commande {
+    utilisateurId: string;
+  }
+
+  interface Commande_Produit {
+    commandeId: string;
+    typeProduitId: string;
+    quantite: number;
+  }
+
+  interface GroupedProduitIHM {
+    typeProduitId: string;
+    quantiteEnStock: number;
+    quantiteAAjouter: number; 
+    typeProduit: any;
+    originalProducts: any[];
+  }
+
 }
 
 export {};

@@ -25,73 +25,65 @@
           <v-row v-if="paginatedProduit.length > 0">
             <v-col
               v-for="(produit, index) in paginatedProduit"
-              :key="index"
+              :key="produit.typeProduitId"
               cols="12"
               lg="6"
             >
               <v-sheet
-                class="d-flex align-center justify-space-between  px-4 py-3 rounded-lg border-md border-gris"
-                :class="(index + 1) % 4 < 2 ? 'bg-vertClair' : 'bg-vertClair60'"
-                elevation="0"
+                class="d-flex align-center justify-space-between px-4 py-3 rounded-lg border-md border-gris"
+                :class="(index + 1) % 2 == 0 ? 'bg-white' : 'bg-transparent'"
               >
-                <span class="text-subtitle-1 font-weight-bold text-black">
-                  {{ produit.typeProduit.nom }}
-                </span>
+                <div class="d-flex flex-column text-body-1 font-weight-bold text-vertFonce">
+                  <span>{{ produit.typeProduit.nom }}</span>
+                  <span class="text-caption text-grey-darken-1 font-weight-medium">
+                    Stock actuel : {{ produit.quantiteEnStock }} {{ produit.typeProduit.unite.toLowerCase() }}
+                  </span>
+                </div>
 
-                <!-- <span class="text-body-2 text-grey-darken-3">
-                  Quantité :
-                  <strong class="text-black">{{ produit.quantite }}</strong>
-                </span> -->
-
-                <div class="d-flex align-center ga-2">
-                    <v-btn
-                      icon="mdi-reload"
-                      @click="resetQuantite(produit)"
-                      variant="text"
-                      class="bg-transparent"
-                    />
-
-                  <!-- INPUT SI C'EST VRAC OU UNITE -->
-
+                <div class="d-flex align-center ga-4">
                   <v-number-input
                     v-if="produit.typeProduit.unite == 'VRAC'"
-                    label="Quantité en vrac"
-                    v-model="produit.quantite"
+                    label="Ajouter (vrac)"
+                    v-model.number="produit.quantiteAAjouter"
                     variant="outlined"
                     control-variant="split"
                     inset
                     density="comfortable"
                     hide-details
-                    :min="produit.quantiteInitiale"
+                    :min="0"
                     :precision="2"
                     min-width="175"
                   />
 
                   <v-number-input
                     v-if="produit.typeProduit.unite == 'UNITE'"
-                    label="Quantité à l'unité"
-                    v-model="produit.quantite"
+                    label="Ajouter (unité)"
+                    v-model.number="produit.quantiteAAjouter"
                     variant="outlined"
                     control-variant="split"
                     inset
                     density="comfortable"
                     hide-details
-                    :min="produit.quantiteInitiale"
+                    :min="0"
                     min-width="175"
                   />
 
-                  <!-- INPUT SI C'EST VRAC OU UNITE -->
-
+                  <v-btn
+                    icon="mdi-refresh"
+                    variant="text"
+                    color="orange"
+                    size="small"
+                    :disabled="produit.quantiteAAjouter === 0"
+                    @click="resetQuantite(produit)"
+                  />
                 </div>
               </v-sheet>
             </v-col>
           </v-row>
 
-          <v-row v-else justify="center" class="mt-5">
-            <v-col cols="12" class="text-center text-grey text-body-1">
-              Aucun produit ne correspond à votre recherche.
-            </v-col>
-          </v-row>
+          <div v-else class="text-center text-grey py-10">
+            Aucun produit trouvé.
+          </div>
         </v-sheet>
 
         <div class="d-flex align-center justify-end">
@@ -111,23 +103,21 @@
 
         <BaseModal
           v-model="isModalOpen"
-          title="Récapitulatif du restockage"
-          submit-text="Confirmer le restockage"
-          cancel-text="Annuler"
+          title="Récapitulatif du Restockage"
+          cancelText="Annuler"
+          submitText="Confirmer"
+          maxWidth="600"
           @cancel="isModalOpen = false"
           @submit="submitRestock"
         >
-          <v-list density="compact" class="bg-transparent">
-            <v-list-item v-for="p in modifiedProduits" :key="p.id" class="px-0">
-              <div class="d-flex justify-space-between w-100 align-center">
-                <span class="font-weight-bold">{{ p.typeProduit.nom }}</span>
-                <div class="text-body-2">
-                  <span class="text-grey">Ancien : {{ p.quantiteInitiale }}</span>
-                  <v-icon icon="mdi-arrow-right" size="small" class="mx-2" color="orange"></v-icon>
-                  <span class="text-orange font-weight-bold">Nouveau : {{ p.quantite }}</span>
-                </div>
+          <v-list v-if="modifiedProduits.length > 0" class="bg-transparent">
+            <v-list-item v-for="p in modifiedProduits" :key="p.typeProduitId" class="px-0">
+              <div class="d-flex justify-space-between align-center w-100 text-body-1 text-vertFonce">
+                <span class="font-weight-medium">{{ p.typeProduit.nom }}</span>
+                <span class="font-weight-bold text-orange">
+                  +{{ p.quantiteAAjouter }} {{ p.typeProduit.unite.toLowerCase() }}
+                </span>
               </div>
-              <v-divider class="mt-2"></v-divider>
             </v-list-item>
           </v-list>
           <div v-if="modifiedProduits.length === 0" class="text-center py-4">
@@ -207,6 +197,5 @@ const {
   submitRestock,
   snackbarShow,
   snackbarText,
-  totalModifies
 } = useGestionStock();
 </script>
