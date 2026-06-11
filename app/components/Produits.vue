@@ -106,7 +106,7 @@
     >
       <v-form class="d-flex flex-column ga-5">
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12">
             <v-select
               label="Type de produit"
               :items="typeProduit"
@@ -117,6 +117,7 @@
               rounded="lg"
               color="vertFonce"
               required
+              hide-details
             ></v-select>
           </v-col>
         </v-row>
@@ -130,6 +131,8 @@
               rounded="lg"
               color="vertFonce"
               prepend-icon=""
+              prepend-inner-icon="mdi-calendar"
+              hide-details
             ></v-date-input>
           </v-col>
           <v-col cols="6">
@@ -140,23 +143,30 @@
               rounded="lg"
               color="vertFonce"
               prepend-icon=""
+              prepend-inner-icon="mdi-calendar"
               :disabled = "!isEditing"
+              hide-details
             ></v-date-input>
           </v-col>
         </v-row>
 
-        <v-date-input
-          label="Date de péremption"
-          v-model="formModel.datePeremption"
-          variant="outlined"
-          rounded="lg"
-          color="vertFonce"
-          prepend-icon=""
-          hide-details
-        ></v-date-input>
+        <v-row>
+          <v-col cols="12">
+            <v-date-input
+              label="Date de péremption"
+              v-model="formModel.datePeremption"
+              variant="outlined"
+              rounded="lg"
+              color="vertFonce"
+              prepend-icon=""
+              prepend-inner-icon="mdi-calendar"
+              hide-details
+            ></v-date-input>
+          </v-col>
+        </v-row>
 
         <v-row>
-          <v-col cols="4">
+          <v-col cols="6">
             <v-number-input
               label="Quantité"
               v-model="formModel.quantite"
@@ -166,6 +176,7 @@
               hide-details
             ></v-number-input>
           </v-col>
+
         </v-row>
       </v-form>
     </BaseModal>
@@ -199,6 +210,13 @@
     >
       <div v-html="snackbarText">
       </div>
+      <template v-slot:actions>
+            <v-btn
+              variant="text"
+              icon="mdi-close"
+              @click="snackbarShow = false"
+            />
+          </template>
     </v-snackbar>
   </div>
 </template>

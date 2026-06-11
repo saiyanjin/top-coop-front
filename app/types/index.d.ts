@@ -1,6 +1,7 @@
 // types/index.d.ts
 
 declare global {
+
   // ---------- Produits ----------
 
   interface Produit {
@@ -17,8 +18,8 @@ declare global {
     typeProduitId: string;
     typeProduit?: TypeProduit;
     dateArrive: Date;
-    dateSortie?: Date ;
-    datePeremption?: Date ;
+    dateSortie?: Date;
+    datePeremption?: Date;
     quantite: number;
   }
 
@@ -47,20 +48,59 @@ declare global {
     role: UserRole;
     dateCreation?: Date;
   }
-    
-    // ---------- Calendrier ----------
-    
-    interface ActivityLogItem {
-      id: string;
-      message: string;
-      timestamp: string | Date;
-    }
-    
-    interface Participant {
-      nom: string;
-      prenom: string;
-      heuresRestantes: number;
-    }
+
+  // ---------- Calendrier ----------
+
+  interface ActivityLogItem {
+    id: string;
+    message: string;
+    timestamp: string | Date;
+  }
+
+  interface Participant {
+    nom: string;
+    prenom: string;
+    heuresRestantes: number;
+  }
+
+  // ---------- Gestion des Stocks ----------
+  
+  interface ProduitRestock {
+    nom?: string;
+    quantite?: number;
+  }
+
+  interface ProduitAvecTypeCommande {
+    id?: string;
+    typeProduitId: string;
+    typeProduit: TypeProduit;
+    dateArrive: Date;
+    dateSortie?: Date;
+    datePeremption?: Date;
+    quantite: number;
+  }
+
+  interface ProduitIHM extends ProduitAvecTypeCommande {
+    quantiteInitiale?: number;
+  }
+
+  interface Commande {
+    utilisateurId: string;
+  }
+
+  interface Commande_Produit {
+    commandeId: string;
+    typeProduitId: string;
+    quantite: number;
+  }
+
+  interface GroupedProduitIHM {
+    typeProduitId: string;
+    quantiteEnStock: number;
+    quantiteAAjouter: number; 
+    typeProduit: any;
+    originalProducts: any[];
+  }
 
 }
 
