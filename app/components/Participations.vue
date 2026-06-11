@@ -8,7 +8,7 @@
       <v-sheet class="overflow-hidden">
         <v-data-table
           :headers="headers"
-          :items="participations"
+          :items="rechercheParticipations"
           :search="schemaSearch"
           :hide-default-footer="participations.length < 11"
           sort-asc-icon="mdi-sort-ascending"
@@ -30,6 +30,17 @@
               max-width="400"
               rounded="lg"
             />
+            <v-spacer></v-spacer>
+            <v-btn
+              class="bg-vertFonce text-white font-weight-bold"
+              size="large"
+              prepend-icon="mdi-plus"
+              rounded="lg"
+              variant="flat"
+              @click="add"
+            >
+              Ajouter une participation
+            </v-btn>
           </v-toolbar>
         </template>
 
@@ -73,39 +84,42 @@
 
     <BaseModal
       v-model="dialog"
-      :title="!isEditing ? 'Modifier la participation' : 'Ajouter une participation'"
-      :submit-text="!isEditing ? 'Modifier' : 'Ajouter'"
+      :title="isEditing ? 'Modifier la participation' : 'Ajouter une participation'"
+      :submit-text="isEditing ? 'Modifier' : 'Ajouter'"
       @cancel="fermerDialog"
       @submit="save"
     >
-      <v-form class="d-flex flex-column ga-5">
+      <v-form class="d-flex flex-column">
         <v-row>
-          <v-col cols="6">
-            <v-text-field
+          <v-col cols="12">
+            <v-autocomplete
+              v-model="formModel.utilisateurId"
               label="Utilisateur"
-              v-model="formModel.utilisateur_id"
+              :items="adherentsOptions"
+              item-title="title"
+              item-value="value"
               variant="outlined"
               rounded="lg"
               color="vertFonce"
               hide-details
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              label="Créneau"s
-              v-model="formModel.creneau_id"
-              variant="outlined"
-              rounded="lg"
-              color="vertFonce"
-              hide-details
-            ></v-text-field>
+            ></v-autocomplete>
           </v-col>
         </v-row>
-
-        <v-autocomplete
-          label="Autocomplete"
-          :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-        ></v-autocomplete>
+        <v-row>
+          <v-col cols="12">
+            <v-autocomplete
+              v-model="formModel.creneauId"
+              label="Créneau"
+              :items="creneauxOptions"
+              item-title="title"
+              item-value="value"
+              variant="outlined"
+              rounded="lg"
+              color="vertFonce"
+              hide-details
+            ></v-autocomplete>
+          </v-col>
+        </v-row>
 
       </v-form>
     </BaseModal>
@@ -121,9 +135,9 @@
       @submit="confirmDelete"
     >
       <div class="text-center">
-        Souhaitez-vous vraiment supprimer la participation
+        Souhaitez-vous vraiment supprimer la participation de
         <span class="text-orange font-weight-bold">
-          {{ itemToDelete ? `${itemToDelete.utilisateur_id} ${itemToDelete.creneau_id}` : "" }}
+          {{ itemToDelete ? `${getUtilisateurNom(itemToDelete.utilisateurId)} - ${getCreneauNom(itemToDelete.creneauId)}` : "" }}
         </span>
         ? Cette action est irréversible.
       </div>
@@ -146,6 +160,9 @@
 <script setup lang="ts">
 const {
   participations,
+  rechercheParticipations,
+  adherentsOptions,
+  creneauxOptions,
   formModel,
   schemaSearch,
   dialog,
@@ -160,6 +177,8 @@ const {
   save,
   reset,
   formatDateAffichage,
+  getUtilisateurNom,
+  getCreneauNom,
   fermerDialog,
   snackbarShow,
   snackbarText

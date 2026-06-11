@@ -37,10 +37,24 @@ declare global {
 
   interface Participation {
     id?: string;
-    utilisateur_id: string;
-    creneau_id: number;
+    utilisateurId: string;
+    creneauId: string;
     dateCreation?: Date;
   }
+
+  // ---------- Créneaux ----------
+
+  interface Creneau {
+    id?: string;
+    nom: string;
+    dateDebut: Date;
+    dateFin: Date;
+    statut: string;
+    description: string;
+    capacite: number;
+    dateCreation?: Date;
+  }
+
 
   // ---------- Adherents ----------
 
