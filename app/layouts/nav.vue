@@ -4,7 +4,7 @@
       <v-btn @click.stop="drawer = !drawer" :icon="drawer ? 'mdi-menu-open' : 'mdi-menu-close'"/>
       <span class="mr-15">Menu</span>
 
-      <div class="ml-15 d-flex align-center">
+      <div class="d-flex align-center">
         <div class="d-flex align-center text-white ml-14">
           <img src="/images/Logo_TopCoop.svg" alt="Logo TopCoop" class="mr-2" width="140" />
         </div>
@@ -18,7 +18,7 @@
           <v-btn value="calendrier" prepend-icon="mdi-calendar-month-outline" class="custom-nav-btn text-white mx-8 text-title-medium pa-3 rounded-lg">
             Calendrier
           </v-btn>
-          <v-btn value="commandes" prepend-icon="mdi-file-document-outline" class="custom-nav-btn text-white text-title-medium pa-3 rounded-lg">
+          <v-btn value="commandes" prepend-icon="mdi-archive-outline" class="custom-nav-btn text-white text-title-medium pa-3 rounded-lg">
             Gestion des stocks
           </v-btn>
         </v-btn-toggle>
@@ -34,7 +34,7 @@
       v-model="drawer"
       class="bg-vertFonce border-0"
       width="260"
-      permanent
+      :permanent="$vuetify.display.xlAndUp"
     >
       <div class="position-sticky top-0 pt-4 pb-2 w-100 bg-vertFonce z-index-2">
         <v-text-field

@@ -1,5 +1,5 @@
 import { ref, computed, onMounted } from "vue";
-import { UserRole } from "~/constants/roles";
+import { UserRole } from "~/constants/enum";
 import { API_ROUTES } from "~/constants/api";
 
 
