@@ -40,7 +40,7 @@ export const useGestionStock = () => {
     }
   };
 
-  const totalModifies = ref(0)
+  const totalModifies = ref()
 
   const submitRestock = async () => {
     try {

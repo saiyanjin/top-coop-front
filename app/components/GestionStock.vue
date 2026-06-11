@@ -62,7 +62,7 @@
                     inset
                     density="comfortable"
                     hide-details
-                    :min="0"
+                    :min="produit.quantiteInitiale"
                     :precision="2"
                     min-width="175"
                   />
@@ -76,7 +76,7 @@
                     inset
                     density="comfortable"
                     hide-details
-                    :min="0"
+                    :min="produit.quantiteInitiale"
                     min-width="175"
                   />
 
