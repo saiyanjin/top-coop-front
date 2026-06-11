@@ -4,7 +4,7 @@
       <v-btn @click.stop="drawer = !drawer" :icon="drawer ? 'mdi-menu-open' : 'mdi-menu-close'"/>
       <span class="mr-15">Menu</span>
 
-      <div class="ml-15 d-flex align-center">
+      <div class="d-flex align-center">
         <div class="d-flex align-center text-white ml-14">
           <img src="/images/Logo_TopCoop.svg" alt="Logo TopCoop" class="mr-2" width="140" />
         </div>
@@ -34,7 +34,7 @@
       v-model="drawer"
       class="bg-vertFonce border-0"
       width="260"
-      permanent
+      :permanent="$vuetify.display.xlAndUp"
     >
       <div class="position-sticky top-0 pt-4 pb-2 w-100 bg-vertFonce z-index-2">
         <v-text-field

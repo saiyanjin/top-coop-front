@@ -80,8 +80,8 @@ declare global {
     quantite: number;
   }
 
-  interface Commande_Produit {
-    // à faire
+  interface ProduitIHM extends ProduitAvecTypeCommande {
+    quantiteInitiale?: number;
   }
 }
 

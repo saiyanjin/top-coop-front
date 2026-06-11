@@ -6,18 +6,15 @@ export const useGestionStock = () => {
   const routes = API_ROUTES(config.public.apiBase);
 
   const tab = ref("restock");
-
-  onMounted(() => {
-    getProduits();
-  });
-
   const searchQuery = ref("");
   const currentPage = ref(1);
   const itemsPerPage = 10;
 
-  const produits = ref<ProduitAvecTypeCommande[]>([]);
+  const produits = ref<ProduitIHM[]>([]);
 
-  const produitList = ref<ProduitAvecTypeCommande[]>([]);
+  onMounted(() => {
+    getProduits();
+  });
 
   const getProduits = async () => {
     try {
@@ -30,20 +27,23 @@ export const useGestionStock = () => {
           },
         },
       );
-      produits.value = data;
+      console.log("data = ", data);
+
+      produits.value = data.map(produit => ({
+        ...produit,
+        quantiteInitiale: produit.quantite
+      }));
+
     } catch (error: any) {
       console.error("Erreur API Nest :", error.data?.message || error.message);
     }
   };
 
   const filteredProduit = computed(() => {
-    if (!searchQuery.value) return produitList.value;
-
+    if (!searchQuery.value) return produits.value;
     const query = searchQuery.value.toLowerCase().trim();
-
-    return produitList.value.filter((p) => {
-      const nom = `${p.typeProduit.nom}`.toLowerCase();
-
+    return produits.value.filter((p) => {
+      const nom = `${p.typeProduit?.nom || ''}`.toLowerCase();
       return nom.includes(query);
     });
   });
@@ -63,6 +63,12 @@ export const useGestionStock = () => {
     currentPage.value = 1;
   });
 
+  const resetQuantite = (produit: ProduitIHM) => {
+    if (produit && produit.quantiteInitiale !== undefined) {
+      produit.quantite = produit.quantiteInitiale;
+    }
+  };
+
   return {
     tab,
     searchQuery,
@@ -70,5 +76,6 @@ export const useGestionStock = () => {
     totalPages,
     paginatedProduit,
     produits,
+    resetQuantite,
   };
 };

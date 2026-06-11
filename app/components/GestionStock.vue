@@ -15,7 +15,7 @@
         <div class="d-flex my-10">
           <v-text-field
             v-model="searchQuery"
-            label="Rechercher un participant ..."
+            label="Rechercher..."
             prepend-inner-icon="mdi-magnify"
             variant="outlined"
             density="comfortable"
@@ -33,20 +33,61 @@
               v-for="(produit, index) in paginatedProduit"
               :key="index"
               cols="12"
-              sm="6"
+              lg="6"
             >
               <v-sheet
-                class="d-flex align-center justify-space-between px-4 py-3 rounded-lg border-md border-gris"
+                class="d-flex align-center justify-space-between  px-4 py-3 rounded-lg border-md border-gris"
                 :class="(index + 1) % 4 < 2 ? 'bg-vertClair' : 'bg-vertClair60'"
                 elevation="0"
               >
                 <span class="text-subtitle-1 font-weight-bold text-black">
                   {{ produit.typeProduit.nom }}
                 </span>
-                <span class="text-body-2 text-grey-darken-3">
+
+                <!-- <span class="text-body-2 text-grey-darken-3">
                   Quantité :
                   <strong class="text-black">{{ produit.quantite }}</strong>
-                </span>
+                </span> -->
+
+                <div class="d-flex align-center ga-2">
+                    <v-btn
+                      icon="mdi-reload"
+                      @click="resetQuantite(produit)"
+                      variant="text"
+                      class="bg-transparent"
+                    />
+
+                  <!-- INPUT SI C'EST VRAC OU UNITE -->
+
+                  <v-number-input
+                    v-if="produit.typeProduit.unite == 'VRAC'"
+                    label="Quantité en vrac"
+                    v-model="produit.quantite"
+                    variant="outlined"
+                    control-variant="split"
+                    inset
+                    density="comfortable"
+                    hide-details
+                    :min="0"
+                    :precision="2"
+                    min-width="175"
+                  />
+
+                  <v-number-input
+                    v-if="produit.typeProduit.unite == 'UNITE'"
+                    label="Quantité à l'unité"
+                    v-model="produit.quantite"
+                    variant="outlined"
+                    control-variant="split"
+                    inset
+                    density="comfortable"
+                    hide-details
+                    :min="0"
+                  />
+
+                  <!-- INPUT SI C'EST VRAC OU UNITE -->
+
+                </div>
               </v-sheet>
             </v-col>
           </v-row>
@@ -122,6 +163,12 @@
 </template>
 
 <script setup lang="ts">
-const { tab, searchQuery, currentPage, totalPages, paginatedProduit } =
-  useGestionStock();
+const { 
+  tab, 
+  searchQuery, 
+  currentPage, 
+  totalPages, 
+  paginatedProduit,
+  resetQuantite,
+} = useGestionStock();
 </script>
