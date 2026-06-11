@@ -4,11 +4,10 @@
     height="calc(100vh - 128px)" 
   >
   
-    <!-- <Adherents /> -->
-    <!-- <Calendrier /> -->
-    <GestionStock />
-    <!-- <Produits /> -->
-
+    <!-- <Calendrier class=""/> -->
+    <!-- <Adherents class=""/> -->
+    <!-- <produits /> -->
+    <Participations />
   </v-sheet>
 </template>
 
