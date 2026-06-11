@@ -24,10 +24,12 @@ export const useParticipations = () => {
 
   const snackbarShow = ref(false);
   const snackbarText = ref("");
+  const snackbarAlert = ref(false);
 
-  function triggerSnackbar(text: string) {
+  function triggerSnackbar(text: string, alert: boolean) {
     snackbarText.value = text;
     snackbarShow.value = true;
+    snackbarAlert.value = alert;
   }
 
   const isEditing = computed(() => !!formModel.value.id);
@@ -58,7 +60,7 @@ export const useParticipations = () => {
   const headers = [
     { title: "Utilisateur", key: "utilisateurNom", align: "start" },
     { title: "Créneau", key: "creneauNom" },
-    { title: "Date Début", key: "dateDebut" }, // Récupérer date de début du créneau
+    { title: "Date Début", key: "dateDebut" },
     { title: "Date de création", key: "dateCreation" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
   ] as const;
@@ -136,6 +138,10 @@ export const useParticipations = () => {
     return creneau ? creneau.dateDebut : new Date;
   }
 
+  function estDejaPris() {
+    return (participations.value.filter((p) => p.creneauId === formModel.value.creneauId).some((p) => p.utilisateurId === formModel.value.utilisateurId))
+  }
+
   function formatDateAffichage(date: Date | null | string): string {
     if (!date) return "-";
     const d = typeof date === "string" ? new Date(date) : date;
@@ -187,17 +193,25 @@ export const useParticipations = () => {
     }
   };
 
+  
   const createParticipation = async () => {
     try {
-      const data = await $fetch<Participation>(routes.NEST_PARTICIPATIONS, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${useToken().getToken()}`,
-        },
-        body: formModel.value,
-      });
-      participations.value.push(data);
-      triggerSnackbar(`La participation <span class="text-orange">${getCreneauNom(data.creneauId)}</span> pour <span class="text-orange">${getUtilisateurNom(data.utilisateurId)}</span> a bien été créée.`);
+      if (estDejaPris()) {
+        const c = formModel.value;
+        triggerSnackbar(`L'utilisateur <span class="text-error">${getUtilisateurNom(c.utilisateurId)}</span> est déjà attribué à <span class="text-error">${getCreneauNom(c.creneauId)} <span class="text-black"> le </span> <span class="text-error">${formatDateAffichage(getDateDebutCreneau(c.creneauId))}</span>`, true);
+        return;
+      } else {
+        const data = await $fetch<Participation>(routes.NEST_PARTICIPATIONS, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${useToken().getToken()}`,
+          },
+          body: formModel.value,
+        });
+        participations.value.push(data);
+        triggerSnackbar(`La participation <span class="text-orange">${getCreneauNom(data.creneauId)}</span> pour <span class="text-orange">${getUtilisateurNom(data.utilisateurId)}</span> a bien été créée.`, false);
+      }
+
     } catch (error: any) {
       console.log(error.message);
     }
@@ -217,7 +231,7 @@ export const useParticipations = () => {
       }
       const deletedParticipation = participations.value[index];
       participations.value.splice(index, 1);
-      triggerSnackbar(`La participation de <span class="text-orange">${getUtilisateurNom(deletedParticipation?.utilisateurId ?? "")}</span> pour <span class="text-orange">${getCreneauNom(deletedParticipation?.creneauId ?? "")}</span> a bien été supprimée.`);
+      triggerSnackbar(`La participation de <span class="text-orange">${getUtilisateurNom(deletedParticipation?.utilisateurId ?? "")}</span> pour <span class="text-orange">${getCreneauNom(deletedParticipation?.creneauId ?? "")}</span> a bien été supprimée.`, false);
     } catch (error: any) {
       console.log(error.message);
     }
@@ -225,22 +239,30 @@ export const useParticipations = () => {
 
     const updateParticipation = async (id: string) => {
     try {
-      const data = await $fetch<Participation>(routes.NEST_PARTICIPATIONS + '/' + id, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${useToken().getToken()}`,
-        },
-        body: {
-          utilisateurId: formModel.value.utilisateurId,
-          creneauId: formModel.value.creneauId,
-        },
-      });
-      const index = participations.value.findIndex((p) => p.id === id);
-      if (index == -1) {
+      if (estDejaPris()) {
+        const c = formModel.value;
+        triggerSnackbar(`L'utilisateur <span class="text-error">${getUtilisateurNom(c.utilisateurId)}</span> est déjà attribué à <span class="text-error">${getCreneauNom(c.creneauId)} <span class="text-black"> le </span> <span class="text-error">${formatDateAffichage(getDateDebutCreneau(c.creneauId))}</span>`, true);
         return;
+
+      } else {
+        const data = await $fetch<Participation>(routes.NEST_PARTICIPATIONS + '/' + id, {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${useToken().getToken()}`,
+          },
+          body: {
+            utilisateurId: formModel.value.utilisateurId,
+            creneauId: formModel.value.creneauId,
+          },
+        });
+        const index = participations.value.findIndex((p) => p.id === id);
+        if (index == -1) {
+          return;
+        }
+        participations.value.splice(index, 1, data);
+        triggerSnackbar(`La participation de <span class="text-orange">${getUtilisateurNom(data.utilisateurId)}</span> pour <span class="text-orange">${getCreneauNom(data.creneauId)}</span> a bien été modifiée.`, false);
       }
-      participations.value.splice(index, 1, data);
-      triggerSnackbar(`La participation de <span class="text-orange">${getUtilisateurNom(data.utilisateurId)}</span> pour <span class="text-orange">${getCreneauNom(data.creneauId)}</span> a bien été modifiée.`);
+      
     } catch (error: any) {
       console.log(error.message);
     }
@@ -272,6 +294,7 @@ export const useParticipations = () => {
     getCreneauNom,
     fermerDialog,
     snackbarShow,
-    snackbarText
+    snackbarText,
+    snackbarAlert
   };
 };

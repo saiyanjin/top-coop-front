@@ -149,14 +149,24 @@
 
     <v-snackbar
       v-model="snackbarShow"
-      timer-color="vertFonce"
+      :timer-color="snackbarAlert ? 'orange' : 'vertFonce'"
       timer="top"
       location="bottom right"
       rounded="lg"
       color="white"
     >
-      <div v-html="snackbarText">
+      <div class="d-flex align-center ga-2">
+        <v-icon v-if="snackbarAlert" icon="mdi-alert" color="error"/>
+        <div v-html="snackbarText">
+        </div>
       </div>
+      <template v-slot:actions>
+            <v-btn
+              variant="text"
+              icon="mdi-close"
+              @click="snackbarShow = false"
+            />
+          </template>
     </v-snackbar>
   </div>
 </template>
@@ -186,6 +196,7 @@ const {
   getCreneauNom,
   fermerDialog,
   snackbarShow,
-  snackbarText
+  snackbarText,
+  snackbarAlert
 } = useParticipations()
 </script>

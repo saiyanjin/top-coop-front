@@ -12,9 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import Participations from '~/components/Participations.vue';
-import Produits from '~/components/Produits.vue';
-
 definePageMeta({
   layout: 'nav'
 })
