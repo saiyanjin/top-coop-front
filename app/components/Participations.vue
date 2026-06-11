@@ -44,7 +44,11 @@
           </v-toolbar>
         </template>
 
-        <template v-slot:item.dateCreation="{ value }">
+        <template
+          v-for="col in dateColumns"
+          :key="col"
+          v-slot:[`item.${col}`]="{ value }"
+        >
           {{ formatDateAffichage(value) }}
         </template>
 
@@ -170,6 +174,7 @@ const {
   itemToDelete,
   isEditing,
   headers,
+  dateColumns,
   add,
   edit,
   remove,

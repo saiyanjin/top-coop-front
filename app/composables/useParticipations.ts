@@ -41,7 +41,7 @@ export const useParticipations = () => {
 
   const creneauxOptions = computed(() =>
     creneaux.value.map((creneau) => ({
-      title: creneau.nom,
+      title: `${creneau.nom}` + ` (${formatDateAffichage(creneau.dateDebut)})`,
       value: creneau.id,
     }))
   );
@@ -51,14 +51,22 @@ export const useParticipations = () => {
       ...p,
       utilisateurNom: getUtilisateurNom(p.utilisateurId),
       creneauNom: getCreneauNom(p.creneauId),
+      dateDebut: getDateDebutCreneau(p.creneauId),
     }))
   );
 
   const headers = [
     { title: "Utilisateur", key: "utilisateurNom", align: "start" },
     { title: "Créneau", key: "creneauNom" },
+    { title: "Date Début", key: "dateDebut" }, // Récupérer date de début du créneau
     { title: "Date de création", key: "dateCreation" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
+  ] as const;
+
+  const dateColumns = [
+    "dateDebut",
+    "dateFin",
+    "dateCreation"
   ] as const;
 
   onMounted(() => {
@@ -121,6 +129,11 @@ export const useParticipations = () => {
   function getCreneauNom(id: string): string {
     const creneau = creneaux.value.find((c) => c.id === id);
     return creneau ? creneau.nom : "-";
+  }
+
+  function getDateDebutCreneau(id: string): Date {
+    const creneau = creneaux.value.find((c) => c.id === id);
+    return creneau ? creneau.dateDebut : new Date;
   }
 
   function formatDateAffichage(date: Date | null | string): string {
@@ -247,6 +260,7 @@ export const useParticipations = () => {
     itemToDelete,
     isEditing,
     headers,
+    dateColumns,
     add,
     edit,
     remove,
