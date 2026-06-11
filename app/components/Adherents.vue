@@ -254,6 +254,13 @@
     >
       <div v-html="snackbarText">
       </div>
+      <template v-slot:actions>
+            <v-btn
+              variant="text"
+              icon="mdi-close"
+              @click="snackbarShow = false"
+            />
+          </template>
     </v-snackbar>
   </div>
 </template>

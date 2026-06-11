@@ -18,7 +18,7 @@
           <v-btn value="calendrier" prepend-icon="mdi-calendar-month-outline" class="custom-nav-btn text-white mx-8 text-title-medium pa-3 rounded-lg">
             Calendrier
           </v-btn>
-          <v-btn value="commandes" prepend-icon="mdi-file-document-outline" class="custom-nav-btn text-white text-title-medium pa-3 rounded-lg">
+          <v-btn value="commandes" prepend-icon="mdi-archive-outline" class="custom-nav-btn text-white text-title-medium pa-3 rounded-lg">
             Gestion des stocks
           </v-btn>
         </v-btn-toggle>

@@ -1,17 +1,11 @@
 <template>
-  <v-tabs v-model="tab" color="vertFonce" class="rounded-ts-lg">
-    <v-tab value="restock">Restock</v-tab>
-    <v-tab value="catalogue">Catalogue</v-tab>
-  </v-tabs>
-
-  <v-divider></v-divider>
-
-  <v-tabs-window v-model="tab">
-    <v-tabs-window-item value="restock">
       <v-sheet
-        height="calc(100vh - 200px)"
-        class="px-15 py-5 overflow-hidden d-flex flex-column bg-transparent"
+        class="px-15 py-10 overflow-hidden d-flex flex-column bg-transparent h-100"
       >
+      <div class="d-flex align-center text-title-large text-orange font-weight-bold">
+        <v-icon icon="mdi-archive-outline" class="mr-2"></v-icon>
+        <span>Gestion des stocks</span>
+      </div>
         <div class="d-flex my-10">
           <v-text-field
             v-model="searchQuery"
@@ -83,6 +77,7 @@
                     density="comfortable"
                     hide-details
                     :min="0"
+                    min-width="175"
                   />
 
                   <!-- INPUT SI C'EST VRAC OU UNITE -->
@@ -94,7 +89,7 @@
 
           <v-row v-else justify="center" class="mt-5">
             <v-col cols="12" class="text-center text-grey text-body-1">
-              Aucun participant ne correspond à votre recherche.
+              Aucun produit ne correspond à votre recherche.
             </v-col>
           </v-row>
         </v-sheet>
@@ -107,11 +102,41 @@
             class="mb-4"
             elevation="1"
             density="comfortable"
+            :disabled="modifiedProduits.length === 0"
+            @click="isModalOpen = true"
           >
-            Valider la commande
+            Valider le restockage ({{ modifiedProduits.length }})
           </v-btn>
         </div>
+
+        <BaseModal
+          v-model="isModalOpen"
+          title="Récapitulatif du restockage"
+          submit-text="Confirmer le restockage"
+          cancel-text="Annuler"
+          @cancel="isModalOpen = false"
+          @submit="submitRestock"
+        >
+          <v-list density="compact" class="bg-transparent">
+            <v-list-item v-for="p in modifiedProduits" :key="p.id" class="px-0">
+              <div class="d-flex justify-space-between w-100 align-center">
+                <span class="font-weight-bold">{{ p.typeProduit.nom }}</span>
+                <div class="text-body-2">
+                  <span class="text-grey">Ancien : {{ p.quantiteInitiale }}</span>
+                  <v-icon icon="mdi-arrow-right" size="small" class="mx-2" color="orange"></v-icon>
+                  <span class="text-orange font-weight-bold">Nouveau : {{ p.quantite }}</span>
+                </div>
+              </div>
+              <v-divider class="mt-2"></v-divider>
+            </v-list-item>
+          </v-list>
+          <div v-if="modifiedProduits.length === 0" class="text-center py-4">
+            Aucune modification détectée.
+          </div>
+        </BaseModal>
+
         <v-divider></v-divider>
+
         <div
           class="d-flex align-center justify-end flex-shrink-0 pt-3 ga-2 pa-0 text-body-2"
         >
@@ -149,26 +174,39 @@
             @click="currentPage = totalPages"
           />
         </div>
-      </v-sheet>
-    </v-tabs-window-item>
+        <v-snackbar
+          v-model="snackbarShow"
+          timer-color="vertFonce"
+          timer="top"
+          location="bottom right"
+          rounded="lg"
+          color="white"
+        >
+          <span v-html="snackbarText"></span>
 
-    <v-tabs-window-item value="catalogue">
-      <v-sheet
-        height="calc(100vh - 200px)"
-        class="pa-5 overflow-hidden d-flex flex-column"
-      >
+          <template v-slot:actions>
+            <v-btn
+              variant="text"
+              icon="mdi-close"
+              @click="snackbarShow = false"
+            />
+          </template>
+        </v-snackbar>
       </v-sheet>
-    </v-tabs-window-item>
-  </v-tabs-window>
 </template>
 
 <script setup lang="ts">
 const { 
-  tab, 
   searchQuery, 
   currentPage, 
   totalPages, 
   paginatedProduit,
+  modifiedProduits,
+  isModalOpen,
   resetQuantite,
+  submitRestock,
+  snackbarShow,
+  snackbarText,
+  totalModifies
 } = useGestionStock();
 </script>
