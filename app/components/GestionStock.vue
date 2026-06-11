@@ -21,7 +21,7 @@
           ></v-text-field>
         </div>
 
-        <v-sheet class="flex-grow-1 overflow-y-auto bg-transparent mb-4">
+        <v-sheet class="flex-grow-1 overflow-y-auto bg-transparent mb-4 rounded-lg">
           <v-row v-if="paginatedProduit.length > 0">
             <v-col
               v-for="(produit, index) in paginatedProduit"
@@ -31,7 +31,8 @@
             >
               <v-sheet
                 class="d-flex align-center justify-space-between px-4 py-3 rounded-lg border-md border-gris"
-                :class="(index + 1) % 2 == 0 ? 'bg-white' : 'bg-transparent'"
+                elevation="1"
+                :class="(index + 1) % 2 == 0 ? 'bg-transparent' : 'bg-transparent'"
               >
                 <div class="d-flex flex-column text-body-1 font-weight-bold text-vertFonce">
                   <span>{{ produit.typeProduit.nom }}</span>
