@@ -6,7 +6,7 @@
   
     <!-- <Adherents /> -->
     <!-- <Calendrier /> -->
-    <GestionStock />
+    <!-- <GestionStock /> -->
     <!-- <Produits /> -->
 
   </v-sheet>
