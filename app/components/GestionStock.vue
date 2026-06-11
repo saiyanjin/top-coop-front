@@ -37,7 +37,7 @@
                 <div class="d-flex flex-column text-body-1 font-weight-bold text-vertFonce">
                   <span>{{ produit.typeProduit.nom }}</span>
                   <span class="text-caption text-grey-darken-1 font-weight-medium">
-                    Stock actuel : {{ produit.quantiteEnStock }} {{ produit.typeProduit.unite.toLowerCase() }}
+                    Stock actuel : {{ produit.quantiteEnStock }} <span v-if="produit.typeProduit.unite == 'VRAC'">kg</span> en stock
                   </span>
                 </div>
 
