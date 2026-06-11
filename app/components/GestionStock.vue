@@ -44,7 +44,7 @@
                 <div class="d-flex align-center ga-4">
                   <v-number-input
                     v-if="produit.typeProduit.unite == 'VRAC'"
-                    label="Ajouter (vrac)"
+                    label="Ajouter (kg)"
                     v-model.number="produit.quantiteAAjouter"
                     variant="outlined"
                     control-variant="split"
@@ -58,7 +58,7 @@
 
                   <v-number-input
                     v-if="produit.typeProduit.unite == 'UNITE'"
-                    label="Ajouter (unité)"
+                    label="Ajouter"
                     v-model.number="produit.quantiteAAjouter"
                     variant="outlined"
                     control-variant="split"
