@@ -19,3 +19,20 @@
 .bg-vertClair60 {
   background-color: rgba(204, 230, 187, 0.6);
 }
+
+/* Nav */
+
+.custom-nav-btn {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.smooth-item { 
+  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out !important; 
+}
+.smooth-item :deep(.v-list-item__prepend .v-icon) { 
+  opacity: 1 !important; 
+}
+:deep(.v-list-item--active .v-list-item__prepend .v-icon) { 
+  color: #3C3C3C !important; 
+}

@@ -1,7 +1,6 @@
 import { useTheme } from 'vuetify'
 import { useToken } from '~/composables/useToken'
 
-// ✅ Refs dehors = singleton partagé entre tous les composants
 const drawer = ref(true)
 const schemaSearch = ref('')
 const activeTopTab = ref<string | undefined>(undefined)
