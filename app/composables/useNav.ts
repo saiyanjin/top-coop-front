@@ -1,34 +1,32 @@
-import { ref, computed } from 'vue'
 import { useTheme } from 'vuetify'
 import { useToken } from '~/composables/useToken'
 
+// ✅ Refs dehors = singleton partagé entre tous les composants
+const drawer = ref(true)
+const schemaSearch = ref('')
+const activeTopTab = ref<string | undefined>(undefined)
+const selectedLeftItem = ref<string[]>(['Produits'])
+
+let lastLeftItem = ['Produits']
+let lastTopTab = 'calendrier'
+
 export const useNav = () => {
-  // --- Thème ---
   const theme = useTheme()
   const isDark = computed(() => theme.global.name.value === 'dark')
-  
+
   function toggleTheme() {
     theme.global.name.value = isDark.value ? 'light' : 'dark'
   }
-
-  // --- États de l'interface ---
-  const drawer = ref(true)
-  const schemaSearch = ref('')
-  const activeTopTab = ref<string | undefined>(undefined)
-  const selectedLeftItem = ref<string[]>(['Produits'])
-
-  // --- Variables persistantes internes ---
-  let lastLeftItem = ['Produits']
-  let lastTopTab = 'calendrier'
 
   // --- Liste de données ---
   const items = [
     { title: 'Produits', value: 'Produits' },
     { title: 'Paniers', value: 'Paniers' },
-    { title: 'Type de produits', value: 'Type de produits' },
-    { title: 'Adhérents', value: 'Adhérents' },
+    { title: 'Type de produits', value: 'Type_produits' },
+    { title: 'Adhérents', value: 'Adherents' },
     { title: 'Commandes', value: 'Commandes' },
     { title: 'Participations', value: 'Participations' },
+    { title: 'Créneau', value: 'Creneaux' },
   ]
 
   // --- Handlers de changement d'onglets ---
@@ -68,6 +66,12 @@ export const useNav = () => {
     await navigateTo('/connexion')
   }
 
+  const pageActive = computed(() => {
+  if (activeTopTab.value === 'calendrier') return 'Calendrier'
+  if (activeTopTab.value === 'commandes') return 'GestionStock'
+  return selectedLeftItem.value[0] ?? 'Produits'
+})
+
   return {
     isDark,
     toggleTheme,
@@ -78,6 +82,7 @@ export const useNav = () => {
     filteredItems,
     onTopTabChange,
     onLeftItemChange,
-    logout
+    logout,
+    pageActive
   }
 }

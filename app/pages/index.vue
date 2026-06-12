@@ -3,11 +3,7 @@
     class="w-100 bg-blanc rounded-lg elevation-1" 
     height="calc(100vh - 128px)" 
   >
-  
-    <!-- <Calendrier class=""/> -->
-    <!-- <Adherents class=""/> -->
-    <!-- <produits /> -->
-    <Participations />
+    <component :is="composantSelec" />
   </v-sheet>
 </template>
 
@@ -15,4 +11,25 @@
 definePageMeta({
   layout: 'nav'
 })
+
+const composants: Record<string, ReturnType<typeof resolveComponent>> = {
+  Produits: resolveComponent('Produits'),
+  // Paniers: resolveComponent('Paniers'),
+  // Type_produits: resolveComponent('Type_produits'),
+  Adherents: resolveComponent('Adherents'),
+  // Commandes: resolveComponent('Commandes'),
+  Participations: resolveComponent('Participations'),
+  // Creneaux: resolveComponent('Creneaux'),
+  Calendrier: resolveComponent('Calendrier'),
+  GestionStock: resolveComponent('GestionStock'),
+}
+
+const composantSelec = computed(() => 
+  composants[pageActive.value]
+)
+
+
+const { 
+    pageActive
+  } = useNav()
 </script>
