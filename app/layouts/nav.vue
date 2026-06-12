@@ -90,20 +90,3 @@ const {
   logout
 } = useNav()
 </script>
-
-<style scoped>
-.custom-nav-btn {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.smooth-item { 
-  transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out !important; 
-}
-.smooth-item :deep(.v-list-item__prepend .v-icon) { 
-  opacity: 1 !important; 
-}
-:deep(.v-list-item--active .v-list-item__prepend .v-icon) { 
-  color: #3C3C3C !important; 
-}
-</style>
