@@ -10,7 +10,7 @@ export const useCreneaux = () => {
       nom: "",
       dateDebut: new Date,
       dateFin: new Date,
-      description: "",
+      description: null,
       capacite: 0,
     };
   }
@@ -121,17 +121,33 @@ export const useCreneaux = () => {
     }
   };
 
+  const valDateString = ref(formModel.value.dateDebut.toISOString())
+  const indexT = valDateString.value.indexOf("T")
+
+  function recupererHeure( heure : string) {
+    if (indexT !== -1) {
+      const debut = valDateString.value.slice( 0, indexT)
+      const fin = valDateString.value.slice(indexT + 9)
+      const nouvelleDate = debut + "T" + heure + ":00" + fin
+      console.log(nouvelleDate)
+      return nouvelleDate
+    }
+  }
+
   const createCreneau = async () => {
     try {
-        const data = await $fetch<Creneau>(routes.NEST_CRENEAUX, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${useToken().getToken()}`,
-          },
-          body: formModel.value,
-        });
-        creneaux.value.push(data);
-        triggerSnackbar(`Le créneau <span class="text-orange">${formModel.value.nom}</span> du  <span class="text-orange">${formatDateAffichage(formModel.value.dateDebut)}</span> au <span class="text-orange">${formatDateAffichage(formModel.value.dateFin)}</span> a bien été créée.`, false);
+      recupererHeure(formatDateAffichage(timeDebut.value))
+      const data = await $fetch<Creneau>(routes.NEST_CRENEAUX, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${useToken().getToken()}`,
+        },
+        body: formModel.value,
+      });
+      // console.log(timeDebut.value)
+      // console.log(formModel.value.dateDebut.toISOString())
+      creneaux.value.push(data);
+        triggerSnackbar(`Le créneau <span class="text-orange">${formModel.value.nom}</span> du  <span class="text-orange">${formatDateAffichage(formModel.value.dateDebut)}</span> au <span class="text-orange">${formatDateAffichage(formModel.value.dateFin)}</span> a bien été créé.`, false);
       } catch (error: any) {
       console.log(error.message);
     }
@@ -183,6 +199,16 @@ export const useCreneaux = () => {
     }
   };
 
+  const timeDebut = ref("")
+  const timeFin = ref("")
+  const showDialogDebut = ref(false)
+  const showDialogFin = ref(false)
+  
+  function fermerHeure() {
+    showDialogDebut.value = false;
+    showDialogFin.value = false;
+  }
+
   return {
     creneaux,
     formModel,
@@ -203,6 +229,11 @@ export const useCreneaux = () => {
     fermerDialog,
     snackbarShow,
     snackbarText,
-    snackbarAlert
+    snackbarAlert,
+    timeDebut,
+    timeFin,
+    showDialogDebut,
+    showDialogFin,
+    fermerHeure
   };
 };

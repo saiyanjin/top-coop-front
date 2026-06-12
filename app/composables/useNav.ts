@@ -25,7 +25,7 @@ export const useNav = () => {
     { title: 'Adhérents', value: 'Adherents' },
     { title: 'Commandes', value: 'Commandes' },
     { title: 'Participations', value: 'Participations' },
-    { title: 'Créneau', value: 'Creneaux' },
+    { title: 'Créneaux', value: 'Creneaux' },
   ]
 
   // --- Handlers de changement d'onglets ---

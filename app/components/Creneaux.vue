@@ -106,7 +106,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="d-flex align-center">
           <v-col cols="6">
             <v-date-input
               label="Date de début"
@@ -118,6 +118,37 @@
               prepend-inner-icon="mdi-calendar"
               hide-details
             ></v-date-input>
+          </v-col>
+          <v-col cols="1" class="d-flex justify-center">-</v-col>
+          <v-col cols="5">
+            <v-text-field
+              :model-value="timeDebut"
+              label="Heure de début"
+              variant="outlined"
+              rounded="lg"
+              prepend-icon=""
+              prepend-inner-icon="mdi-clock-time-four-outline"
+              readonly
+              hide-details
+            >
+              <v-dialog 
+                v-model="showDialogDebut"
+                activator="parent"
+                width="auto"
+                rounded="xl"
+                
+              >
+                <v-card class="rounded-xl pa-6">
+                  <v-card-title class="d-flex justify-center text-title-large text-orange font-weight-bold pa-4">Sélectionner une heure</v-card-title>
+                  <v-card-text>
+                    <v-time-picker v-model="timeDebut" rounded="xl" format="24hr" hide-title/>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn size="large" rounded="lg" color="white" class="px-8 bg-orange font-weight-bold" @click="fermerHeure">Valider</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-text-field>
           </v-col>
           <v-col cols="6">
             <v-date-input
@@ -131,6 +162,38 @@
               hide-details
             ></v-date-input>
           </v-col>
+          <v-col cols="1" class="d-flex justify-center">-</v-col>
+          <v-col cols="5">
+            <v-text-field
+              :model-value="timeFin"
+              label="Heure de fin"
+              variant="outlined"
+              rounded="lg"
+              prepend-icon=""
+              prepend-inner-icon="mdi-clock-time-four-outline"
+              readonly
+              format="24hr"
+              hide-details
+            >
+              <v-dialog 
+                v-model="showDialogFin"
+                activator="parent"
+                width="auto"
+                rounded="xl"
+                
+              >
+                <v-card class="rounded-xl pa-6">
+                  <v-card-title class="d-flex justify-center text-title-large text-orange font-weight-bold pa-4">Sélectionner une heure</v-card-title>
+                  <v-card-text>
+                    <v-time-picker v-model="timeFin" rounded="xl" format="24hr" hide-title/>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn size="large" rounded="lg" color="white" class="px-8 bg-orange font-weight-bold" @click="fermerHeure">Valider</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-text-field>
+          </v-col>
         </v-row>
 
         <v-row>
@@ -142,6 +205,7 @@
               variant="outlined"
               rounded="lg"
               color="vertFonce"
+              no-resize
             />
           </v-col>
         </v-row>
@@ -155,6 +219,7 @@
               rounded="lg"
               color="vertFonce"
               hide-details
+              :min="0"
             ></v-number-input>
           </v-col>
         </v-row>
@@ -226,6 +291,11 @@ const {
   fermerDialog,
   snackbarShow,
   snackbarText,
-  snackbarAlert
+  snackbarAlert,
+  timeDebut,
+  timeFin,
+  showDialogDebut,
+  showDialogFin,
+  fermerHeure
 } = useCreneaux()
 </script>
