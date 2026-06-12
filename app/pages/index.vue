@@ -15,7 +15,7 @@ definePageMeta({
 const composants: Record<string, ReturnType<typeof resolveComponent>> = {
   Produits: resolveComponent('Produits'),
   // Paniers: resolveComponent('Paniers'),
-  // Type_produits: resolveComponent('Type_produits'),
+  Type_produits: resolveComponent('Type_produits'),
   Adherents: resolveComponent('Adherents'),
   // Commandes: resolveComponent('Commandes'),
   Participations: resolveComponent('Participations'),
