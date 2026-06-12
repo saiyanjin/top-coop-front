@@ -114,7 +114,7 @@ export const useProduits = () => {
           Authorization: `Bearer ${useToken().getToken()}`,
         },
       });
-
+      
       produits.value = data;
     } catch (error: any) {
       console.error("Erreur API Nest :", error.data?.message || error.message);

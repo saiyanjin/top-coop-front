@@ -68,9 +68,9 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="bg-fond min-vh-100">
-      <div class="pa-6 h-100">
-        <NuxtPage />
+    <v-main>
+      <div class="pa-6 bg-fond h-screen">
+        <NuxtPage/>
       </div>
     </v-main>
   </div>
