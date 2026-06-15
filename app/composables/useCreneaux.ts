@@ -49,13 +49,17 @@ export const useCreneaux = () => {
     const debut = typeof item.dateDebut === "string" ? new Date(item.dateDebut) : item.dateDebut;
     const fin = typeof item.dateFin === "string" ? new Date(item.dateFin) : item.dateFin;
 
-    const dateStr = debut.toLocaleDateString("fr-FR");
+    const dateStr = debut.toLocaleDateString('fr-FR');
+    const dateStrDebut = debut.toISOString();
+    const dateStrFin = fin.toISOString();
+    const maDate = new Date(dateStrDebut.replace('Z', ''));
+    const maDateFin = new Date(dateStrFin.replace('Z', ''));
     
-    const heureDebut = debut.getHours().toString().padStart(2, '0');
-    const minDebut = debut.getMinutes().toString().padStart(2, '0');
+    const heureDebut = maDate.getHours().toString().padStart(2, '0');
+    const minDebut = maDate.getMinutes().toString().padStart(2, '0');
     
-    const heureFin = fin.getHours().toString().padStart(2, '0');
-    const minFin = fin.getMinutes().toString().padStart(2, '0');
+    const heureFin = maDateFin.getHours().toString().padStart(2, '0');
+    const minFin = maDateFin.getMinutes().toString().padStart(2, '0');
 
     return `${dateStr} de ${heureDebut}:${minDebut} à ${heureFin}:${minFin}`;
   }
@@ -282,7 +286,6 @@ export const useCreneaux = () => {
     save,
     reset,
     formatDateAffichage,
-    formatDateAffichageHeure,
     fermerDialog,
     snackbarShow,
     snackbarText,

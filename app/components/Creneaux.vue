@@ -291,7 +291,6 @@ const {
   save,
   reset,
   formatDateAffichage,
-  formatDateAffichageHeure,
   fermerDialog,
   snackbarShow,
   snackbarText,
