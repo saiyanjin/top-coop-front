@@ -36,33 +36,30 @@ export const useCreneaux = () => {
 
   const headers = [
     { title: "Nom", key: "nom", align: "start" },
-    { title: "Créneau", key: "creneauPlage", sortable: false },
+    { title: "Créneau", key: "dateDebut"},
     { title: "Description", key: "description" },
     { title: "Capacité", key: "capacite" },
     { title: "Date de création", key: "dateCreation" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
   ] as const;
 
-  function formatPlageCreneau(item: Creneau): string {
-    if (!item.dateDebut || !item.dateFin) return "-";
-    
-    const debut = typeof item.dateDebut === "string" ? new Date(item.dateDebut) : item.dateDebut;
-    const fin = typeof item.dateFin === "string" ? new Date(item.dateFin) : item.dateFin;
+ function formatPlageCreneau(item: Creneau): string {
+  if (!item.dateDebut || !item.dateFin) return "-";
+  
+  const strDebut = typeof item.dateDebut === "string" ? item.dateDebut : item.dateDebut.toISOString();
+  const strFin = typeof item.dateFin === "string" ? item.dateFin : item.dateFin.toISOString();
 
-    const dateStr = debut.toLocaleDateString('fr-FR');
-    const dateStrDebut = debut.toISOString();
-    const dateStrFin = fin.toISOString();
-    const maDate = new Date(dateStrDebut.replace('Z', ''));
-    const maDateFin = new Date(dateStrFin.replace('Z', ''));
-    
-    const heureDebut = maDate.getHours().toString().padStart(2, '0');
-    const minDebut = maDate.getMinutes().toString().padStart(2, '0');
-    
-    const heureFin = maDateFin.getHours().toString().padStart(2, '0');
-    const minFin = maDateFin.getMinutes().toString().padStart(2, '0');
+  const maDateDebut = new Date(strDebut.replace('Z', ''));
+  const maDateFin = new Date(strFin.replace('Z', ''));
+  const dateStr = maDateDebut.toLocaleDateString('fr-FR');
+  const heureDebut = maDateDebut.getHours().toString().padStart(2, '0');
+  const minDebut = maDateDebut.getMinutes().toString().padStart(2, '0');
+  
+  const heureFin = maDateFin.getHours().toString().padStart(2, '0');
+  const minFin = maDateFin.getMinutes().toString().padStart(2, '0');
 
-    return `${dateStr} de ${heureDebut}:${minDebut} à ${heureFin}:${minFin}`;
-  }
+  return `${dateStr} de ${heureDebut}:${minDebut} à ${heureFin}:${minFin}`;
+} 
 
   onMounted(() => {
     getCreneaux();

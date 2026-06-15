@@ -44,7 +44,7 @@
           </v-toolbar>
         </template>
 
-        <template v-slot:item.creneauPlage="{ item }">
+        <template v-slot:item.dateDebut="{ item }">
           {{ formatPlageCreneau(item) }}
         </template>
 
