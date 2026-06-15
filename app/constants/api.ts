@@ -6,6 +6,8 @@ export const API_ROUTES = (baseUrl: string) => ({
     NEST_TYPE_PRODUITS: `${baseUrl}/type-produit`,
     NEST_PARTICIPATIONS: `${baseUrl}/participation`,
     NEST_CRENEAUX: `${baseUrl}/creneau`,
+    NEST_PANIER: `${baseUrl}/panier`,
+    NEST_PANIER_COMPLET: `${baseUrl}/panier/complets`,
+    NEST_PRODUIT_PANIER: `${baseUrl}/produit-panier`,
     NEST_COMMANDE: `${baseUrl}/commande`,
-    NEST_COMMANDE_PRODUIT: `${baseUrl}/commande-produit`,
-});
+    NEST_COMMANDE_PRODUIT: `${baseUrl}/commande-produit`,});
