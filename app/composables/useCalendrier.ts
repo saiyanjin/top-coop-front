@@ -110,41 +110,40 @@ export const useCalendrier = () => {
   const detailsDialog = ref(false)
 
   function showEventDetails(data: any) {
-  // console.log("Structure reçue au clic :", data);
 
-  const rawEventName = 
-    data?.target?.innerText || 
-    data?.event?.name ||      
-    data?.name ||             
-    data?.title;              
+    const rawEventName = 
+      data?.target?.innerText || 
+      data?.event?.name ||      
+      data?.name ||             
+      data?.title;              
 
-  if (!rawEventName) {
-    console.warn("Impossible de lire le nom du créneau dans l'objet transmis par Vuetify :", data);
-    return;
+    if (!rawEventName) {
+      console.warn("Impossible de lire le nom du créneau dans l'objet transmis par Vuetify :", data);
+      return;
+    }
+
+    let eventNameCleaned = rawEventName.split('\n')[0];
+    
+    eventNameCleaned = eventNameCleaned.split(',')[0];
+    
+    eventNameCleaned = eventNameCleaned.trim().toLowerCase();
+
+    const originalCreneau = creneaux.value.find(
+      c => c.nom?.trim().toLowerCase() === eventNameCleaned
+    );
+    
+    if (originalCreneau) {
+      selectedEvent.value = {
+        nom: originalCreneau.nom,
+        description: originalCreneau.description || 'Aucune description fournie.',
+        capacite: originalCreneau.capacite || 0,
+        plageHoraire: formatToCalendarDate(originalCreneau.dateDebut) + ' au ' + formatToCalendarDate(originalCreneau.dateFin)
+      };
+      detailsDialog.value = true;
+    } else {
+      console.warn(`Créneau introuvable dans la liste 'creneaux' pour le nom nettoyé : "${eventNameCleaned}" (Nom brut: "${rawEventName}")`);
+    }
   }
-
-  let eventNameCleaned = rawEventName.split('\n')[0];
-  
-  eventNameCleaned = eventNameCleaned.split(',')[0];
-  
-  eventNameCleaned = eventNameCleaned.trim().toLowerCase();
-
-  const originalCreneau = creneaux.value.find(
-    c => c.nom?.trim().toLowerCase() === eventNameCleaned
-  );
-  
-  if (originalCreneau) {
-    selectedEvent.value = {
-      nom: originalCreneau.nom,
-      description: originalCreneau.description || 'Aucune description fournie.',
-      capacite: originalCreneau.capacite || 0,
-      plageHoraire: formatToCalendarDate(originalCreneau.dateDebut) + ' au ' + formatToCalendarDate(originalCreneau.dateFin)
-    };
-    detailsDialog.value = true;
-  } else {
-    console.warn(`Créneau introuvable dans la liste 'creneaux' pour le nom nettoyé : "${eventNameCleaned}" (Nom brut: "${rawEventName}")`);
-  }
-}
 
 
   onMounted(() => {

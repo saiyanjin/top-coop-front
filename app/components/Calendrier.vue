@@ -38,7 +38,7 @@
               <v-card-text class="py-4 text-body-1">
                 <div class="mb-4">
                   <v-icon icon="mdi-clock-outline" size="small" class="mr-2 text-grey-darken-1"></v-icon>
-                  <strong>Horaire :</strong> <span class="text-grey-darken-3">{{ selectedEvent.plageHoraire }}</span>
+                  <strong>Horaire :</strong> <span class="text-grey-darken-3">Le {{ selectedEvent.plageHoraire }}</span>
                 </div>
                 
                 <div class="mb-4">
