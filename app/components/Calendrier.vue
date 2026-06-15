@@ -24,7 +24,6 @@
             :model-value="today"
             :first-day-of-week="1"
             :now="today"
-            color="primary"
             type="week"
             @click:event="showEventDetails"
           ></v-calendar>

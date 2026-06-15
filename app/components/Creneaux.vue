@@ -155,7 +155,7 @@
           <v-col cols="6">
             <v-text-field
               label="Date de fin"
-              :model-value="formModel.dateDebut"
+              :model-value="formatDateAffichage(formModel.dateDebut)"
               variant="outlined"
               rounded="lg"
               color="vertFonce"

@@ -74,16 +74,34 @@ export const useCalendrier = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}`
   }
 
+  const PALETTE_COULEURS = ['orange', 'success', 'purple', 'cyan', 'indigo', 'teal', 'pink'];
+
+  const genererCouleurParTexte = (texte: string | undefined | null): string => {
+    if (!texte) return 'primary';
+    
+    let hash = 0;
+    for (let i = 0; i < texte.length; i++) {
+      hash = texte.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    const index = Math.abs(hash) % PALETTE_COULEURS.length;
+    
+    return PALETTE_COULEURS[index] || 'primary';
+  };
+
   const participations = computed(() => {
     if (!creneaux || !Array.isArray(creneaux.value)) return []
 
     return creneaux.value
       .filter(creneau => creneau && creneau.dateDebut && creneau.dateFin)
       .map(creneau => {
+        const nomCreneau = creneau.nom || 'Sans nom';
+        
         return {
-          name: creneau.nom,
+          name: nomCreneau,
           start: formatToCalendarDate(creneau.dateDebut),
           end: formatToCalendarDate(creneau.dateFin),
+          color: genererCouleurParTexte(nomCreneau), 
         }
       })
   })

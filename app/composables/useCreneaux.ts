@@ -111,17 +111,19 @@ export const useCreneaux = () => {
     creneaux.value = [];
   }
 
-  function formatDateAffichage(date: Date | null | string): string {
-    if (!date) return "-";
-    const d = typeof date === "string" ? new Date(date) : date;
-    return d.toLocaleDateString("fr-FR");
-  }
+  function formatDateAffichage(dateSource: Date | string | undefined | null): string {
+  if (!dateSource) return '';
+  
+  const d = new Date(dateSource);
+  if (isNaN(d.getTime())) return '';
 
-  function formatDateAffichageHeure(date: Date | null | string): string {
-    if (!date) return "-";
-    const d = typeof date === "string" ? new Date(date) : date;
-    return d.toLocaleDateString("fr-FR") + " " + d.getHours() + ":" + d.getMinutes();
-  }
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 
   const getCreneaux = async () => {
     try {
