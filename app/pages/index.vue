@@ -1,7 +1,6 @@
 <template>
   <v-sheet 
-    class="w-100 bg-blanc rounded-lg elevation-1" 
-    height="calc(100vh - 128px)" 
+    class="w-100 bg-blanc rounded-lg elevation-1"
   >
     <component :is="composantSelec" />
   </v-sheet>
@@ -19,7 +18,7 @@ const composants: Record<string, ReturnType<typeof resolveComponent>> = {
   Adherents: resolveComponent('Adherents'),
   // Commandes: resolveComponent('Commandes'),
   Participations: resolveComponent('Participations'),
-  // Creneaux: resolveComponent('Creneaux'),
+  Creneaux: resolveComponent('Creneaux'),
   Calendrier: resolveComponent('Calendrier'),
   GestionStock: resolveComponent('GestionStock'),
 }

@@ -1,3 +1,7 @@
+body {
+  background-color: #ECEFEC;
+}
+
 /* Adhérents */
 
 .v-table__wrapper > table > thead > tr > th:not(.v-data-table__th--sorted):not(:hover) .v-data-table-header__sort-icon {

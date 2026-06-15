@@ -50,8 +50,7 @@ declare global {
     nom: string;
     dateDebut: Date;
     dateFin: Date;
-    statut: string;
-    description: string;
+    description: string | null;
     capacite: number;
     dateCreation?: Date;
   }

@@ -34,6 +34,7 @@ export const useProduits = () => {
 
   const isEditing = computed(() => !!formModel.value.id);
 
+// Remplacez l'ancien tableau par celui-ci
   const headers = [
     { title: "Type de produit", key: "typeProduit.nom", align: "start" },
     { title: "Date d'arrivée", key: "dateArrive" },
@@ -114,7 +115,7 @@ export const useProduits = () => {
           Authorization: `Bearer ${useToken().getToken()}`,
         },
       });
-
+      
       produits.value = data;
     } catch (error: any) {
       console.error("Erreur API Nest :", error.data?.message || error.message);
