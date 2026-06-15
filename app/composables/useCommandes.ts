@@ -11,9 +11,8 @@ export const useCommandes = () => {
     };
   }
 
-  // États réactifs
   const commandes = ref<Commande[]>([]);
-  const listeAdherents = ref<Utilisateur[]>([]); // Pour alimenter le v-select
+  const listeAdherents = ref<Utilisateur[]>([]); 
   const formModel = ref<Commande>(createNewRecord());
   const schemaSearch = ref("");
   const dialog = ref(false);
@@ -37,16 +36,13 @@ export const useCommandes = () => {
   }
 
   const headers = [
-    { title: "ID Commande", key: "id", align: "start" },
-    { title: "Adhérent (ID)", key: "utilisateurId"},
-    { title: "Email Client", key: "client"},
     { title: "Date de création", key: "dateCreation"},
+    { title: "ID Commande", key: "id", align: "start", sortable: false },
+    { title: "Adhérent (ID)", key: "utilisateurId", sortable: false},
+    { title: "Email Client", key: "client", sortable: false},
     { title: "Actions", key: "actions", sortable: false, align: "end" },
   ] as const;
 
-  // --- ACTIONS API ---
-
-  // Charger les commandes
   const fetchCommandes = async () => {
     try {
       const data = await $fetch<Commande[]>(routes.NEST_COMMANDE, {
@@ -59,7 +55,6 @@ export const useCommandes = () => {
     }
   };
 
-  // Charger les adhérents pour le formulaire
   const fetchAdherents = async () => {
     try {
       const data = await $fetch<Utilisateur[]>(routes.NEST_USERS, {
@@ -92,7 +87,6 @@ export const useCommandes = () => {
         },
       });
       
-      // Optionnel : Re-fetch complet pour s'assurer d'avoir les relations d'objets utilisateur du backend
       await fetchCommandes();
       
       triggerSnackbar("La commande a bien été créée !");

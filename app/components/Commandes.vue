@@ -87,7 +87,7 @@
       @submit="isEditing ? updateCommande(formModel.id!) : createCommande()"
     >
       <v-form class="mt-4">
-        <v-select
+        <v-autocomplete
           v-model="formModel.utilisateurId"
           :items="listeAdherents"
           item-title="email"
@@ -96,7 +96,7 @@
           variant="outlined"
           color="vertFonce"
           hide-details
-        ></v-select>
+        ></v-autocomplete>
       </v-form>
     </BaseModal>
 
