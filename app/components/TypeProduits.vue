@@ -4,7 +4,7 @@
       class="d-flex align-center text-title-large text-orange font-weight-bold mb-6"
     >
       <v-icon icon="mdi-database" class="mr-2"></v-icon>
-      <span>Produits</span>
+      <span>Type de Produits</span>
     </div>
 
     <v-sheet class="overflow-hidden">
@@ -147,8 +147,10 @@
         <v-row>
           <v-col cols="6">
             <v-number-input
-              label="Prix"
+              label="Prix €"
               v-model="formModel.prix"
+              :precision="2"
+              :step="0.5"
               variant="outlined"
               rounded="lg"
               color="vertFonce"
