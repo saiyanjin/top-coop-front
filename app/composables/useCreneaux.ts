@@ -133,19 +133,20 @@ export const useCreneaux = () => {
   };
   
   function recupererHeure( heure : string) {
-    const valDateString = ref(new Date(formModel.value.dateDebut).toISOString())
+    // console.log(formModel.value.dateDebut)
+    const valDateString = ref(formModel.value.dateDebut.toISOString())
     const indexT = valDateString.value.indexOf("T")
-    console.log(valDateString)
-    console.log(heure)
+    console.log("valDateString Début : ", valDateString)
+    // console.log(heure)
     if (indexT === -1) {
-      // console.log("T = -1")
+      // // console.log("T = -1")
       throw new Error
     }
     const debut = valDateString.value.slice( 0, indexT)
     const fin = valDateString.value.slice(indexT + 9)
     const nouvelleDate = debut + "T" + heure + ":00" + fin
     // const nouvelleDateSansZ = nouvelleDate.replace("Z", "")
-    // console.log("Nouvelle Date : ", nouvelleDate, "Debut : ",debut, "Fin : ",fin, "Heure : ",heure)
+    // // console.log("Nouvelle Date : ", nouvelleDate, "Debut : ",debut, "Fin : ",fin, "Heure : ",heure)
     return nouvelleDate
   }
 
@@ -153,8 +154,11 @@ export const useCreneaux = () => {
     // CORRECTION : On utilise la date de DÉBUT pour récupérer le jour sélectionné
     if (!formModel.value.dateDebut) throw new Error("Date de début manquante");
     
-    const valDateString = ref(new Date(formModel.value.dateDebut).toISOString())
+    const valDateString = ref(formModel.value.dateDebut.toISOString())
     const indexT = valDateString.value.indexOf("T")
+
+    console.log("valDateString FIN : ", valDateString)
+
 
     if (indexT === -1) {
       throw new Error()
@@ -170,8 +174,8 @@ export const useCreneaux = () => {
     const dateStringFin = recupererHeureFin(timeFin.value);
     const nouvelleDate : Date = new Date(dateString);
     const nouvelleDateFin : Date = new Date(dateStringFin);
-    console.log(dateString, dateStringFin)
-    console.log(nouvelleDate, nouvelleDateFin)
+    // console.log(dateString, dateStringFin)
+    // console.log(nouvelleDate, nouvelleDateFin)
     formModel.value.dateDebut = nouvelleDate
     formModel.value.dateFin = nouvelleDateFin
   }
@@ -191,12 +195,12 @@ export const useCreneaux = () => {
         },
         body: formModel.value,
       });
-      // console.log(timeDebut.value)
-      // console.log(formModel.value.dateDebut.toISOString())
+      // // console.log(timeDebut.value)
+      // // console.log(formModel.value.dateDebut.toISOString())
       creneaux.value.push(data);
         triggerSnackbar(`Le créneau <span class="text-orange">${formModel.value.nom}</span> du  <span class="text-orange">${formatDateAffichage(formModel.value.dateDebut)}</span> au <span class="text-orange">${formatDateAffichage(formModel.value.dateFin)}</span> a bien été créé.`, false);
       } catch (error: any) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
@@ -216,7 +220,7 @@ export const useCreneaux = () => {
       creneaux.value.splice(index, 1);
       triggerSnackbar(`Le créneau <span class="text-orange">${deletedCreneau?.nom}</span> du <span class="text-orange">${formatDateAffichage(deletedCreneau?.dateDebut ?? "")}</span> a bien été supprimée.`, false);
     } catch (error: any) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
@@ -248,7 +252,7 @@ export const useCreneaux = () => {
       creneaux.value.splice(index, 1, data);
       triggerSnackbar(`Le créneau <span class="text-orange">${formModel.value.nom}</span> du <span class="text-orange">${formatDateAffichage(formModel.value.dateDebut)}</span> a bien été modifié.`, false);
     } catch (error: any) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   };
 
