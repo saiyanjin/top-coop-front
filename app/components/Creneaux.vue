@@ -49,8 +49,12 @@
           :key="col"
           v-slot:[`item.${col}`]="{ value }"
         >
-          {{ formatDateAffichage(value) }}
+          {{ formatDateAffichageHeure(value) }}
         </template>
+
+        <template v-slot:item.dateCreation="{ value }">
+          {{ formatDateAffichage(value) }}
+        </template >
 
         <template v-slot:item.actions="{ item }">
           <div class="d-flex ga-3 justify-end">
@@ -117,6 +121,7 @@
               prepend-icon=""
               prepend-inner-icon="mdi-calendar"
               hide-details
+              clearable
             ></v-date-input>
           </v-col>
           <v-col cols="1" class="d-flex justify-center">-</v-col>
@@ -130,6 +135,7 @@
               prepend-inner-icon="mdi-clock-time-four-outline"
               readonly
               hide-details
+              clearables
             >
               <v-dialog 
                 v-model="showDialogDebut"
@@ -160,6 +166,7 @@
               prepend-icon=""
               prepend-inner-icon="mdi-calendar"
               hide-details
+              clearable
             ></v-date-input>
           </v-col>
           <v-col cols="1" class="d-flex justify-center">-</v-col>
@@ -174,6 +181,7 @@
               readonly
               format="24hr"
               hide-details
+              clearable
             >
               <v-dialog 
                 v-model="showDialogFin"
@@ -288,6 +296,7 @@ const {
   save,
   reset,
   formatDateAffichage,
+  formatDateAffichageHeure,
   fermerDialog,
   snackbarShow,
   snackbarText,

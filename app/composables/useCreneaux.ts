@@ -47,7 +47,6 @@ export const useCreneaux = () => {
   const dateColumns = [
     "dateDebut",
     "dateFin",
-    "dateCreation"
   ] as const;
 
   onMounted(() => {
@@ -106,6 +105,12 @@ export const useCreneaux = () => {
     return d.toLocaleDateString("fr-FR");
   }
 
+  function formatDateAffichageHeure(date: Date | null | string): string {
+    if (!date) return "-";
+    const d = typeof date === "string" ? new Date(date) : date;
+    return d.toLocaleDateString("fr-FR") + " " + d.getHours() + ":" + d.getMinutes();
+  }
+
   const getCreneaux = async () => {
     try {
       const data = await $fetch<Creneau[]>(routes.NEST_CRENEAUX, {
@@ -121,22 +126,57 @@ export const useCreneaux = () => {
     }
   };
 
-  const valDateString = ref(formModel.value.dateDebut.toISOString())
-  const indexT = valDateString.value.indexOf("T")
-
+  
   function recupererHeure( heure : string) {
-    if (indexT !== -1) {
-      const debut = valDateString.value.slice( 0, indexT)
-      const fin = valDateString.value.slice(indexT + 9)
-      const nouvelleDate = debut + "T" + heure + ":00" + fin
-      console.log(nouvelleDate)
-      return nouvelleDate
+    const valDateString = ref(new Date(formModel.value.dateDebut).toISOString())
+    const indexT = valDateString.value.indexOf("T")
+    console.log(valDateString)
+    console.log(heure)
+    if (indexT === -1) {
+      // console.log("T = -1")
+      throw new Error
     }
+    const debut = valDateString.value.slice( 0, indexT)
+    const fin = valDateString.value.slice(indexT + 9)
+    const nouvelleDate = debut + "T" + heure + ":00" + fin
+    // const nouvelleDateSansZ = nouvelleDate.replace("Z", "")
+    console.log("Nouvelle Date : ", nouvelleDate, "Debut : ",debut, "Fin : ",fin, "Heure : ",heure)
+    return nouvelleDate
   }
 
+  function recupererHeureFin( heure : string) {
+    const valDateString = ref(new Date(formModel.value.dateFin).toISOString())
+    const indexT = valDateString.value.indexOf("T")
+
+    if (indexT === -1) {
+      throw new Error
+    }
+    const debut = valDateString.value.slice( 0, indexT)
+    const fin = valDateString.value.slice(indexT + 9)
+    const nouvelleDate = debut + "T" + heure + ":00" + fin
+    return nouvelleDate
+  }
+
+  function recupererTout() {
+    console.log("Ici")
+    const dateString = recupererHeure(timeDebut.value);
+    const dateStringFin = recupererHeureFin(timeFin.value);
+    const nouvelleDate : Date = new Date(dateString);
+    const nouvelleDateFin : Date = new Date(dateStringFin);
+    console.log(dateString, dateStringFin)
+    console.log(nouvelleDate, nouvelleDateFin)
+    formModel.value.dateDebut = nouvelleDate
+    formModel.value.dateFin = nouvelleDateFin
+  }
+  
   const createCreneau = async () => {
     try {
-      recupererHeure(formatDateAffichage(timeDebut.value))
+      recupererTout()
+    } catch (error) {
+      triggerSnackbar(`Date invalide`, false);
+      return
+    }
+    try {
       const data = await $fetch<Creneau>(routes.NEST_CRENEAUX, {
         method: "POST",
         headers: {
@@ -175,17 +215,23 @@ export const useCreneaux = () => {
 
     const updateCreneau = async (id: string) => {
     try {
+      recupererTout()
+    } catch (error) {
+      triggerSnackbar(`Date invalide`, false);
+      return
+    }
+    try {
       const data = await $fetch<Creneau>(routes.NEST_CRENEAUX + '/' + id, {
           method: "PATCH",
           headers: {
           Authorization: `Bearer ${useToken().getToken()}`,
           },
           body: {
-          nom: formModel.value.nom,
-          dateDebut: formModel.value.dateDebut,
-          dateFin: formModel.value.dateFin,
-          description: formModel.value.description,
-          capacite: formModel.value.capacite,
+            nom: formModel.value.nom,
+            dateDebut: formModel.value.dateDebut,
+            dateFin: formModel.value.dateFin,
+            description: formModel.value.description,
+            capacite: formModel.value.capacite,
           },
       });
       const index = creneaux.value.findIndex((p) => p.id === id);
@@ -226,6 +272,7 @@ export const useCreneaux = () => {
     save,
     reset,
     formatDateAffichage,
+    formatDateAffichageHeure,
     fermerDialog,
     snackbarShow,
     snackbarText,
