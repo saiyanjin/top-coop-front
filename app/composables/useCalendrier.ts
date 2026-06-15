@@ -1,10 +1,22 @@
 import { onMounted, ref, computed, watch } from 'vue'
+import { useCreneaux } from './useCreneaux' 
 
 export const useCalendrier = () => {
   const calendar = ref()
   const nbrJourSemaine = 7
   const tab = ref("calendrier")
-  const today = ref('2026-06-05')
+
+  const getLocalTodayString = () => {
+    const d = new Date()
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
+  const today = ref(getLocalTodayString())
+
+  const { creneaux } = useCreneaux()
 
   const queryHistory = ref<ActivityLogItem[]>([
     {
@@ -45,22 +57,77 @@ export const useCalendrier = () => {
     return `${monthName} ${current.getFullYear()}`
   })
   
-  const participations = [
-    {
-      name: 'Mise en rayon',
-      start: '2026-06-01 09:00',
-      end: '2026-06-01 12:00',
-    },
-    {
-      name: `Thomas' Birthday`,
-      start: '2026-06-07',
-    },
-    {
-      name: 'Mash Potatoes',
-      start: '2026-06-04 12:30',
-      end: '2026-06-04 15:30',
-    },
-  ]
+  const formatToCalendarDate = (dateSource: Date | string | null | undefined): string => {
+    if (!dateSource) return ''
+    
+    const cleanSource = typeof dateSource === 'string' ? dateSource.replace('Z', '') : dateSource
+    const d = new Date(cleanSource)
+    
+    if (isNaN(d.getTime())) return ''
+
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`
+  }
+
+  const participations = computed(() => {
+    if (!creneaux || !Array.isArray(creneaux.value)) return []
+
+    return creneaux.value
+      .filter(creneau => creneau && creneau.dateDebut && creneau.dateFin)
+      .map(creneau => {
+        return {
+          name: creneau.nom,
+          start: formatToCalendarDate(creneau.dateDebut),
+          end: formatToCalendarDate(creneau.dateFin),
+        }
+      })
+  })
+
+  const selectedEvent = ref<any>(null)
+  const detailsDialog = ref(false)
+
+  function showEventDetails(data: any) {
+  // console.log("Structure reçue au clic :", data);
+
+  const rawEventName = 
+    data?.target?.innerText || 
+    data?.event?.name ||      
+    data?.name ||             
+    data?.title;              
+
+  if (!rawEventName) {
+    console.warn("Impossible de lire le nom du créneau dans l'objet transmis par Vuetify :", data);
+    return;
+  }
+
+  let eventNameCleaned = rawEventName.split('\n')[0];
+  
+  eventNameCleaned = eventNameCleaned.split(',')[0];
+  
+  eventNameCleaned = eventNameCleaned.trim().toLowerCase();
+
+  const originalCreneau = creneaux.value.find(
+    c => c.nom?.trim().toLowerCase() === eventNameCleaned
+  );
+  
+  if (originalCreneau) {
+    selectedEvent.value = {
+      nom: originalCreneau.nom,
+      description: originalCreneau.description || 'Aucune description fournie.',
+      capacite: originalCreneau.capacite || 0,
+      plageHoraire: formatToCalendarDate(originalCreneau.dateDebut) + ' au ' + formatToCalendarDate(originalCreneau.dateFin)
+    };
+    detailsDialog.value = true;
+  } else {
+    console.warn(`Créneau introuvable dans la liste 'creneaux' pour le nom nettoyé : "${eventNameCleaned}" (Nom brut: "${rawEventName}")`);
+  }
+}
+
 
   onMounted(() => {
     if (calendar.value) {
@@ -137,7 +204,7 @@ export const useCalendrier = () => {
     tab,
     today,
     currentMonth,
-    participations,
+    participations, 
     queryHistory,
     clearHistory,
     deleteLog,
@@ -146,6 +213,9 @@ export const useCalendrier = () => {
     searchQuery,
     currentPage,
     totalPages,
-    paginatedParticipants
+    paginatedParticipants,
+    detailsDialog,
+    selectedEvent,
+    showEventDetails
   };
 }

@@ -156,14 +156,17 @@ export const useCreneaux = () => {
     return nouvelleDate
   }
 
-  function recupererHeureFin( heure : string) {
-    const valDateString = ref(new Date(formModel.value.dateFin).toISOString())
+  function recupererHeureFin(heure: string) {
+    // CORRECTION : On utilise la date de DÉBUT pour récupérer le jour sélectionné
+    if (!formModel.value.dateDebut) throw new Error("Date de début manquante");
+    
+    const valDateString = ref(new Date(formModel.value.dateDebut).toISOString())
     const indexT = valDateString.value.indexOf("T")
 
     if (indexT === -1) {
-      throw new Error
+      throw new Error()
     }
-    const debut = valDateString.value.slice( 0, indexT)
+    const debut = valDateString.value.slice(0, indexT)
     const fin = valDateString.value.slice(indexT + 9)
     const nouvelleDate = debut + "T" + heure + ":00" + fin
     return nouvelleDate

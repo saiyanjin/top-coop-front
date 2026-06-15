@@ -17,15 +17,65 @@
               <v-btn icon="mdi-chevron-right" variant="text" @click="next"/>
           </div>
           <v-sheet class="flex-grow-1 overflow-hidden">
-            <v-calendar
-              ref="calendar"
-              :events="participations"
-              :model-value="today"
-              :first-day-of-week="1"
-              :now="today"
-              color="primary"
-              type="week"
-            ></v-calendar>
+          <v-calendar
+            v-if="participations"
+            ref="calendar"
+            :events="participations"
+            :model-value="today"
+            :first-day-of-week="1"
+            :now="today"
+            color="primary"
+            type="week"
+            @click:event="showEventDetails"
+          ></v-calendar>
+
+          <v-dialog v-model="detailsDialog" max-width="500" rounded="xl">
+            <v-card class="rounded-xl pa-6" v-if="selectedEvent">
+              <v-card-title class="d-flex align-center text-headline font-weight-bold text-orange pa-2">
+                <v-icon icon="mdi-information-outline" class="mr-2"></v-icon>
+                <span>{{ selectedEvent.nom }}</span>
+              </v-card-title>
+              
+              <v-card-text class="py-4 text-body-1">
+                <div class="mb-4">
+                  <v-icon icon="mdi-clock-outline" size="small" class="mr-2 text-grey-darken-1"></v-icon>
+                  <strong>Horaire :</strong> <span class="text-grey-darken-3">{{ selectedEvent.plageHoraire }}</span>
+                </div>
+                
+                <div class="mb-4">
+                  <v-icon icon="mdi-account-group-outline" size="small" class="mr-2 text-grey-darken-1"></v-icon>
+                  <strong>Capacité :</strong> 
+                  <v-chip size="small" color="vertFonce" class="ml-2 font-weight-bold text-white">
+                    {{ selectedEvent.capacite }} participants max
+                  </v-chip>
+                </div>
+
+                <v-divider class="my-3"></v-divider>
+
+                <div>
+                  <div class="font-weight-bold mb-1">
+                    <v-icon icon="mdi-text-short" size="small" class="mr-2 text-grey-darken-1"></v-icon>
+                    Description :
+                  </div>
+                  <p class="text-body-2 text-grey-darken-2 bg-grey-lighten-4 pa-3 rounded-lg border-sm">
+                    {{ selectedEvent.description }}
+                  </p>
+                </div>
+              </v-card-text>
+
+              <v-card-actions class="justify-end">
+                <v-btn 
+                  variant="flat" 
+                  rounded="lg" 
+                  color="vertFonce" 
+                  class="px-6 text-white font-weight-bold" 
+                  @click="detailsDialog = false"
+                >
+                  Fermer
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           </v-sheet>
         </div>
       </v-sheet>
@@ -168,7 +218,10 @@
     searchQuery,
     currentPage,
     totalPages,
-    paginatedParticipants
+    paginatedParticipants,
+    detailsDialog,
+    selectedEvent,
+    showEventDetails
   } = useCalendrier()
 
 </script>

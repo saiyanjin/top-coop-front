@@ -16,7 +16,7 @@ const composants: Record<string, ReturnType<typeof resolveComponent>> = {
   // Paniers: resolveComponent('Paniers'),
   Type_produits: resolveComponent('Type_produits'),
   Adherents: resolveComponent('Adherents'),
-  // Commandes: resolveComponent('Commandes'),
+  Commandes: resolveComponent('Commandes'),
   Participations: resolveComponent('Participations'),
   Creneaux: resolveComponent('Creneaux'),
   Calendrier: resolveComponent('Calendrier'),
