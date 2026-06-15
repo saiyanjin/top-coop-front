@@ -29,7 +29,7 @@ declare global {
     id?: string;
     nom: string;
     quantiteMax: number;
-    unite: string;
+    unite: Unite;
     prix: number;
     dateCreation?: Date;
   }
