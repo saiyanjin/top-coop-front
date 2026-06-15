@@ -36,34 +36,19 @@ export const useProduits = () => {
 
 // Remplacez l'ancien tableau par celui-ci
   const headers = [
-    { title: "Nom", key: "nom", align: "start" },
-    { title: "Créneau", key: "creneauPlage", sortable: false }, // Nouvelle colonne fusionnée
-    { title: "Description", key: "description" },
-    { title: "Capacité", key: "capacite" },
-    { title: "Date de création", key: "dateCreation" },
+    { title: "Type de produit", key: "typeProduit.nom", align: "start" },
+    { title: "Date d'arrivée", key: "dateArrive" },
+    { title: "Date de sortie", key: "dateSortie" },
+    { title: "Date de péremption", key: "datePeremption" },
+    { title: "Quantité", key: "quantite" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
   ] as const;
 
-  // Vous pouvez supprimer 'dateColumns' si vous n'en avez plus besoin ailleurs
-  const dateColumns = [] as const;
-
-  // Nouvelle fonction pour formater la plage horaire complète d'un item
-  function formatPlageCreneau(item: Creneau): string {
-    if (!item.dateDebut || !item.dateFin) return "-";
-    
-    const debut = typeof item.dateDebut === "string" ? new Date(item.dateDebut) : item.dateDebut;
-    const fin = typeof item.dateFin === "string" ? new Date(item.dateFin) : item.dateFin;
-
-    const dateStr = debut.toLocaleDateString("fr-FR");
-    
-    const heureDebut = debut.getHours().toString().padStart(2, '0');
-    const minDebut = debut.getMinutes().toString().padStart(2, '0');
-    
-    const heureFin = fin.getHours().toString().padStart(2, '0');
-    const minFin = fin.getMinutes().toString().padStart(2, '0');
-
-    return `${dateStr} de ${heureDebut}:${minDebut} à ${heureFin}:${minFin}`;
-  }
+  const dateColumns = [
+    "dateArrive",
+    "dateSortie",
+    "datePeremption"
+  ] as const;
 
   onMounted(() => {
     getProduits();
@@ -250,6 +235,5 @@ export const useProduits = () => {
     fermerDialog,
     snackbarShow,
     snackbarText,
-    formatPlageCreneau,
   };
 };
