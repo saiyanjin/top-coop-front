@@ -36,18 +36,29 @@ export const useCreneaux = () => {
 
   const headers = [
     { title: "Nom", key: "nom", align: "start" },
-    { title: "Date Début", key: "dateDebut" },
-    { title: "Date Fin", key: "dateFin" },
+    { title: "Créneau", key: "creneauPlage", sortable: false },
     { title: "Description", key: "description" },
     { title: "Capacité", key: "capacite" },
     { title: "Date de création", key: "dateCreation" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
   ] as const;
 
-  const dateColumns = [
-    "dateDebut",
-    "dateFin",
-  ] as const;
+  function formatPlageCreneau(item: Creneau): string {
+    if (!item.dateDebut || !item.dateFin) return "-";
+    
+    const debut = typeof item.dateDebut === "string" ? new Date(item.dateDebut) : item.dateDebut;
+    const fin = typeof item.dateFin === "string" ? new Date(item.dateFin) : item.dateFin;
+
+    const dateStr = debut.toLocaleDateString("fr-FR");
+    
+    const heureDebut = debut.getHours().toString().padStart(2, '0');
+    const minDebut = debut.getMinutes().toString().padStart(2, '0');
+    
+    const heureFin = fin.getHours().toString().padStart(2, '0');
+    const minFin = fin.getMinutes().toString().padStart(2, '0');
+
+    return `${dateStr} de ${heureDebut}:${minDebut} à ${heureFin}:${minFin}`;
+  }
 
   onMounted(() => {
     getCreneaux();
@@ -264,7 +275,6 @@ export const useCreneaux = () => {
     itemToDelete,
     isEditing,
     headers,
-    dateColumns,
     add,
     edit,
     remove,
@@ -281,6 +291,7 @@ export const useCreneaux = () => {
     timeFin,
     showDialogDebut,
     showDialogFin,
+    formatPlageCreneau,
     fermerHeure
   };
 };

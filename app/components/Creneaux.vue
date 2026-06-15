@@ -44,12 +44,8 @@
           </v-toolbar>
         </template>
 
-        <template
-          v-for="col in dateColumns"
-          :key="col"
-          v-slot:[`item.${col}`]="{ value }"
-        >
-          {{ formatDateAffichageHeure(value) }}
+        <template v-slot:item.creneauPlage="{ item }">
+          {{ formatPlageCreneau(item) }}
         </template>
 
         <template v-slot:item.dateCreation="{ value }">
@@ -288,7 +284,6 @@ const {
   itemToDelete,
   isEditing,
   headers,
-  dateColumns,
   add,
   edit,
   remove,
@@ -305,6 +300,7 @@ const {
   timeFin,
   showDialogDebut,
   showDialogFin,
-  fermerHeure
+  fermerHeure,
+  formatPlageCreneau
 } = useCreneaux()
 </script>
