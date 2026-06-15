@@ -46,16 +46,6 @@
           </v-toolbar>
         </template>
 
-        <!-- <template v-slot:item.dateSortie="{ value }">
-          {{ formatDateAffichage(value) }}
-        </template>
-        <template v-slot:item.dateArrive="{ value }">
-          {{ formatDateAffichage(value) }}
-        </template>
-        <template v-slot:item.datePeremption="{ value }">
-          {{ formatDateAffichage(value) }}
-        </template> -->
-
         <template
           v-for="col in dateColumns"
           :key="col"

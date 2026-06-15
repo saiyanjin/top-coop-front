@@ -117,12 +117,6 @@ export const useCreneaux = () => {
     return d.toLocaleDateString("fr-FR");
   }
 
-  function formatDateAffichageHeure(date: Date | null | string): string {
-    if (!date) return "-";
-    const d = typeof date === "string" ? new Date(date) : date;
-    return d.toLocaleDateString("fr-FR") + " " + d.getHours() + ":" + d.getMinutes();
-  }
-
   const getCreneaux = async () => {
     try {
       const data = await $fetch<Creneau[]>(routes.NEST_CRENEAUX, {
@@ -152,7 +146,7 @@ export const useCreneaux = () => {
     const fin = valDateString.value.slice(indexT + 9)
     const nouvelleDate = debut + "T" + heure + ":00" + fin
     // const nouvelleDateSansZ = nouvelleDate.replace("Z", "")
-    console.log("Nouvelle Date : ", nouvelleDate, "Debut : ",debut, "Fin : ",fin, "Heure : ",heure)
+    // console.log("Nouvelle Date : ", nouvelleDate, "Debut : ",debut, "Fin : ",fin, "Heure : ",heure)
     return nouvelleDate
   }
 

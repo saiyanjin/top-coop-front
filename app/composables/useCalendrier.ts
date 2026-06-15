@@ -131,6 +131,12 @@ export const useCalendrier = () => {
     const originalCreneau = creneaux.value.find(
       c => c.nom?.trim().toLowerCase() === eventNameCleaned
     );
+
+    function formatDateAffichage(date: Date | null | string): string {
+      if (!date) return "-";
+      const d = typeof date === "string" ? new Date(date) : date;
+      return d.toLocaleDateString("fr-FR");
+    }
     
     if (originalCreneau) {
       selectedEvent.value = {
