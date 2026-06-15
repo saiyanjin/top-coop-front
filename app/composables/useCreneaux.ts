@@ -131,7 +131,6 @@ export const useCreneaux = () => {
       console.error("Erreur API Nest :", error.data?.message || error.message);
     }
   };
-
   
   function recupererHeure( heure : string) {
     const valDateString = ref(new Date(formModel.value.dateDebut).toISOString())
@@ -167,7 +166,6 @@ export const useCreneaux = () => {
   }
 
   function recupererTout() {
-    console.log("Ici")
     const dateString = recupererHeure(timeDebut.value);
     const dateStringFin = recupererHeureFin(timeFin.value);
     const nouvelleDate : Date = new Date(dateString);
