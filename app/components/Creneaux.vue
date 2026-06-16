@@ -153,17 +153,17 @@
             </v-text-field>
           </v-col>
           <v-col cols="6">
-            <v-date-input
+            <v-text-field
               label="Date de fin"
-              v-model="formModel.dateFin"
+              :model-value="formatDateAffichage(formModel.dateDebut)"
               variant="outlined"
               rounded="lg"
               color="vertFonce"
-              prepend-icon=""
               prepend-inner-icon="mdi-calendar"
+              readonly
+              disabled
               hide-details
-              clearable
-            ></v-date-input>
+            ></v-text-field>
           </v-col>
           <v-col cols="1" class="d-flex justify-center">-</v-col>
           <v-col cols="5">

@@ -2,11 +2,11 @@
       <v-sheet
         class="px-15 py-10 overflow-hidden d-flex flex-column bg-transparent h-100"
       >
-      <div class="d-flex align-center text-title-large text-orange font-weight-bold">
+      <div class="d-flex align-center pa-1 text-title-large text-orange font-weight-bold">
         <v-icon icon="mdi-archive-outline" class="mr-2"></v-icon>
         <span>Gestion des stocks</span>
       </div>
-        <div class="d-flex my-10">
+        <div class="d-flex pa-1 my-10">
           <v-text-field
             v-model="searchQuery"
             label="Rechercher..."
@@ -21,7 +21,7 @@
           ></v-text-field>
         </div>
 
-        <v-sheet class="flex-grow-1 overflow-y-auto bg-transparent mb-4 rounded-lg">
+        <v-sheet class="flex-grow-1 overflow-y-auto bg-transparent pa-1 pb-4 rounded-lg">
           <v-row v-if="paginatedProduit.length > 0">
             <v-col
               v-for="(produit, index) in paginatedProduit"

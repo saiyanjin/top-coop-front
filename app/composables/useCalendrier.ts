@@ -1,10 +1,22 @@
 import { onMounted, ref, computed, watch } from 'vue'
+import { useCreneaux } from './useCreneaux' 
 
 export const useCalendrier = () => {
   const calendar = ref()
   const nbrJourSemaine = 7
   const tab = ref("calendrier")
-  const today = ref('2026-06-05')
+
+  const getLocalTodayString = () => {
+    const d = new Date()
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
+  const today = ref(getLocalTodayString())
+
+  const { creneaux } = useCreneaux()
 
   const queryHistory = ref<ActivityLogItem[]>([
     {
@@ -45,22 +57,110 @@ export const useCalendrier = () => {
     return `${monthName} ${current.getFullYear()}`
   })
   
-  const participations = [
-    {
-      name: 'Mise en rayon',
-      start: '2026-06-01 09:00',
-      end: '2026-06-01 12:00',
-    },
-    {
-      name: `Thomas' Birthday`,
-      start: '2026-06-07',
-    },
-    {
-      name: 'Mash Potatoes',
-      start: '2026-06-04 12:30',
-      end: '2026-06-04 15:30',
-    },
-  ]
+  const formatToCalendarDate = (dateSource: Date | string | null | undefined): string => {
+    if (!dateSource) return ''
+    
+    const d = typeof dateSource === 'string' ? new Date(dateSource) : dateSource
+    
+    if (isNaN(d.getTime())) return ''
+
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`
+  }
+
+  const PALETTE_COULEURS = ['orange', 'success', 'purple', 'cyan', 'indigo', 'teal', 'pink'];
+
+  const genererCouleurParTexte = (texte: string | undefined | null): string => {
+    if (!texte) return 'primary';
+    
+    let hash = 0;
+    for (let i = 0; i < texte.length; i++) {
+      hash = texte.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    const index = Math.abs(hash) % PALETTE_COULEURS.length;
+    
+    return PALETTE_COULEURS[index] || 'primary';
+  };
+
+  const participations = computed(() => {
+    if (!creneaux || !Array.isArray(creneaux.value)) return []
+
+    return creneaux.value
+      .filter(creneau => creneau && creneau.dateDebut && creneau.dateFin)
+      .map(creneau => {
+        const nomCreneau = creneau.nom || 'Sans nom';
+        
+        return {
+          name: nomCreneau,
+          start: formatToCalendarDate(creneau.dateDebut),
+          end: formatToCalendarDate(creneau.dateFin),
+          color: genererCouleurParTexte(nomCreneau), 
+        }
+      })
+  })
+
+  const selectedEvent = ref<any>(null)
+  const detailsDialog = ref(false)
+
+  function showEventDetails(data: any) {
+
+    const rawEventName = 
+      data?.target?.innerText || 
+      data?.event?.name ||      
+      data?.name ||             
+      data?.title;              
+
+    if (!rawEventName) {
+      console.warn("Impossible de lire le nom du créneau dans l'objet transmis par Vuetify :", data);
+      return;
+    }
+
+    let eventNameCleaned = rawEventName.split('\n')[0];
+    eventNameCleaned = eventNameCleaned.split(',')[0];
+    eventNameCleaned = eventNameCleaned.trim().toLowerCase();
+
+    const originalCreneau = creneaux.value.find(
+      c => c.nom?.trim().toLowerCase() === eventNameCleaned
+    );
+    
+    if (originalCreneau) {
+      const dDebut = typeof originalCreneau.dateDebut === 'string' ? new Date(originalCreneau.dateDebut) : originalCreneau.dateDebut;
+      const dFin = typeof originalCreneau.dateFin === 'string' ? new Date(originalCreneau.dateFin) : originalCreneau.dateFin;
+
+      let plageFormatee = "-";
+
+      if (dDebut && !isNaN(dDebut.getTime()) && dFin && !isNaN(dFin.getTime())) {
+        const dateStr = dDebut.toLocaleDateString('fr-FR');
+        
+        const heureDebut = String(dDebut.getHours()).padStart(2, '0');
+        const minDebut = String(dDebut.getMinutes()).padStart(2, '0');
+        
+        const heureFin = String(dFin.getHours()).padStart(2, '0');
+        const minFin = String(dFin.getMinutes()).padStart(2, '0');
+
+        plageFormatee = `${dateStr} de ${heureDebut}:${minDebut}h à ${heureFin}:${minFin}h`;
+      }
+      // -----------------------------------------------------
+
+      selectedEvent.value = {
+        nom: originalCreneau.nom,
+        description: originalCreneau.description || 'Aucune description fournie.',
+        capacite: originalCreneau.capacite || 0,
+        plageHoraire: plageFormatee 
+      };
+      detailsDialog.value = true;
+    } else {
+      console.warn(`Créneau introuvable dans la liste 'creneaux' pour le nom nettoyé : "${eventNameCleaned}" (Nom brut: "${rawEventName}")`);
+    }
+  }
+
 
   onMounted(() => {
     if (calendar.value) {
@@ -137,7 +237,7 @@ export const useCalendrier = () => {
     tab,
     today,
     currentMonth,
-    participations,
+    participations, 
     queryHistory,
     clearHistory,
     deleteLog,
@@ -146,6 +246,9 @@ export const useCalendrier = () => {
     searchQuery,
     currentPage,
     totalPages,
-    paginatedParticipants
+    paginatedParticipants,
+    detailsDialog,
+    selectedEvent,
+    showEventDetails
   };
 }

@@ -150,6 +150,7 @@
               label="Prix €"
               v-model="formModel.prix"
               :precision="2"
+              :min="0"
               :step="0.5"
               variant="outlined"
               rounded="lg"
