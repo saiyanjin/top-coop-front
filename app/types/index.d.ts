@@ -1,5 +1,7 @@
 // types/index.d.ts
 
+import type { Unite } from "~/constants/enum";
+
 declare global {
 
   // ---------- Produits ----------
@@ -16,7 +18,7 @@ declare global {
   interface ProduitAvecType {
     id?: string;
     typeProduitId: string;
-    typeProduit?: TypeProduit;
+    typeProduit: TypeProduit;
     dateArrive: Date;
     dateSortie?: Date;
     datePeremption?: Date;
@@ -134,6 +136,36 @@ declare global {
     originalProducts: any[];
   }
 
+  // ---------- Paniers ----------
+
+    interface Panier {
+    id?: string;
+    utilisateurId: string;
+    prix: number; 
+    dateCreation?: Date;
+  }
+
+  interface ProduitPanier {
+    id?: string,
+    panierId: string,
+    produitId: string,
+    quantite: number,
+    unite: Unite,
+    prix: number,
+  }
+
+  interface PanierComplet extends Panier {
+    produitPaniers: ProduitDansPanier[],
+    nomDesProduits: string[],
+  }
+
+  interface PanierCompletSansProduit extends Panier {
+    produitPaniers: ProduitDansPanier[],
+  }
+
+  interface ProduitDansPanier extends ProduitPanier {
+    produit: ProduitAvecType,
+  }
 }
 
 export {};
