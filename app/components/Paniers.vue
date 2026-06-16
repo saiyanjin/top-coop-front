@@ -30,7 +30,7 @@
               max-width="400"
               rounded="lg"
             />
-            <!-- <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
             <v-btn
               class="bg-vertFonce text-white font-weight-bold"
               size="large"
@@ -40,7 +40,7 @@
               @click="add"
             >
               Ajouter un panier
-            </v-btn> -->
+            </v-btn>
           </v-toolbar>
         </template>
 
