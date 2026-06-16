@@ -131,24 +131,20 @@ export const useCalendrier = () => {
     );
     
     if (originalCreneau) {
-      // --- NOUVELLE LOGIQUE DE FORMATTAGE POUR LE MODAL ---
       const dDebut = typeof originalCreneau.dateDebut === 'string' ? new Date(originalCreneau.dateDebut) : originalCreneau.dateDebut;
       const dFin = typeof originalCreneau.dateFin === 'string' ? new Date(originalCreneau.dateFin) : originalCreneau.dateFin;
 
       let plageFormatee = "-";
 
       if (dDebut && !isNaN(dDebut.getTime()) && dFin && !isNaN(dFin.getTime())) {
-        // Date au format 19/06/2026
         const dateStr = dDebut.toLocaleDateString('fr-FR');
         
-        // Heures et minutes locales (ex: 14:00)
         const heureDebut = String(dDebut.getHours()).padStart(2, '0');
         const minDebut = String(dDebut.getMinutes()).padStart(2, '0');
         
         const heureFin = String(dFin.getHours()).padStart(2, '0');
         const minFin = String(dFin.getMinutes()).padStart(2, '0');
 
-        // Assemblage final : "19/06/2026 de 14:00h à 20:00h"
         plageFormatee = `${dateStr} de ${heureDebut}:${minDebut}h à ${heureFin}:${minFin}h`;
       }
       // -----------------------------------------------------
@@ -157,7 +153,7 @@ export const useCalendrier = () => {
         nom: originalCreneau.nom,
         description: originalCreneau.description || 'Aucune description fournie.',
         capacite: originalCreneau.capacite || 0,
-        plageHoraire: plageFormatee // On utilise notre chaîne personnalisée
+        plageHoraire: plageFormatee 
       };
       detailsDialog.value = true;
     } else {
