@@ -171,12 +171,7 @@ export const usePaniers = () => {
 
   function formatProduitPanier(produits: ProduitDansPanier[]): string {
     if (!produits || produits.length === 0) return "-";
-    return produits
-      .map(
-        (p) =>
-          `<v-list class="text-vertFonce">${p.produit.typeProduit.nom} x${p.quantite} - ${p.prix} €</v-list>`
-      )
-      .join(", ");
+    return produits.map((p) => `<v-list class="text-vertFonce">${p.produit.typeProduit.nom} x${p.quantite} - ${p.prix.toPrecision(3)} €</v-list>`).join(", ");
   }
 
   const getPaniers = async () => {

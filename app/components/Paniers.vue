@@ -48,9 +48,12 @@
           {{ formatDateAffichage(value) }}
         </template>
 
-        <template 
-        v-slot:item.nomDesProduits="{ item }">
+        <template v-slot:item.nomDesProduits="{ item }">
           {{ item.nomDesProduits }}
+        </template>
+
+        <template v-slot:item.prix="{ item }">
+          {{ item.prix.toFixed(2) }} €
         </template>
 
         <template v-slot:item.data-table-expand="{ internalItem, isExpanded, toggleExpand }">
@@ -68,8 +71,15 @@
           <tr>
             <td :colspan="columns.length" class="py-2">
               <v-sheet rounded="lg">
-                <div v-html="formatProduitPanier(item.produitPaniers)">
-                </div>
+                <div v-html="formatProduitPanier(item.produitPaniers)"></div>
+                <!-- <v-list lines="one">
+                  <v-list-item
+                    v-for="elem in item.produitPaniers.length"
+                    :key="elem"
+                    :title="formatProduitPanier(item.produitPaniers) + elem"
+                    subtitle="test"
+                  ></v-list-item>
+                </v-list> -->
               </v-sheet>
             </td>
           </tr>
@@ -185,6 +195,10 @@
               Aucun produit dans ce panier.
             </div>
 
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
             <v-autocomplete
               label="Ajouter un produit"
               :items="produitsDisponiblesOptions"
