@@ -12,10 +12,10 @@ export const useTypeProduits = () => {
       quantiteMax: 0,
       unite: Unite.UNITE,
       prix: 0,
+      ean: "",
     };
   }
 
-//   const produits = ref<ProduitAvecType[]>([]);
   const typeUnite = ref([Unite.VRAC, Unite.UNITE]);
   const typeProduits = ref<TypeProduit[]>([]);
   const formModel = ref<TypeProduit>(createNewRecord());
@@ -39,6 +39,7 @@ export const useTypeProduits = () => {
     { title: "Quantité Max", key: "quantiteMax" },
     { title: "Unité", key: "unite" },
     { title: "Prix", key: "prix" },
+    { title: "EAN", key: "ean" },
     { title: "Date de création", key: "dateCreation" },
     { title: "Actions", key: "actions", align: "end", sortable: false },
   ] as const;
@@ -48,7 +49,6 @@ export const useTypeProduits = () => {
   ] as const;
 
   onMounted(() => {
-    // getProduits();
     getTypeProduit();
   });
 

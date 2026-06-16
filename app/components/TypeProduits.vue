@@ -159,6 +159,20 @@
             ></v-number-input>
           </v-col>
 
+          <v-col cols="6">
+            <v-text-field
+              label="EAN"
+              placeholder="8421555331005"
+              hint="Le code EAN doit faire 13 caractères."
+              type="input"
+              v-model="formModel.ean"
+              variant="outlined"
+              rounded="lg"
+              color="vertFonce"
+              clearable
+            ></v-text-field>
+          </v-col>
+
         </v-row>
       </v-form>
     </BaseModal>

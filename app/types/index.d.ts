@@ -33,6 +33,7 @@ declare global {
     quantiteMax: number;
     unite: Unite;
     prix: number;
+    ean: string;
     dateCreation?: Date;
   }
 
@@ -108,13 +109,10 @@ declare global {
     quantiteInitiale?: number;
   }
 
-  // Dans types/index.d.ts (si ce n'est pas déjà fait)
-  // Dans types/index.d.ts
   interface Commande {
     id?: string;
     utilisateurId: string;
     dateCreation?: Date | string;
-    // Si votre backend NestJS inclut l'objet utilisateur lors du GET :
     utilisateur?: {
       nom: string;
       prenom: string;
