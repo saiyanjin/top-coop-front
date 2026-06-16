@@ -60,14 +60,14 @@ export const useCalendrier = () => {
   const formatToCalendarDate = (dateSource: Date | string | null | undefined): string => {
     if (!dateSource) return ''
     
-    const cleanSource = typeof dateSource === 'string' ? dateSource.replace('Z', '') : dateSource
-    const d = new Date(cleanSource)
+    const d = typeof dateSource === 'string' ? new Date(dateSource) : dateSource
     
     if (isNaN(d.getTime())) return ''
 
     const year = d.getFullYear()
     const month = String(d.getMonth() + 1).padStart(2, '0')
     const day = String(d.getDate()).padStart(2, '0')
+    
     const hours = String(d.getHours()).padStart(2, '0')
     const minutes = String(d.getMinutes()).padStart(2, '0')
 
