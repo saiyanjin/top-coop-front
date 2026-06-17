@@ -8,7 +8,7 @@ export const useProduits = () => {
   function createNewRecord(): ProduitAvecType {
     return {
       typeProduitId: "",
-      typeProduit: undefined,
+      typeProduit: undefined as any,
       dateArrive: new Date(),
       dateSortie: undefined,
       datePeremption: undefined,
@@ -63,12 +63,12 @@ export const useProduits = () => {
     dialog.value = true;
   }
 
-  function edit(item: Produit) {
+  function edit(item: ProduitAvecType) {
     formModel.value = { ...item };
     dialog.value = true;
   }
 
-  function remove(item: Produit) {
+  function remove(item: ProduitAvecType) {
     if (!item || item.id === undefined) return;
     itemToDelete.value = item;
     dialogDelete.value = true;
