@@ -1,10 +1,40 @@
 import { onMounted, ref, computed, watch } from 'vue'
+import { API_ROUTES } from "~/constants/api";
 import { useCreneaux } from './useCreneaux' 
 
 export const useCalendrier = () => {
+  const config = useRuntimeConfig()
+  const routes = API_ROUTES(config.public.apiBase)
+
   const calendar = ref()
   const nbrJourSemaine = 7
   const tab = ref("calendrier")
+
+  const participantsList = ref<Participant[]>([])
+
+  const getParticipantsQuotas = async () => {
+    try {
+      const data = await $fetch<any[]>(routes.NEST_UTILISATEUR_QUOTA, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${useToken().getToken()}`,
+        },
+      })
+
+      participantsList.value = data.map((user: any) => {
+        const nbParticipations = Array.isArray(user.participations) ? user.participations.length : 0
+        const heuresRestantes = (user.quota || 0) - nbParticipations
+
+        return {
+          nom: user.nom,
+          prenom: user.prenom,
+          heuresRestantes: heuresRestantes < 0 ? 0 : heuresRestantes
+        }
+      })
+    } catch (error: any) {
+      console.error("Erreur lors de la récupération des quotas utilisateurs :", error.message)
+    }
+  }
 
   const getLocalTodayString = () => {
     const d = new Date()
@@ -147,7 +177,6 @@ export const useCalendrier = () => {
 
         plageFormatee = `${dateStr} de ${heureDebut}:${minDebut}h à ${heureFin}:${minFin}h`;
       }
-      // -----------------------------------------------------
 
       selectedEvent.value = {
         nom: originalCreneau.nom,
@@ -161,11 +190,11 @@ export const useCalendrier = () => {
     }
   }
 
-
   onMounted(() => {
     if (calendar.value) {
       calendar.value.scrollToTime('08:00')
     }
+    getParticipantsQuotas()
   })
 
   function offsetDate (days: number) {
@@ -190,20 +219,6 @@ export const useCalendrier = () => {
   const currentPage = ref(1)
   const itemsPerPage = 10
 
-  const participantsList = ref<Participant[]>([
-    { nom: 'Matthieu', prenom: 'Flament', heuresRestantes: 1 },
-    { nom: 'Dupont', prenom: 'Jean', heuresRestantes: 1 },
-    { nom: 'Martin', prenom: 'Sophie', heuresRestantes: 1 },
-    { nom: 'Bernard', prenom: 'Thomas', heuresRestantes: 1 },
-    { nom: 'Petit', prenom: 'Marie', heuresRestantes: 1 },
-    { nom: 'Durand', prenom: 'Lucas', heuresRestantes: 1 },
-    { nom: 'Leroy', prenom: 'Julie', heuresRestantes: 1 },
-    { nom: 'Moreau', prenom: 'Pierre', heuresRestantes: 1 },
-    { nom: 'Simon', prenom: 'Chloé', heuresRestantes: 1 },
-    { nom: 'Laurent', prenom: 'Maxime', heuresRestantes: 1 },
-    { nom: 'Lefebvre', prenom: 'Emma', heuresRestantes: 1 },
-    { nom: 'Michel', prenom: 'Antoine', heuresRestantes: 1 },
-  ])
 
   const filteredParticipants = computed(() => {
     if (!searchQuery.value) return participantsList.value
