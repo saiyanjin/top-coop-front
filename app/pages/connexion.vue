@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import ConnexionForm from '~/components/ConnexionForm.vue';
 
 definePageMeta({
   layout: 'login'
