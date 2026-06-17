@@ -18,7 +18,7 @@ declare global {
   interface ProduitAvecType {
     id?: string;
     typeProduitId: string;
-    typeProduit?: TypeProduit;
+    typeProduit: TypeProduit;
     dateArrive: Date;
     dateSortie?: Date;
     datePeremption?: Date;
@@ -27,7 +27,7 @@ declare global {
 
   // ---------- Type Produits ----------
 
-  interface TypeProduit {
+  class TypeProduit {
     id?: string;
     nom: string;
     quantiteMax: number;
@@ -140,7 +140,7 @@ declare global {
     id?: string;
     utilisateurId: string;
     prix: number; 
-    dateCreation?: Date;
+    dateCreation: Date;
   }
 
   interface ProduitPanier {

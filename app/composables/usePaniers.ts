@@ -10,7 +10,7 @@ export const usePaniers = () => {
       id: undefined,
       utilisateurId: "",
       prix: 0,
-      dateCreation: undefined,
+      dateCreation: new Date(),
     };
   }
 
@@ -58,17 +58,17 @@ export const usePaniers = () => {
 
   const produitsDisponiblesOptions = computed(() =>
     produitsDisponibles.value.map((p) => ({
-      title: `${p.typeProduit.nom} (${p.typeProduit.prix} €)`,
+      title: `${p.typeProduit?.nom} (${p.typeProduit?.prix} €)`,
       value: p.id,
     }))
   );
 
   const headers = [
-    { title: "Id du panier", key: "id", align: "start" },
-    { title: "Utilisateur", key: "utilisateurNom"},
-    { title: "Produits du panier", key: 'data-table-expand', align: "center"},
+    { title: "Produits du panier", key: 'data-table-expand',  align: "start", width:250},
+    { title: "Utilisateur", key: "utilisateurNom" }, 
     { title: "Prix", key: 'prix'},
     { title: "Date de création", key: "dateCreation" },
+    { title: "Heure de création", key: "heureCreation" }, // Nouvelle colonne
     { title: "Actions", key: "actions", align: "end", sortable: false },
   ] as const;
 
@@ -167,6 +167,12 @@ export const usePaniers = () => {
     if (!date) return "-";
     const d = typeof date === "string" ? new Date(date) : date;
     return d.toLocaleDateString("fr-FR");
+  }
+
+  function formatHeureAffichage(date: Date | null | string): string {
+    if (!date) return "-";
+    const d = typeof date === "string" ? new Date(date) : date;
+    return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
   }
 
   function formatProduitPanier(produits: ProduitDansPanier[]): string {
@@ -344,6 +350,7 @@ export const usePaniers = () => {
     save,
     reset,
     formatDateAffichage,
+    formatHeureAffichage,
     formatProduitPanier,
     getUtilisateurNom,
     fermerDialog,

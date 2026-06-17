@@ -48,6 +48,10 @@
           {{ formatDateAffichage(value) }}
         </template>
 
+        <template v-slot:item.heureCreation="{ item }">
+          {{ formatHeureAffichage(item.dateCreation) }}
+        </template>
+
         <template v-slot:item.nomDesProduits="{ item }">
           {{ item.nomDesProduits }}
         </template>
@@ -58,7 +62,7 @@
 
         <template v-slot:item.data-table-expand="{ internalItem, isExpanded, toggleExpand }">
           <v-btn
-            :append-icon="isExpanded(internalItem) ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+            :prepend-icon="isExpanded(internalItem) ? 'mdi-chevron-up' : 'mdi-chevron-down'"
             :text="isExpanded(internalItem) ? 'Fermer' : 'Voir les produits'"
             class="text-vertFonce"
             density="comfortable"
@@ -69,7 +73,7 @@
 
         <template v-slot:expanded-row="{ columns, item }">
           <tr>
-            <td :colspan="columns.length" class="py-2">
+            <td :colspan="columns.length" class="">
               <v-sheet rounded="lg">
                 <div v-html="formatProduitPanier(item.produitPaniers)"></div>
                 <!-- <v-list lines="one">
@@ -295,6 +299,7 @@ const {
   save,
   reset,
   formatDateAffichage,
+  formatHeureAffichage,
   formatProduitPanier,
   getUtilisateurNom,
   fermerDialog,

@@ -36,10 +36,10 @@ export const useCommandes = () => {
   }
 
   const headers = [
+    { title: "ID Commande", key: "id", align: "start" },
     { title: "Date de création", key: "dateCreation"},
-    { title: "ID Commande", key: "id", align: "start", sortable: false },
-    { title: "Adhérent (ID)", key: "utilisateurId", sortable: false},
-    { title: "Email Client", key: "client", sortable: false},
+    { title: "Nom & Prénom", key: "clientName", },
+    { title: "Email Client", key: "client" },
     { title: "Actions", key: "actions", sortable: false, align: "end" },
   ] as const;
 

@@ -45,6 +45,16 @@
           </v-toolbar>
         </template>
 
+        <template v-slot:item.clientName="{ item }">
+          <span>
+            {{ 
+              listeAdherents.find(u => u.id === item.utilisateurId) 
+                ? `${listeAdherents.find(u => u.id === item.utilisateurId)?.nom} ${listeAdherents.find(u => u.id === item.utilisateurId)?.prenom}`
+                : 'Adhérent inconnu'
+            }}
+          </span>
+        </template>
+
         <template v-slot:item.client="{ item }">
           <span>
             {{ listeAdherents.find(u => u.id === item.utilisateurId)?.email || 'Email introuvable' }}
