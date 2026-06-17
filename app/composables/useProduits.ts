@@ -34,7 +34,6 @@ export const useProduits = () => {
 
   const isEditing = computed(() => !!formModel.value.id);
 
-// Remplacez l'ancien tableau par celui-ci
   const headers = [
     { title: "Type de produit", key: "typeProduit.nom", align: "start" },
     { title: "Date d'arrivée", key: "dateArrive" },

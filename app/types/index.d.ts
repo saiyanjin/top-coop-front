@@ -18,7 +18,7 @@ declare global {
   interface ProduitAvecType {
     id?: string;
     typeProduitId: string;
-    typeProduit: TypeProduit;
+    typeProduit?: TypeProduit;
     dateArrive: Date;
     dateSortie?: Date;
     datePeremption?: Date;
