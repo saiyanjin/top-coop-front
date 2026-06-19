@@ -1,3 +1,10 @@
+# Application web CRUD de le Top'Coop
+
+## Liens des projets back et mobile
+
+- Backend juste [ici](https://github.com/remabd/top-coop-back)
+- Mobile juste [ici](https://github.com/remabd/top-coop-mobile)
+
 # Nuxt Minimal Starter
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
